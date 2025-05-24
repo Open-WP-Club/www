@@ -1,1 +1,57 @@
 @import "tailwindcss";
+
+/* Custom styles for plugin slider */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Ensure smooth scrolling for the slider */
+#plugins-slider {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Plugin card hover effects */
+.plugin-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.plugin-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Responsive slider container */
+.slider-container {
+  overflow: hidden;
+}
+
+/* Button hover states */
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Ensure consistent card sizing across breakpoints */
+#plugins-slider .flex-none {
+  width: 16rem;
+  /* w-64 = 256px */
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 640px) {
+  #plugins-slider .flex-none {
+    width: calc(100vw - 3rem);
+    /* Full width minus padding */
+    max-width: 20rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  #plugins-slider .flex-none {
+    width: calc(50vw - 2rem);
+    /* Half width minus padding */
+    max-width: 18rem;
+  }
+}
