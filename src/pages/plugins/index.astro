@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PluginCard from '../../components/PluginCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPlugins = await getCollection('plugins');
+const sorted = allPlugins.sort((a, b) => {
+  if (!a.data.lastPush || !b.data.lastPush) return 0;
+  return new Date(b.data.lastPush).getTime() - new Date(a.data.lastPush).getTime();
+});
+---
+
+<BaseLayout title="All Plugins - Open WP Club" description="Browse all open source WordPress plugins created by the Open WP Club community.">
+  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
+          Our WordPress Plugins
+        </h1>
+        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          {sorted.length} open source plugins built by the Open WP Club community. Click any plugin to see its full documentation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sorted.map((plugin) => (
+          <PluginCard
+            slug={plugin.id}
+            name={plugin.data.name}
+            description={plugin.data.description}
+            version={plugin.data.version}
+            stars={plugin.data.stars}
+            forks={plugin.data.forks}
+            lastPush={plugin.data.lastPush}
+            language={plugin.data.language}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,47 @@
+---
+const checkItems = [
+  'Welcome developers of all skill levels to share and learn',
+  'Support open source WordPress plugin development',
+  'Foster collaboration and knowledge sharing',
+  'Help each other solve WordPress challenges together',
+];
+---
+
+<section id="mission" class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+      <div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">Our Community Mission</h2>
+        <p class="mt-6 text-lg text-gray-600 leading-relaxed">
+          To create a supportive space where WordPress developers can share, learn, and collaborate on open source
+          projects that benefit everyone.
+        </p>
+        <div class="mt-8 space-y-4">
+          {checkItems.map((item) => (
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <div class="flex items-center justify-center size-6 rounded-full bg-green-100">
+                  <svg class="size-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+              <p class="ml-4 text-gray-600 leading-relaxed">{item}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="mt-12 lg:mt-0">
+        <div class="bg-white rounded-2xl shadow-xl p-8 lg:p-10">
+          <blockquote class="text-gray-600 italic text-lg leading-relaxed">
+            "The best WordPress solutions come from developers working together, sharing ideas, and building on each
+            other's work. Community makes everything better."
+          </blockquote>
+          <div class="mt-6 pt-6 border-t border-gray-100">
+            <div class="font-semibold text-gray-900">Open WP Club Community</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

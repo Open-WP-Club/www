@@ -1,19 +1,20 @@
 {
   "name": "open-wp-club-website",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "type": "module",
   "description": "A community website for WordPress open source enthusiasts",
-  "main": "index.html",
   "scripts": {
-    "build": "npx @tailwindcss/cli -i ./assets/styles.css -o ./assets/css/styles_min.css --build",
-    "watch": "npx @tailwindcss/cli -i ./assets/styles.css -o ./assets/css/styles_min.css --watch",
-    "serve": "python3 -m http.server 8000"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "keywords": [
     "wordpress",
     "open-source",
     "community",
     "plugins",
-    "tailwindcss"
+    "astro"
   ],
   "author": "Open WP Club",
   "license": "MIT",
@@ -22,10 +23,14 @@
     "url": "https://github.com/Open-WP-Club/www.git"
   },
   "homepage": "https://openwpclub.com",
-  "devDependencies": {
-    "tailwindcss": "4.1.7"
+  "dependencies": {
+    "astro": "^5.17.2",
+    "@astrojs/sitemap": "^3.3.1",
+    "marked": "^15.0.7",
+    "tailwindcss": "^4.1.7",
+    "@tailwindcss/vite": "^4.1.7"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   }
 }
