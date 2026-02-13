@@ -1,6 +1,12 @@
 ---
 const pathname = Astro.url.pathname;
-const isHome = pathname === '/';
+
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/mission', label: 'Mission' },
+  { href: '/plugins', label: 'Plugins' },
+  { href: '/apps', label: 'Apps' },
+];
 ---
 
 <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
@@ -18,18 +24,19 @@ const isHome = pathname === '/';
       </a>
       <div class="hidden md:block">
         <div class="ml-10 flex items-baseline space-x-4">
-          {isHome ? (
-            <a href="#about" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">About</a>
-            <a href="#mission" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Mission</a>
-            <a href="#why-us" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Why Us</a>
-          ) : (
-            <a href="/" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Home</a>
-          )}
-          <a href="/plugins" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Plugins</a>
-          <a href="/apps" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Apps</a>
-          {isHome ? (
-            <a href="#contact" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Contact</a>
-          ) : null}
+          {links.map((link) => (
+            <a
+              href={link.href}
+              class:list={[
+                'px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200',
+                pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
+                  ? 'text-blue-600 bg-blue-50'
+                  : 'text-gray-700 hover:text-blue-600',
+              ]}
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
       </div>
       <!-- Mobile menu button -->
@@ -45,18 +52,19 @@ const isHome = pathname === '/';
     </div>
     <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden md:hidden pb-4">
-      {isHome ? (
-        <a href="#about" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">About</a>
-        <a href="#mission" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Mission</a>
-        <a href="#why-us" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Why Us</a>
-      ) : (
-        <a href="/" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Home</a>
-      )}
-      <a href="/plugins" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Plugins</a>
-      <a href="/apps" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Apps</a>
-      {isHome ? (
-        <a href="#contact" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Contact</a>
-      ) : null}
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            'block px-3 py-2 rounded-md text-base font-medium',
+            pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
+              ? 'text-blue-600 bg-blue-50'
+              : 'text-gray-700 hover:text-blue-600',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
     </div>
   </div>
 </nav>
