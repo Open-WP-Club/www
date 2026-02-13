@@ -13,7 +13,7 @@ export const GET: APIRoute = async () => {
   const lines: string[] = [
     '# Open WP Club',
     '',
-    '> An open community building free WordPress plugins — one problem, one plugin, no paywalls. We keep going through donations and code contributions.',
+    '> An open community building free WordPress plugins - one problem, one plugin, no paywalls. We keep going through donations and code contributions.',
     '',
     '## Links',
     '',

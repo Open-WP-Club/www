@@ -49,18 +49,30 @@ export async function fetchRepoStats(repoName: string): Promise<GitHubRepoStats>
 }
 
 export async function fetchReadme(repoName: string, defaultBranch: string = 'main'): Promise<string> {
+  // Try the GitHub API first
   const url = `https://api.github.com/repos/${ORG}/${repoName}/readme`;
   const res = await fetch(url, { headers: githubHeaders() });
 
-  if (!res.ok) {
-    return '<p class="text-gray-500 italic">No README available for this plugin.</p>';
+  if (res.ok) {
+    const data = await res.json();
+    const content = Buffer.from(data.content, 'base64').toString('utf-8');
+    let html = await marked(content);
+    html = rewriteImageUrls(html, repoName, defaultBranch);
+    return html;
   }
 
-  const data = await res.json();
-  const content = Buffer.from(data.content, 'base64').toString('utf-8');
-  let html = await marked(content);
-  html = rewriteImageUrls(html, repoName, defaultBranch);
-  return html;
+  // Fallback: fetch raw README directly (not rate-limited like the API)
+  const rawUrl = `https://raw.githubusercontent.com/${ORG}/${repoName}/${defaultBranch}/README.md`;
+  const rawRes = await fetch(rawUrl);
+
+  if (rawRes.ok) {
+    const content = await rawRes.text();
+    let html = await marked(content);
+    html = rewriteImageUrls(html, repoName, defaultBranch);
+    return html;
+  }
+
+  return '<p class="text-gray-500 italic">No README available for this plugin.</p>';
 }
 
 export function rewriteImageUrls(html: string, repo: string, branch: string): string {
@@ -71,6 +83,47 @@ export function rewriteImageUrls(html: string, repo: string, branch: string): st
       return `${prefix}https://raw.githubusercontent.com/${ORG}/${repo}/${branch}/${cleanSrc}${suffix}`;
     }
   );
+}
+
+export interface Contributor {
+  login: string;
+  contributions: number;
+  profileUrl: string;
+}
+
+export async function fetchOrgContributors(repoNames: string[]): Promise<Contributor[]> {
+  const contributorMap = new Map<string, Contributor>();
+
+  for (let i = 0; i < repoNames.length; i += BATCH_SIZE) {
+    const batch = repoNames.slice(i, i + BATCH_SIZE);
+    const batchResults = await Promise.allSettled(
+      batch.map(async (repo) => {
+        const url = `https://api.github.com/repos/${ORG}/${repo}/contributors?per_page=100`;
+        const res = await fetch(url, { headers: githubHeaders() });
+        if (!res.ok) return [];
+        return (await res.json()) as Array<{ login: string; contributions: number; html_url: string; type: string }>;
+      })
+    );
+
+    for (const result of batchResults) {
+      if (result.status !== 'fulfilled') continue;
+      for (const c of result.value) {
+        if (c.type === 'Bot') continue;
+        const existing = contributorMap.get(c.login);
+        if (existing) {
+          existing.contributions += c.contributions;
+        } else {
+          contributorMap.set(c.login, {
+            login: c.login,
+            contributions: c.contributions,
+            profileUrl: c.html_url,
+          });
+        }
+      }
+    }
+  }
+
+  return Array.from(contributorMap.values()).sort((a, b) => b.contributions - a.contributions);
 }
 
 export async function fetchAllGitHubData(
