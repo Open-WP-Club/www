@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const apps = [
   {
     name: 'Desktop for WooCommerce',
-    description: 'A desktop application for managing your WooCommerce store. Process orders, manage inventory, and handle customer data — all from a native desktop experience without needing a browser.',
+    description: 'Manage orders, inventory, and customers from a native desktop app — no browser tabs required. Still in development.',
     platform: 'Desktop',
     platformIcon: 'desktop',
     status: 'Coming Soon',
@@ -12,7 +12,7 @@ const apps = [
   },
   {
     name: 'Android app for WooCommerce',
-    description: 'Manage your WooCommerce store on the go. View orders, update stock levels, and stay connected to your store from your Android device with push notifications and offline support.',
+    description: 'Check orders and update stock from your phone. Push notifications for new orders and low-stock alerts. Early stage — not yet available.',
     platform: 'Android',
     platformIcon: 'mobile',
     status: 'Coming Soon',
@@ -21,15 +21,15 @@ const apps = [
 ];
 ---
 
-<BaseLayout title="Apps - Open WP Club" description="Desktop and mobile applications built by Open WP Club for WooCommerce store management.">
+<BaseLayout title="Apps - Open WP Club" description="Desktop and mobile apps for WooCommerce store management. Currently in development by Open WP Club.">
   <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
-          Our Apps
+          Apps
         </h1>
         <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-          Desktop and mobile applications for WooCommerce store management, built by the Open WP Club community.
+          Native apps for WooCommerce store management. These are in active development — none are publicly available yet.
         </p>
       </div>
     </div>
@@ -44,11 +44,11 @@ const apps = [
               <div class="flex items-start gap-4">
                 <div class="flex-shrink-0 size-14 flex items-center justify-center rounded-xl bg-blue-100">
                   {app.platformIcon === 'desktop' ? (
-                    <svg class="size-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <svg class="size-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" />
                     </svg>
                   ) : (
-                    <svg class="size-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <svg class="size-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
                     </svg>
                   )}

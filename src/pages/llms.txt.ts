@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { GITHUB_ORG_URL, DISCORD_URL } from '../lib/config';
 
 export const GET: APIRoute = async () => {
   const plugins = await getCollection('plugins');
@@ -12,13 +13,13 @@ export const GET: APIRoute = async () => {
   const lines: string[] = [
     '# Open WP Club',
     '',
-    '> A community of WordPress developers sharing knowledge, collaborating on open source projects, and building better solutions for the WordPress ecosystem.',
+    '> An open community building free WordPress plugins — one problem, one plugin, no paywalls. We keep going through donations and code contributions.',
     '',
     '## Links',
     '',
     '- Website: https://openwpclub.com',
-    '- GitHub: https://github.com/Open-WP-Club',
-    '- Discord: https://discord.gg/ESTDmmjj',
+    `- GitHub: ${GITHUB_ORG_URL}`,
+    `- Discord: ${DISCORD_URL}`,
     '',
     '## Pages',
     '',

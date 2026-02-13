@@ -10,15 +10,15 @@ const sorted = allPlugins.sort((a, b) => {
 });
 ---
 
-<BaseLayout title="All Plugins - Open WP Club" description="Browse all open source WordPress plugins created by the Open WP Club community.">
+<BaseLayout title="All Plugins - Open WP Club" description={`${sorted.length} free, open-source WordPress plugins. Browse the full catalog, sorted by most recently updated.`}>
   <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
-          Our WordPress Plugins
+          All Plugins
         </h1>
         <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-          {sorted.length} open source plugins built by the Open WP Club community. Click any plugin to see its full documentation.
+          {sorted.length} plugins, sorted by most recently updated. Click any card to read the full README and docs.
         </p>
       </div>
     </div>

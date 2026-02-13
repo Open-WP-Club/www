@@ -2,22 +2,34 @@
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { GITHUB_ORG_URL, DISCORD_URL } from '../lib/config';
 
 interface Props {
   title: string;
   description?: string;
   ogType?: string;
   ogImage?: string;
+  jsonLd?: Record<string, unknown>;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const {
   title,
-  description = 'Open WP Club is a welcoming community where WordPress developers share knowledge, collaborate on open source projects, and help each other build better solutions.',
+  description = 'Open WP Club builds free, open-source WordPress plugins. Browse our catalog, read the source, and use them in your projects.',
   ogType = 'website',
   ogImage,
+  jsonLd,
 } = Astro.props;
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Open WP Club',
+  url: 'https://openwpclub.com',
+  logo: 'https://openwpclub.com/favicon.svg',
+  sameAs: [GITHUB_ORG_URL, DISCORD_URL],
+};
 ---
 
 <!doctype html>
@@ -50,10 +62,21 @@ const {
 
     <!-- Robots -->
     <meta name="robots" content="index, follow" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
   </head>
   <body class="font-sans antialiased bg-gray-50 text-gray-900">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-blue-600 focus:underline">
+      Skip to content
+    </a>
     <Nav />
-    <slot />
+    <main id="main">
+      <slot />
+    </main>
     <Footer />
   </body>
 </html>

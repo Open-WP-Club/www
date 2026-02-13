@@ -1,7 +1,7 @@
 import { marked } from 'marked';
 import type { GitHubRepoStats } from './types';
+import { ORG, BATCH_SIZE } from './config';
 
-const ORG = 'Open-WP-Club';
 const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN || '';
 
 function githubHeaders(): HeadersInit {
@@ -63,7 +63,7 @@ export async function fetchReadme(repoName: string, defaultBranch: string = 'mai
   return html;
 }
 
-function rewriteImageUrls(html: string, repo: string, branch: string): string {
+export function rewriteImageUrls(html: string, repo: string, branch: string): string {
   return html.replace(
     /(<img\s[^>]*src=")(?!https?:\/\/)([^"]+)(")/gi,
     (_, prefix, src, suffix) => {
@@ -77,7 +77,6 @@ export async function fetchAllGitHubData(
   repoNames: string[]
 ): Promise<Map<string, { stats: GitHubRepoStats; readmeHtml: string }>> {
   const results = new Map<string, { stats: GitHubRepoStats; readmeHtml: string }>();
-  const BATCH_SIZE = 10;
 
   for (let i = 0; i < repoNames.length; i += BATCH_SIZE) {
     const batch = repoNames.slice(i, i + BATCH_SIZE);

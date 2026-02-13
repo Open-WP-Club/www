@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run"
   },
   "keywords": [
     "wordpress",
@@ -24,13 +25,17 @@
   },
   "homepage": "https://openwpclub.com",
   "dependencies": {
-    "astro": "^5.17.2",
     "@astrojs/sitemap": "^3.3.1",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.1.7",
+    "astro": "^5.17.2",
     "marked": "^15.0.7",
-    "tailwindcss": "^4.1.7",
-    "@tailwindcss/vite": "^4.1.7"
+    "tailwindcss": "^4.1.7"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18"
   }
 }

@@ -1,9 +1,9 @@
 ---
 const checkItems = [
-  'Welcome developers of all skill levels to share and learn',
-  'Support open source WordPress plugin development',
-  'Foster collaboration and knowledge sharing',
-  'Help each other solve WordPress challenges together',
+  'Every plugin is free and open source — no paid tiers, ever',
+  'One plugin per problem, built to do it well',
+  'Anyone can contribute — code, ideas, or donations',
+  'No gatekeeping, no "pro" version waiting around the corner',
 ];
 ---
 
@@ -11,17 +11,16 @@ const checkItems = [
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
       <div>
-        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">Our Community Mission</h2>
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">Why We Do This</h2>
         <p class="mt-6 text-lg text-gray-600 leading-relaxed">
-          To create a supportive space where WordPress developers can share, learn, and collaborate on open source
-          projects that benefit everyone.
+          WordPress.org is full of plugins that do the same thing — most of them locking the good parts behind a paywall. The ecosystem shouldn't work like that. We build free alternatives that actually solve the problem, and we keep them alive through community support — donations and code contributions alike.
         </p>
         <div class="mt-8 space-y-4">
           {checkItems.map((item) => (
             <div class="flex items-start">
               <div class="flex-shrink-0">
                 <div class="flex items-center justify-center size-6 rounded-full bg-green-100">
-                  <svg class="size-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <svg class="size-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -34,11 +33,10 @@ const checkItems = [
       <div class="mt-12 lg:mt-0">
         <div class="bg-white rounded-2xl shadow-xl p-8 lg:p-10">
           <blockquote class="text-gray-600 italic text-lg leading-relaxed">
-            "The best WordPress solutions come from developers working together, sharing ideas, and building on each
-            other's work. Community makes everything better."
+            "Bringing back the power of WordPress, one plugin at a time."
           </blockquote>
           <div class="mt-6 pt-6 border-t border-gray-100">
-            <div class="font-semibold text-gray-900">Open WP Club Community</div>
+            <div class="font-semibold text-gray-900">Open WP Club</div>
           </div>
         </div>
       </div>

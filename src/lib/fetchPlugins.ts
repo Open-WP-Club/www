@@ -1,8 +1,7 @@
 import type { PluginCSVRow } from './types';
+import { CSV_URL } from './config';
 
-const CSV_URL = 'https://raw.githubusercontent.com/Open-WP-Club/.github/main/plugins.csv';
-
-function parseCSVLine(line: string): string[] {
+export function parseCSVLine(line: string): string[] {
   const result: string[] = [];
   let current = '';
   let inQuotes = false;
