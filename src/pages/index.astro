@@ -1,16 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import Stats from '../components/Stats.astro';
 import About from '../components/About.astro';
+import { SHOW_STATS } from '../lib/config';
 import PluginShowcase from '../components/PluginShowcase.astro';
 import WhyUs from '../components/WhyUs.astro';
+import Sponsor from '../components/Sponsor.astro';
 import Contact from '../components/Contact.astro';
 ---
 
 <BaseLayout title="Open WP Club - Free, Open-Source WordPress Software">
   <Hero />
+  {SHOW_STATS && <Stats />}
   <About />
   <PluginShowcase />
   <WhyUs />
+  <Sponsor />
   <Contact />
 </BaseLayout>

@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import { fetchOrgContributors } from '../lib/fetchGitHubData';
+
+const allPlugins = await getCollection('plugins');
+const repoNames = allPlugins.map((p) => p.id);
+const contributors = await fetchOrgContributors(repoNames);
+
+const totalStars = allPlugins.reduce((sum, p) => sum + p.data.stars, 0);
+const totalForks = allPlugins.reduce((sum, p) => sum + p.data.forks, 0);
+
+const stats = [
+  { label: 'Open-source plugins', value: allPlugins.length.toString() },
+  { label: 'GitHub stars', value: totalStars.toLocaleString() },
+  { label: 'Forks', value: totalForks.toLocaleString() },
+  { label: 'Contributors', value: contributors.length.toLocaleString() },
+];
+---
+
+<section class="py-12 bg-white border-y border-gray-100">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      {stats.map((stat) => (
+        <div>
+          <p class="text-3xl sm:text-4xl font-bold text-blue-600 tracking-tight">{stat.value}</p>
+          <p class="mt-1 text-sm text-gray-500">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

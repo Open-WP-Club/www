@@ -1,14 +1,41 @@
 ---
-import { GITHUB_ORG_URL, DISCORD_URL } from '../lib/config';
+import { GITHUB_ORG_URL, DISCORD_URL, SPONSOR_URL, CONTACT_EMAIL } from '../lib/config';
 ---
 
 <div class="space-y-6">
-  <!-- Support / Sponsor -->
-  <div class="bg-gradient-to-br from-blue-50 via-white to-blue-50 rounded-xl shadow-sm border border-blue-100 p-6">
-    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">Support our work</h3>
+  <!-- Sponsor CTA -->
+  <div class="bg-gradient-to-br from-amber-50 via-white to-amber-50 rounded-xl shadow-sm border border-amber-200 p-6">
+    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-2">Sponsor us</h3>
     <p class="text-sm text-gray-600 leading-relaxed mb-4">
-      Everything we build is free and open source. Donations and contributions keep us going.
+      Our software is free forever. Sponsorships help us maintain 30+ plugins and build new tools for the WordPress ecosystem.
     </p>
+    {SPONSOR_URL && (
+      <a
+        href={SPONSOR_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 rounded-lg transition-colors mb-2"
+      >
+        <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+        </svg>
+        Become a Sponsor
+      </a>
+    )}
+    <a
+      href={`mailto:${CONTACT_EMAIL}?subject=Sponsorship Inquiry`}
+      class={`inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${SPONSOR_URL ? 'text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200' : 'text-white bg-amber-500 hover:bg-amber-600'}`}
+    >
+      <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+      </svg>
+      Contact us about sponsoring
+    </a>
+  </div>
+
+  <!-- Community -->
+  <div class="bg-gradient-to-br from-blue-50 via-white to-blue-50 rounded-xl shadow-sm border border-blue-100 p-6">
+    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">Community</h3>
     <div class="space-y-3">
       <a
         href={GITHUB_ORG_URL}
@@ -16,10 +43,10 @@ import { GITHUB_ORG_URL, DISCORD_URL } from '../lib/config';
         rel="noopener noreferrer"
         class="flex items-center gap-3 text-sm text-gray-700 hover:text-blue-600 transition-colors"
       >
-        <svg class="size-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+        <svg class="size-5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
         </svg>
-        Sponsor on GitHub
+        View on GitHub
       </a>
       <a
         href={DISCORD_URL}
@@ -33,17 +60,32 @@ import { GITHUB_ORG_URL, DISCORD_URL } from '../lib/config';
         Join Discord
       </a>
       <a
-        href={`${GITHUB_ORG_URL}`}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={`mailto:${CONTACT_EMAIL}`}
         class="flex items-center gap-3 text-sm text-gray-700 hover:text-blue-600 transition-colors"
       >
-        <svg class="size-5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-          <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
+        <svg class="size-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
         </svg>
-        View on GitHub
+        {CONTACT_EMAIL}
       </a>
     </div>
+  </div>
+
+  <!-- Write for us -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-2">Write for us</h3>
+    <p class="text-sm text-gray-600 leading-relaxed mb-4">
+      Got a WordPress story, tutorial, or opinion? We welcome guest posts from the community.
+    </p>
+    <a
+      href={`mailto:${CONTACT_EMAIL}?subject=Guest Post Proposal`}
+      class="inline-flex items-center justify-center w-full gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors"
+    >
+      <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+      </svg>
+      Pitch a guest post
+    </a>
   </div>
 
   <!-- Quick Links -->

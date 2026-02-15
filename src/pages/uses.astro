@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+
+const categories = [
+  {
+    title: 'Website',
+    items: [
+      { name: 'Astro', description: 'Static site generator. Fast builds, zero JS by default.', url: 'https://astro.build' },
+      { name: 'Tailwind CSS', description: 'Utility-first CSS framework.', url: 'https://tailwindcss.com' },
+      { name: 'TypeScript', description: 'Type-safe JavaScript for the codebase.', url: 'https://typescriptlang.org' },
+      { name: 'Cloudflare Workers', description: 'Edge deployment. Fast everywhere.', url: 'https://workers.cloudflare.com' },
+    ],
+  },
+  {
+    title: 'Plugin development',
+    items: [
+      { name: 'WordPress', description: 'The CMS we build for. Plugins target WP 6.0+.', url: 'https://wordpress.org' },
+      { name: 'WooCommerce', description: 'Many of our plugins extend WooCommerce stores.', url: 'https://woocommerce.com' },
+      { name: 'PHP', description: 'Server-side language for WordPress plugins.', url: 'https://php.net' },
+      { name: 'JavaScript', description: 'Frontend interactions and block development.', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
+    ],
+  },
+  {
+    title: 'Infrastructure',
+    items: [
+      { name: 'GitHub', description: 'Code hosting, issues, PRs, CI/CD, and project management.', url: 'https://github.com/Open-WP-Club' },
+      { name: 'GitHub Actions', description: 'Automated testing and deployment pipelines.', url: 'https://github.com/features/actions' },
+      { name: 'Discord', description: 'Community chat, support, and contributor coordination.', url: 'https://discord.gg/ESTDmmjj' },
+    ],
+  },
+  {
+    title: 'Testing & quality',
+    items: [
+      { name: 'Vitest', description: 'Unit testing for the website codebase.', url: 'https://vitest.dev' },
+      { name: 'PHPUnit', description: 'Unit testing for WordPress plugins.', url: 'https://phpunit.de' },
+      { name: 'WordPress Coding Standards', description: 'PHP_CodeSniffer rules for WP conventions.', url: 'https://developer.wordpress.org/coding-standards/' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Uses - Open WP Club"
+  description="The tools, technologies, and services we use to build free WordPress software."
+>
+  <!-- Hero -->
+  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight tracking-tight">
+          What we <span class="text-blue-600">use</span>
+        </h1>
+        <p class="mt-6 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+          The tools and technologies behind Open WP Club. Everything here is either free or open source — we practice what we preach.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-column: Content + Sidebar -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+
+        <!-- Main content -->
+        <div class="lg:col-span-2 space-y-10">
+          {categories.map((category) => (
+            <div>
+              <h2 class="text-xl font-bold text-gray-900 mb-4">{category.title}</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {category.items.map((item) => (
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group bg-white rounded-xl p-5 shadow-sm border border-gray-200 hover:shadow-lg hover:border-blue-200 transition-all duration-200"
+                  >
+                    <h3 class="text-base font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                      {item.name}
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="mt-8 lg:mt-0">
+          <div class="lg:sticky lg:top-24">
+            <Sidebar />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>
