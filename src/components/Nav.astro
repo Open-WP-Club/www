@@ -43,15 +43,20 @@ const links = [
       <button
         id="mobile-menu-btn"
         class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
-        aria-label="Toggle menu"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
       >
-        <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+        <svg id="menu-icon-open" class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+        <svg id="menu-icon-close" class="size-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden pb-4">
+    <div id="mobile-menu" class="hidden md:hidden pb-4" role="navigation" aria-label="Mobile navigation">
       {links.map((link) => (
         <a
           href={link.href}
@@ -70,7 +75,33 @@ const links = [
 </nav>
 
 <script>
-  const btn = document.getElementById('mobile-menu-btn');
-  const menu = document.getElementById('mobile-menu');
-  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+  document.addEventListener('astro:page-load', () => {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+    if (!btn || !menu || !iconOpen || !iconClose) return;
+
+    function toggleMenu() {
+      const isOpen = !menu!.classList.contains('hidden');
+      menu!.classList.toggle('hidden');
+      btn!.setAttribute('aria-expanded', String(!isOpen));
+      iconOpen!.classList.toggle('hidden');
+      iconClose!.classList.toggle('hidden');
+
+      if (!isOpen) {
+        const firstLink = menu!.querySelector('a');
+        firstLink?.focus();
+      }
+    }
+
+    btn.addEventListener('click', toggleMenu);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+        toggleMenu();
+        btn.focus();
+      }
+    });
+  });
 </script>

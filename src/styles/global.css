@@ -32,3 +32,38 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* Focus indicators for accessibility */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* View Transition animations */
+@keyframes slide-in-from-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-out-to-left {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(-20px); }
+}
+
+::view-transition-old(plugin-content) {
+  animation: slide-out-to-left 0.2s ease-in forwards;
+}
+
+::view-transition-new(plugin-content) {
+  animation: slide-in-from-right 0.3s ease-out;
+}

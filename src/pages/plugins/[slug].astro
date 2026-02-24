@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import { getCollection } from 'astro:content';
 import { GITHUB_ORG_URL, DISCORD_URL } from '../../lib/config';
+import sanitizeHtml from 'sanitize-html';
 
 export async function getStaticPaths() {
   const plugins = await getCollection('plugins');
@@ -14,6 +15,20 @@ export async function getStaticPaths() {
 
 const { plugin } = Astro.props;
 const { name, description, version, githubUrl, wordpressUrl, stars, forks, openIssues, lastPush, license, language, defaultBranch, readmeHtml } = plugin.data;
+
+const safeReadmeHtml = sanitizeHtml(readmeHtml, {
+  allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'details', 'summary', 'picture', 'source', 'video']),
+  allowedAttributes: {
+    ...sanitizeHtml.defaults.allowedAttributes,
+    img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+    a: ['href', 'title', 'target', 'rel'],
+    code: ['class'],
+    span: ['class'],
+    pre: ['class'],
+    div: ['class'],
+  },
+  allowedSchemes: ['http', 'https', 'mailto'],
+});
 const downloadUrl = `${githubUrl}/archive/refs/heads/${defaultBranch}.zip`;
 
 function formatDate(dateStr: string): string {
@@ -101,7 +116,7 @@ const softwareSchema = {
   </section>
 
   <!-- Two-column: README + Sidebar -->
-  <section class="py-12 bg-gray-50">
+  <section class="py-12 bg-gray-50" transition:name="plugin-content">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="lg:grid lg:grid-cols-3 lg:gap-8">
 
@@ -109,7 +124,7 @@ const softwareSchema = {
         <div class="lg:col-span-2">
           <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8 lg:p-10">
             <h2 class="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200">README</h2>
-            <div class="prose max-w-none" set:html={readmeHtml} />
+            <div class="prose max-w-none" set:html={safeReadmeHtml} />
           </div>
         </div>
 

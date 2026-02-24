@@ -3,6 +3,7 @@ title: "Welcome to Open WP Club"
 description: "Why we started building free WordPress plugins and what's coming next."
 date: 2026-02-15
 author: "Open WP Club"
+tags: ["announcement", "open-source"]
 ---
 
 WordPress powers over 40% of the web, but the plugin ecosystem has a problem: the features people actually need are locked behind paywalls.

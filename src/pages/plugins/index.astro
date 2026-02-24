@@ -18,28 +18,106 @@ const sorted = allPlugins.sort((a, b) => {
           All Plugins
         </h1>
         <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-          {sorted.length} plugins, sorted by most recently updated. Click any card to read the full README and docs.
+          {sorted.length} plugins. Search, sort, and click any card to read the full README.
         </p>
+      </div>
+
+      <!-- Search & Sort controls -->
+      <div class="mt-8 max-w-2xl mx-auto flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-1">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+          <input
+            id="plugin-search"
+            type="search"
+            placeholder="Search plugins..."
+            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            aria-label="Search plugins"
+          />
+        </div>
+        <select
+          id="plugin-sort"
+          class="px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          aria-label="Sort plugins"
+        >
+          <option value="updated">Recently updated</option>
+          <option value="stars">Most stars</option>
+          <option value="forks">Most forks</option>
+          <option value="name">Name A-Z</option>
+        </select>
       </div>
     </div>
   </section>
 
   <section class="py-12 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <p id="plugin-count" class="text-sm text-gray-500 mb-6"></p>
+      <div id="plugin-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {sorted.map((plugin) => (
-          <PluginCard
-            slug={plugin.id}
-            name={plugin.data.name}
-            description={plugin.data.description}
-            version={plugin.data.version}
-            stars={plugin.data.stars}
-            forks={plugin.data.forks}
-            lastPush={plugin.data.lastPush}
-            language={plugin.data.language}
-          />
+          <div
+            class="plugin-item"
+            data-name={plugin.data.name.toLowerCase()}
+            data-description={plugin.data.description.toLowerCase()}
+            data-stars={plugin.data.stars}
+            data-forks={plugin.data.forks}
+            data-updated={plugin.data.lastPush}
+          >
+            <PluginCard
+              slug={plugin.id}
+              name={plugin.data.name}
+              description={plugin.data.description}
+              version={plugin.data.version}
+              stars={plugin.data.stars}
+              forks={plugin.data.forks}
+              lastPush={plugin.data.lastPush}
+              language={plugin.data.language}
+            />
+          </div>
         ))}
       </div>
+      <p id="no-results" class="hidden text-center text-gray-500 py-12">No plugins match your search.</p>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const search = document.getElementById('plugin-search') as HTMLInputElement | null;
+    const sort = document.getElementById('plugin-sort') as HTMLSelectElement | null;
+    const grid = document.getElementById('plugin-grid');
+    const countEl = document.getElementById('plugin-count');
+    const noResults = document.getElementById('no-results');
+    if (!search || !sort || !grid || !countEl || !noResults) return;
+
+    const items = [...grid.querySelectorAll('.plugin-item')] as HTMLElement[];
+    const total = items.length;
+
+    function update() {
+      const query = search!.value.toLowerCase().trim();
+      let visible = items.filter((item) => {
+        const name = item.dataset.name || '';
+        const desc = item.dataset.description || '';
+        const match = !query || name.includes(query) || desc.includes(query);
+        item.style.display = match ? '' : 'none';
+        return match;
+      });
+
+      const sortBy = sort!.value;
+      const sorted = [...visible].sort((a, b) => {
+        if (sortBy === 'stars') return Number(b.dataset.stars) - Number(a.dataset.stars);
+        if (sortBy === 'forks') return Number(b.dataset.forks) - Number(a.dataset.forks);
+        if (sortBy === 'name') return (a.dataset.name || '').localeCompare(b.dataset.name || '');
+        return (b.dataset.updated || '').localeCompare(a.dataset.updated || '');
+      });
+
+      sorted.forEach((el) => grid!.appendChild(el));
+      countEl!.textContent = query ? `Showing ${visible.length} of ${total} plugins` : `${total} plugins`;
+      noResults!.classList.toggle('hidden', visible.length > 0);
+    }
+
+    search.addEventListener('input', update);
+    sort.addEventListener('change', update);
+    update();
+  });
+</script>
