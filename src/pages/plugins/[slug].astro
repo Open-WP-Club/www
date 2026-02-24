@@ -32,14 +32,6 @@ const softwareSchema = {
   ...(license && { license: `https://spdx.org/licenses/${license}` }),
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   codeRepository: githubUrl,
-  ...(stars > 0 && {
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: Math.min(5, Math.round((stars / 10) * 5 * 10) / 10 || 5),
-      bestRating: 5,
-      ratingCount: stars,
-    },
-  }),
 };
 ---
 
