@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://openwpclub.com',
+  trailingSlash: 'always',
   integrations: [sitemap()],
   prefetch: {
     defaultStrategy: 'viewport',
