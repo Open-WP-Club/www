@@ -3,10 +3,20 @@ const pathname = Astro.url.pathname;
 
 const links = [
   { href: '/', label: 'Home' },
-  { href: '/mission', label: 'Mission' },
-  { href: '/plugins', label: 'Plugins' },
-  { href: '/apps', label: 'Apps' },
+  {
+    label: 'Mission',
+    href: '/mission/',
+    children: [
+      { href: '/mission/', label: 'Our Mission' },
+      { href: '/tech-stack/', label: 'Tech Stack' },
+      { href: '/join/', label: 'How to Join' },
+    ],
+  },
+  { href: '/plugins/', label: 'Plugins' },
+  { href: '/apps/', label: 'Apps' },
 ];
+
+const isMissionActive = ['/mission/', '/tech-stack/', '/join/'].some((p) => pathname.startsWith(p));
 ---
 
 <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
@@ -14,31 +24,69 @@ const links = [
     <div class="flex justify-between items-center h-16">
       <a href="/" class="flex items-center">
         <div class="flex-shrink-0">
-          <svg class="size-8 text-blue-600" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-            <rect x="6" y="6" width="20" height="20" rx="2" stroke="currentColor" stroke-width="2" fill="none" />
-            <path d="M12 12h8v8h-8z" fill="currentColor" />
-            <circle cx="16" cy="16" r="2" fill="white" />
+          <svg class="size-8" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M10 4L26 4L23 10L7 10Z" fill="#93C5FD"/>
+            <path d="M10 13L26 13L23 19L7 19Z" fill="#3B82F6"/>
+            <path d="M10 22L26 22L23 28L7 28Z" fill="#1E40AF"/>
           </svg>
         </div>
         <span class="ml-3 text-xl font-bold text-gray-900">Open WP Club</span>
       </a>
+
+      <!-- Desktop nav -->
       <div class="hidden md:block">
         <div class="ml-10 flex items-baseline space-x-4">
-          {links.map((link) => (
-            <a
-              href={link.href}
-              class:list={[
-                'px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200',
-                pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
-                  ? 'text-blue-600 bg-blue-50'
-                  : 'text-gray-700 hover:text-blue-600',
-              ]}
-            >
-              {link.label}
-            </a>
-          ))}
+          {links.map((link) =>
+            link.children ? (
+              <div class="relative group">
+                <button
+                  class:list={[
+                    'inline-flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200',
+                    isMissionActive ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600',
+                  ]}
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                >
+                  {link.label}
+                  <svg class="size-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </svg>
+                </button>
+                <div class="absolute left-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
+                  <div class="w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1">
+                    {link.children.map((child) => (
+                      <a
+                        href={child.href}
+                        class:list={[
+                          'block px-4 py-2 text-sm transition-colors duration-200',
+                          pathname === child.href
+                            ? 'text-blue-600 bg-blue-50'
+                            : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50',
+                        ]}
+                      >
+                        {child.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <a
+                href={link.href}
+                class:list={[
+                  'px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200',
+                  pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-gray-700 hover:text-blue-600',
+                ]}
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </div>
       </div>
+
       <!-- Mobile menu button -->
       <button
         id="mobile-menu-btn"
@@ -55,21 +103,54 @@ const links = [
         </svg>
       </button>
     </div>
+
     <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden md:hidden pb-4" role="navigation" aria-label="Mobile navigation">
-      {links.map((link) => (
-        <a
-          href={link.href}
-          class:list={[
-            'block px-3 py-2 rounded-md text-base font-medium',
-            pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
-              ? 'text-blue-600 bg-blue-50'
-              : 'text-gray-700 hover:text-blue-600',
-          ]}
-        >
-          {link.label}
-        </a>
-      ))}
+      {links.map((link) =>
+        link.children ? (
+          <div>
+            <button
+              class:list={[
+                'mobile-submenu-btn w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium',
+                isMissionActive ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600',
+              ]}
+              aria-expanded="false"
+            >
+              {link.label}
+              <svg class="mobile-submenu-chevron size-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </button>
+            <div class="mobile-submenu hidden pl-4">
+              {link.children.map((child) => (
+                <a
+                  href={child.href}
+                  class:list={[
+                    'block px-3 py-2 rounded-md text-sm font-medium',
+                    pathname === child.href
+                      ? 'text-blue-600 bg-blue-50'
+                      : 'text-gray-600 hover:text-blue-600',
+                  ]}
+                >
+                  {child.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={link.href}
+            class:list={[
+              'block px-3 py-2 rounded-md text-base font-medium',
+              pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
+                ? 'text-blue-600 bg-blue-50'
+                : 'text-gray-700 hover:text-blue-600',
+            ]}
+          >
+            {link.label}
+          </a>
+        )
+      )}
     </div>
   </div>
 </nav>
@@ -96,6 +177,19 @@ const links = [
     }
 
     btn.addEventListener('click', toggleMenu);
+
+    // Mobile submenu toggles
+    menu.querySelectorAll('.mobile-submenu-btn').forEach((subBtn) => {
+      subBtn.addEventListener('click', () => {
+        const submenu = subBtn.nextElementSibling as HTMLElement;
+        const chevron = subBtn.querySelector('.mobile-submenu-chevron') as HTMLElement;
+        if (!submenu) return;
+        const isOpen = !submenu.classList.contains('hidden');
+        submenu.classList.toggle('hidden');
+        subBtn.setAttribute('aria-expanded', String(!isOpen));
+        chevron?.classList.toggle('rotate-180');
+      });
+    });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !menu.classList.contains('hidden')) {

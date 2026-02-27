@@ -1,0 +1,20 @@
+<svg viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Open Graph social preview image (1200x630) -->
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#F8FAFC"/>
+  <!-- Subtle gradient overlay -->
+  <rect width="1200" height="630" fill="url(#bg-gradient)"/>
+  <defs>
+    <linearGradient id="bg-gradient" x1="0" y1="0" x2="1200" y2="630">
+      <stop offset="0%" stop-color="#EFF6FF"/>
+      <stop offset="100%" stop-color="#F8FAFC"/>
+    </linearGradient>
+  </defs>
+  <!-- Logo icon (centered, large) -->
+  <path d="M510 160L610 160L595 200L495 200Z" fill="#93C5FD"/>
+  <path d="M510 215L610 215L595 255L495 255Z" fill="#3B82F6"/>
+  <path d="M510 270L610 270L595 310L495 310Z" fill="#1E40AF"/>
+  <!-- Text -->
+  <text x="600" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="700" fill="#111827">Open WP Club</text>
+  <text x="600" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#6B7280">Free, open-source WordPress software</text>
+</svg>

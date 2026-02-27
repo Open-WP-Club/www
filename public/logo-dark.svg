@@ -1,0 +1,6 @@
+<svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stacked layers - for dark backgrounds -->
+  <path d="M32 16L96 16L84 44L20 44Z" fill="#BFDBFE"/>
+  <path d="M32 48L96 48L84 76L20 76Z" fill="#93C5FD"/>
+  <path d="M32 80L96 80L84 108L20 108Z" fill="#60A5FA"/>
+</svg>

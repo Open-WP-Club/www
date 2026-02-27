@@ -1,0 +1,6 @@
+<svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stacked layers - monochrome (single color, opacity variations) -->
+  <path d="M32 16L96 16L84 44L20 44Z" fill="#2563EB" opacity="0.4"/>
+  <path d="M32 48L96 48L84 76L20 76Z" fill="#2563EB" opacity="0.7"/>
+  <path d="M32 80L96 80L84 108L20 108Z" fill="#2563EB"/>
+</svg>

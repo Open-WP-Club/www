@@ -1,0 +1,217 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Contact from '../components/Contact.astro';
+import { GITHUB_ORG_URL, DISCORD_URL, CONTACT_EMAIL } from '../lib/config';
+
+const ways = [
+  {
+    icon: 'code',
+    title: 'Write code',
+    description: 'Pick an open issue, fix a bug, or build a new feature. We use PHP for plugins, Astro + Tailwind for the website, and TypeScript for tooling.',
+    action: 'Browse open issues',
+    href: `${GITHUB_ORG_URL}/.github/issues`,
+  },
+  {
+    icon: 'bug',
+    title: 'Test & report bugs',
+    description: 'Install our plugins, use them on real sites, and tell us what breaks. Detailed bug reports are just as valuable as code.',
+    action: 'Report a bug',
+    href: `${GITHUB_ORG_URL}/.github/issues/new`,
+  },
+  {
+    icon: 'docs',
+    title: 'Write documentation',
+    description: 'Improve README files, write tutorials, or translate existing docs. Good documentation makes plugins usable.',
+    action: 'See contributing guide',
+    href: `${GITHUB_ORG_URL}/.github/blob/main/CONTRIBUTING.md`,
+  },
+  {
+    icon: 'chat',
+    title: 'Help in the community',
+    description: 'Answer questions on Discord, help newcomers with their first PR, or share our plugins with people who need them.',
+    action: 'Join Discord',
+    href: DISCORD_URL,
+  },
+  {
+    icon: 'pen',
+    title: 'Write for the blog',
+    description: 'Got a WordPress story, tutorial, or opinion? We publish guest posts from the community — no editorial gatekeeping.',
+    action: 'Pitch a post',
+    href: `mailto:${CONTACT_EMAIL}?subject=Guest Post Proposal`,
+  },
+  {
+    icon: 'heart',
+    title: 'Sponsor',
+    description: 'We run entirely on contributions. Even small sponsorships help us maintain 30+ plugins and keep everything free for everyone.',
+    action: 'Contact about sponsoring',
+    href: `mailto:${CONTACT_EMAIL}?subject=Sponsorship Inquiry`,
+  },
+];
+
+const steps = [
+  { step: '1', title: 'Join our Discord', description: 'Say hello, introduce yourself, and ask any questions. No formalities.' },
+  { step: '2', title: 'Find something to work on', description: 'Browse our GitHub issues labeled "good first issue" or pick any open bug/feature that interests you.' },
+  { step: '3', title: 'Fork, code, PR', description: 'Fork the repo, make your changes, and open a pull request. We review all PRs and help you get them merged.' },
+  { step: '4', title: 'You\'re in', description: 'After your first merged contribution, you\'re a contributor. No applications, no approval process, no waiting list.' },
+];
+---
+
+<BaseLayout
+  title="How to Join - Open WP Club"
+  description="Join Open WP Club — contribute code, report bugs, write docs, or help the community. No applications, no gatekeeping. Your first PR makes you a member."
+>
+  <!-- Hero -->
+  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight tracking-tight">
+          How to <span class="text-blue-600">join</span>
+        </h1>
+        <p class="mt-6 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+          There's no application form. No interview. No approval committee. You join by contributing — code, docs, bug reports, community help, or anything else that makes our software better.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-column: Content + Sidebar -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+
+        <!-- Main content -->
+        <div class="lg:col-span-2 space-y-10">
+
+          <!-- Ways to contribute -->
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">Ways to contribute</h2>
+            <p class="text-gray-600 leading-relaxed mb-8">Pick whatever fits your skills and interests. Every contribution counts equally.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {ways.map((way) => (
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col">
+                  <div class="flex items-center gap-3 mb-3">
+                    {way.icon === 'code' && (
+                      <svg class="size-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                      </svg>
+                    )}
+                    {way.icon === 'bug' && (
+                      <svg class="size-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 12.75c1.148 0 2.278.08 3.383.237 1.037.146 1.866.966 1.866 2.013 0 3.728-2.35 6.75-5.25 6.75S6.75 18.728 6.75 15c0-1.046.83-1.867 1.866-2.013A24.204 24.204 0 0112 12.75zm0 0c2.883 0 5.647.508 8.207 1.44a23.91 23.91 0 01-1.152-6.44c0-2.21.478-4.31 1.339-6.2A1.125 1.125 0 0019.26.75H4.74a1.125 1.125 0 00-1.134 1.55A11.94 11.94 0 014.945 7.75c0 2.24-.616 4.336-1.688 6.13A24.3 24.3 0 0112 12.75z" />
+                      </svg>
+                    )}
+                    {way.icon === 'docs' && (
+                      <svg class="size-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                      </svg>
+                    )}
+                    {way.icon === 'chat' && (
+                      <svg class="size-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                      </svg>
+                    )}
+                    {way.icon === 'pen' && (
+                      <svg class="size-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                      </svg>
+                    )}
+                    {way.icon === 'heart' && (
+                      <svg class="size-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                      </svg>
+                    )}
+                    <h3 class="text-lg font-semibold text-gray-900">{way.title}</h3>
+                  </div>
+                  <p class="text-sm text-gray-600 leading-relaxed flex-1">{way.description}</p>
+                  <a
+                    href={way.href}
+                    target={way.href.startsWith('http') || way.href.startsWith('mailto') ? '_blank' : undefined}
+                    rel={way.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    class="mt-4 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                  >
+                    {way.action}
+                    <svg class="ml-1 size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Getting started steps -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+            <h2 class="text-2xl font-bold text-gray-900 tracking-tight mb-6">Getting started</h2>
+            <div class="space-y-6">
+              {steps.map((item) => (
+                <div class="flex gap-4">
+                  <div class="flex-shrink-0 flex items-center justify-center size-10 rounded-full bg-blue-100 text-blue-600 font-bold text-lg">
+                    {item.step}
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-semibold text-gray-900">{item.title}</h3>
+                    <p class="mt-1 text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- No gatekeeping -->
+          <div class="bg-gradient-to-br from-green-50 via-white to-green-50 rounded-xl shadow-sm border border-green-200 p-6 sm:p-8">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">No gatekeeping, ever</h2>
+            <div class="space-y-4 text-sm text-gray-600 leading-relaxed">
+              <p>
+                We don't care about your experience level, your resume, or how many GitHub stars you have. If you want to help build free WordPress software, you're welcome here.
+              </p>
+              <p>
+                First-time open source contributor? Great — we'll help you through your first PR. Seasoned maintainer? Even better — we could use your expertise. The only requirement is that you treat everyone with respect.
+              </p>
+            </div>
+          </div>
+
+          <!-- Quick links -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <a
+              href={DISCORD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-center gap-2 px-6 py-4 text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-all duration-200"
+            >
+              Join Discord
+            </a>
+            <a
+              href={GITHUB_ORG_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-center gap-2 px-6 py-4 text-base font-medium rounded-lg text-blue-600 bg-white border border-blue-600 hover:bg-blue-50 shadow-sm transition-all duration-200"
+            >
+              View GitHub
+            </a>
+            <a
+              href={`${GITHUB_ORG_URL}/.github/blob/main/CONTRIBUTING.md`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-center gap-2 px-6 py-4 text-base font-medium rounded-lg text-blue-600 bg-white border border-blue-600 hover:bg-blue-50 shadow-sm transition-all duration-200"
+            >
+              Contributing guide
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div class="mt-8 lg:mt-0">
+          <div class="lg:sticky lg:top-24">
+            <Sidebar />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <Contact />
+</BaseLayout>

@@ -1,0 +1,9 @@
+<svg viewBox="0 0 360 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stacked layers + wordmark - horizontal layout, light bg -->
+  <!-- Icon -->
+  <path d="M16 8L48 8L44 22L12 22Z" fill="#93C5FD"/>
+  <path d="M16 28L48 28L44 42L12 42Z" fill="#3B82F6"/>
+  <path d="M16 48L48 48L44 62L12 62Z" fill="#1E40AF"/>
+  <!-- Text -->
+  <text x="64" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="700" fill="#111827">Open WP Club</text>
+</svg>
