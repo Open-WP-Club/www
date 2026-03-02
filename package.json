@@ -8,7 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "vitest run"
+    "test": "vitest run",
+    "fetch-data": "npx tsx scripts/fetch-data.ts",
+    "refresh": "npx tsx scripts/fetch-data.ts && astro build"
   },
   "keywords": [
     "wordpress",
