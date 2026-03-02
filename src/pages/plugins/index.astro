@@ -11,13 +11,13 @@ const sorted = allPlugins.sort((a, b) => {
 ---
 
 <BaseLayout title="All Plugins - Open WP Club" description={`${sorted.length} free, open-source WordPress plugins. Browse the full catalog, sorted by most recently updated.`}>
-  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white">
+  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
           All Plugins
         </h1>
-        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           {sorted.length} plugins. Search, sort, and click any card to read the full README.
         </p>
       </div>
@@ -32,13 +32,13 @@ const sorted = allPlugins.sort((a, b) => {
             id="plugin-search"
             type="search"
             placeholder="Search plugins..."
-            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             aria-label="Search plugins"
           />
         </div>
         <select
           id="plugin-sort"
-          class="px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          class="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
           aria-label="Sort plugins"
         >
           <option value="updated">Recently updated</option>
@@ -50,9 +50,9 @@ const sorted = allPlugins.sort((a, b) => {
     </div>
   </section>
 
-  <section class="py-12 bg-gray-50">
+  <section class="py-12 bg-gray-50 dark:bg-gray-950">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p id="plugin-count" class="text-sm text-gray-500 mb-6"></p>
+      <p id="plugin-count" class="text-sm text-gray-500 dark:text-gray-500 mb-6"></p>
       <div id="plugin-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {sorted.map((plugin) => (
           <div
@@ -76,7 +76,7 @@ const sorted = allPlugins.sort((a, b) => {
           </div>
         ))}
       </div>
-      <p id="no-results" class="hidden text-center text-gray-500 py-12">No plugins match your search.</p>
+      <p id="no-results" class="hidden text-center text-gray-500 dark:text-gray-500 py-12">No plugins match your search.</p>
     </div>
   </section>
 </BaseLayout>

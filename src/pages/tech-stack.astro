@@ -81,21 +81,21 @@ const stats = [
   description="The tools and services we use to build, deploy, and maintain free WordPress software. Everything open source, everything free."
 >
   <!-- Hero -->
-  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white">
+  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight tracking-tight">
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
           Our <span class="text-blue-600">tech stack</span>
         </h1>
-        <p class="mt-6 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
-          Every tool we use is either free or open source. We run the entire organization — 30+ plugins, this website, CI/CD, community — at <strong class="text-gray-900">$0 per month</strong>.
+        <p class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
+          Every tool we use is either free or open source. We run the entire organization — 30+ plugins, this website, CI/CD, community — at <strong class="text-gray-900 dark:text-white">$0 per month</strong>.
         </p>
       </div>
     </div>
   </section>
 
   <!-- Two-column: Content + Sidebar -->
-  <section class="py-12 bg-gray-50">
+  <section class="py-12 bg-gray-50 dark:bg-gray-950">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="lg:grid lg:grid-cols-3 lg:gap-8">
 
@@ -104,12 +104,12 @@ const stats = [
 
           <!-- Category cards -->
           {categories.map((cat) => (
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
               <div class="flex items-center gap-3 mb-4">
                 <span class="text-2xl" aria-hidden="true">{cat.emoji}</span>
                 <div>
-                  <h2 class="text-xl font-bold text-gray-900">{cat.title}</h2>
-                  <p class="text-sm text-gray-500">{cat.description}</p>
+                  <h2 class="text-xl font-bold text-gray-900 dark:text-white">{cat.title}</h2>
+                  <p class="text-sm text-gray-500 dark:text-gray-500">{cat.description}</p>
                 </div>
               </div>
               <ul class="space-y-3">
@@ -119,8 +119,8 @@ const stats = [
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75" />
                     </svg>
                     <span>
-                      <strong class="text-gray-900">{tool.name}</strong>
-                      <span class="text-gray-500"> — {tool.note}</span>
+                      <strong class="text-gray-900 dark:text-white">{tool.name}</strong>
+                      <span class="text-gray-500 dark:text-gray-500"> — {tool.note}</span>
                     </span>
                   </li>
                 ))}
@@ -129,9 +129,9 @@ const stats = [
           ))}
 
           <!-- Philosophy -->
-          <div class="bg-gradient-to-br from-green-50 via-white to-green-50 rounded-xl shadow-sm border border-green-200 p-6 sm:p-8">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Why this matters</h2>
-            <div class="space-y-4 text-sm text-gray-600 leading-relaxed">
+          <div class="bg-gradient-to-br from-green-50 via-white to-green-50 dark:from-green-950/30 dark:via-gray-800 dark:to-green-950/30 rounded-xl shadow-sm border border-green-200 dark:border-green-800/50 p-6 sm:p-8">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Why this matters</h2>
+            <div class="space-y-4 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
               <p>
                 If we can run an entire open-source organization for free, so can you. We deliberately choose tools that don't lock us (or our contributors) into paid plans, vendor lock-in, or proprietary ecosystems.
               </p>
@@ -144,16 +144,16 @@ const stats = [
           <!-- Stats bar -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {stats.map((stat) => (
-              <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
-                <p class="text-3xl font-bold text-blue-600">{stat.value}</p>
-                <p class="mt-1 text-sm text-gray-500">{stat.label}</p>
+              <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 text-center">
+                <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">{stat.value}</p>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-500">{stat.label}</p>
               </div>
             ))}
           </div>
 
           <!-- CTA -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8 text-center">
-            <p class="text-gray-600 mb-4">Want to see how it all fits together?</p>
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8 text-center">
+            <p class="text-gray-600 dark:text-gray-400 mb-4">Want to see how it all fits together?</p>
             <a
               href={`${GITHUB_ORG_URL}/www`}
               target="_blank"

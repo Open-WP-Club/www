@@ -6,5 +6,6 @@ export const GITHUB_ORG_URL = `https://github.com/${ORG}`;
 export const DISCORD_URL = 'https://discord.gg/ESTDmmjj';
 export const SPONSOR_URL = '';
 export const CONTACT_EMAIL = 'contact@openwpclub.com';
+export const TWITTER_HANDLE = '@OpenWPClub';
 export const SHOW_STATS = false;
 export const BATCH_SIZE = 10;

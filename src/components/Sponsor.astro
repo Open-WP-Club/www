@@ -2,10 +2,10 @@
 import { SPONSOR_URL, CONTACT_EMAIL } from '../lib/config';
 ---
 
-<section class="py-20 bg-gradient-to-br from-amber-50 via-white to-amber-50">
+<section class="py-20 bg-gradient-to-br from-amber-50 via-white to-amber-50 dark:from-amber-950/20 dark:via-gray-900 dark:to-amber-950/20">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">Support free WordPress software</h2>
-    <p class="mt-6 text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">Support free WordPress software</h2>
+    <p class="mt-6 text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
       We maintain 30+ plugins and build new tools - all free, all open source. Sponsorships help us keep doing this full-time instead of side-project pace.
     </p>
     <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -24,7 +24,7 @@ import { SPONSOR_URL, CONTACT_EMAIL } from '../lib/config';
       )}
       <a
         href={`mailto:${CONTACT_EMAIL}?subject=Sponsorship Inquiry`}
-        class={`inline-flex items-center px-8 py-4 text-base font-medium rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 ${SPONSOR_URL ? 'text-amber-700 bg-white border border-amber-200 hover:bg-amber-50' : 'text-white bg-amber-500 hover:bg-amber-600'}`}
+        class={`inline-flex items-center px-8 py-4 text-base font-medium rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 ${SPONSOR_URL ? 'text-amber-700 dark:text-amber-300 bg-white dark:bg-gray-800 border border-amber-200 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-gray-700' : 'text-white bg-amber-500 hover:bg-amber-600'}`}
       >
         <svg class="size-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -32,7 +32,7 @@ import { SPONSOR_URL, CONTACT_EMAIL } from '../lib/config';
         Get in touch
       </a>
     </div>
-    <p class="mt-6 text-sm text-gray-500">
+    <p class="mt-6 text-sm text-gray-500 dark:text-gray-500">
       Every sponsor directly funds plugin maintenance, bug fixes, and new features for the WordPress community.
     </p>
   </div>

@@ -3,7 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
-import { GITHUB_ORG_URL, DISCORD_URL } from '../lib/config';
+import { GITHUB_ORG_URL, DISCORD_URL, TWITTER_HANDLE } from '../lib/config';
 
 interface Props {
   title: string;
@@ -19,7 +19,7 @@ const {
   title,
   description = 'Open WP Club builds free, open-source WordPress plugins. Browse our catalog, read the source, and use them in your projects.',
   ogType = 'website',
-  ogImage,
+  ogImage = new URL('/og-image.svg', Astro.site).toString(),
   jsonLd,
 } = Astro.props;
 
@@ -38,6 +38,16 @@ const orgSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Dark mode: prevent flash of wrong theme -->
+    <script is:inline>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -58,13 +68,14 @@ const orgSchema = {
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:site_name" content="Open WP Club" />
     <meta property="og:locale" content="en_US" />
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:image" content={ogImage} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    {TWITTER_HANDLE && <meta name="twitter:site" content={TWITTER_HANDLE} />}
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    <meta name="twitter:image" content={ogImage} />
 
     <!-- Robots -->
     <meta name="robots" content="index, follow" />
@@ -78,8 +89,8 @@ const orgSchema = {
       <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     )}
   </head>
-  <body class="font-sans antialiased bg-gray-50 text-gray-900">
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-blue-600 focus:underline">
+  <body class="font-sans antialiased bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white dark:focus:bg-gray-900 focus:text-blue-600 focus:underline">
       Skip to content
     </a>
     <Nav />

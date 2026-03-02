@@ -4,9 +4,9 @@ import { GITHUB_ORG_URL, DISCORD_URL, SPONSOR_URL, CONTACT_EMAIL } from '../lib/
 
 <div class="space-y-6">
   <!-- Sponsor CTA -->
-  <div class="bg-gradient-to-br from-amber-50 via-white to-amber-50 rounded-xl shadow-sm border border-amber-200 p-6">
-    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-2">Sponsor us</h3>
-    <p class="text-sm text-gray-600 leading-relaxed mb-4">
+  <div class="bg-gradient-to-br from-amber-50 via-white to-amber-50 dark:from-amber-950/20 dark:via-gray-800 dark:to-amber-950/20 rounded-xl shadow-sm border border-amber-200 dark:border-amber-800/50 p-6">
+    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-2">Sponsor us</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
       Our software is free forever. Sponsorships help us maintain 30+ plugins and build new tools for the WordPress ecosystem.
     </p>
     {SPONSOR_URL && (
@@ -24,7 +24,7 @@ import { GITHUB_ORG_URL, DISCORD_URL, SPONSOR_URL, CONTACT_EMAIL } from '../lib/
     )}
     <a
       href={`mailto:${CONTACT_EMAIL}?subject=Sponsorship Inquiry`}
-      class={`inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${SPONSOR_URL ? 'text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200' : 'text-white bg-amber-500 hover:bg-amber-600'}`}
+      class={`inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${SPONSOR_URL ? 'text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100 dark:hover:bg-amber-900/40 border border-amber-200 dark:border-amber-800/50' : 'text-white bg-amber-500 hover:bg-amber-600'}`}
     >
       <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -34,14 +34,14 @@ import { GITHUB_ORG_URL, DISCORD_URL, SPONSOR_URL, CONTACT_EMAIL } from '../lib/
   </div>
 
   <!-- Community -->
-  <div class="bg-gradient-to-br from-blue-50 via-white to-blue-50 rounded-xl shadow-sm border border-blue-100 p-6">
-    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">Community</h3>
+  <div class="bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-blue-950/20 dark:via-gray-800 dark:to-blue-950/20 rounded-xl shadow-sm border border-blue-100 dark:border-blue-900/50 p-6">
+    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">Community</h3>
     <div class="space-y-3">
       <a
         href={GITHUB_ORG_URL}
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center gap-3 text-sm text-gray-700 hover:text-blue-600 transition-colors"
+        class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
       >
         <svg class="size-5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
@@ -52,7 +52,7 @@ import { GITHUB_ORG_URL, DISCORD_URL, SPONSOR_URL, CONTACT_EMAIL } from '../lib/
         href={DISCORD_URL}
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center gap-3 text-sm text-gray-700 hover:text-blue-600 transition-colors"
+        class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
       >
         <svg class="size-5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
           <path d="M16.942 7.168c-1.111-.519-2.297-.902-3.538-1.114a.075.075 0 00-.079.036c-.153.271-.322.625-.441.902-1.338-.201-2.669-.201-3.973 0-.119-.285-.296-.631-.442-.902a.078.078 0 00-.079-.036 13.279 13.279 0 00-3.538 1.114.07.07 0 00-.032.028C1.718 10.432 1.07 13.616 1.396 16.761a.082.082 0 00.031.056 13.307 13.307 0 004.001 2.019.078.078 0 00.084-.028 9.51 9.51 0 00.82-1.333.076.076 0 00-.041-.106 8.79 8.79 0 01-1.255-.597.077.077 0 01-.008-.128c.084-.063.169-.129.249-.195a.075.075 0 01.078-.011c2.634 1.202 5.486 1.202 8.086 0a.075.075 0 01.079.01c.08.067.165.133.249.196a.077.077 0 01-.006.128 8.254 8.254 0 01-1.255.596.076.076 0 00-.041.107c.23.463.494.904.82 1.333a.078.078 0 00.084.028 13.265 13.265 0 004.001-2.019.077.077 0 00.031-.055c.39-3.644-.654-6.808-2.764-9.621a.061.061 0 00-.032-.029zM6.678 14.813c-.921 0-1.679-.847-1.679-1.887 0-1.04.743-1.887 1.679-1.887.943 0 1.694.855 1.679 1.887 0 1.04-.743 1.887-1.679 1.887zm6.644 0c-.921 0-1.679-.847-1.679-1.887 0-1.04.743-1.887 1.679-1.887.943 0 1.694.855 1.679 1.887 0 1.04-.736 1.887-1.679 1.887z" />
@@ -61,7 +61,7 @@ import { GITHUB_ORG_URL, DISCORD_URL, SPONSOR_URL, CONTACT_EMAIL } from '../lib/
       </a>
       <a
         href={`mailto:${CONTACT_EMAIL}`}
-        class="flex items-center gap-3 text-sm text-gray-700 hover:text-blue-600 transition-colors"
+        class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
       >
         <svg class="size-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -72,14 +72,14 @@ import { GITHUB_ORG_URL, DISCORD_URL, SPONSOR_URL, CONTACT_EMAIL } from '../lib/
   </div>
 
   <!-- Write for us -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-2">Write for us</h3>
-    <p class="text-sm text-gray-600 leading-relaxed mb-4">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-2">Write for us</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
       Got a WordPress story, tutorial, or opinion? We welcome guest posts from the community.
     </p>
     <a
       href={`mailto:${CONTACT_EMAIL}?subject=Guest Post Proposal`}
-      class="inline-flex items-center justify-center w-full gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors"
+      class="inline-flex items-center justify-center w-full gap-2 px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200 dark:border-blue-800/50 rounded-lg transition-colors"
     >
       <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -89,22 +89,22 @@ import { GITHUB_ORG_URL, DISCORD_URL, SPONSOR_URL, CONTACT_EMAIL } from '../lib/
   </div>
 
   <!-- Quick Links -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">Explore</h3>
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+    <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">Explore</h3>
     <div class="space-y-3">
-      <a href="/plugins/" class="flex items-center gap-3 text-sm text-gray-700 hover:text-blue-600 transition-colors">
+      <a href="/plugins/" class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
         <svg class="size-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" />
         </svg>
         All Plugins
       </a>
-      <a href="/apps/" class="flex items-center gap-3 text-sm text-gray-700 hover:text-blue-600 transition-colors">
+      <a href="/apps/" class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
         <svg class="size-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" />
         </svg>
         Apps
       </a>
-      <a href="/mission/" class="flex items-center gap-3 text-sm text-gray-700 hover:text-blue-600 transition-colors">
+      <a href="/mission/" class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
         <svg class="size-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21" />
         </svg>

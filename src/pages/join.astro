@@ -62,13 +62,13 @@ const steps = [
   description="Join Open WP Club — contribute code, report bugs, write docs, or help the community. No applications, no gatekeeping. Your first PR makes you a member."
 >
   <!-- Hero -->
-  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white">
+  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight tracking-tight">
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
           How to <span class="text-blue-600">join</span>
         </h1>
-        <p class="mt-6 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+        <p class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
           There's no application form. No interview. No approval committee. You join by contributing — code, docs, bug reports, community help, or anything else that makes our software better.
         </p>
       </div>
@@ -76,7 +76,7 @@ const steps = [
   </section>
 
   <!-- Two-column: Content + Sidebar -->
-  <section class="py-12 bg-gray-50">
+  <section class="py-12 bg-gray-50 dark:bg-gray-950">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="lg:grid lg:grid-cols-3 lg:gap-8">
 
@@ -85,11 +85,11 @@ const steps = [
 
           <!-- Ways to contribute -->
           <div>
-            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">Ways to contribute</h2>
-            <p class="text-gray-600 leading-relaxed mb-8">Pick whatever fits your skills and interests. Every contribution counts equally.</p>
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight mb-2">Ways to contribute</h2>
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">Pick whatever fits your skills and interests. Every contribution counts equally.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {ways.map((way) => (
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 flex flex-col">
                   <div class="flex items-center gap-3 mb-3">
                     {way.icon === 'code' && (
                       <svg class="size-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
@@ -121,9 +121,9 @@ const steps = [
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                       </svg>
                     )}
-                    <h3 class="text-lg font-semibold text-gray-900">{way.title}</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{way.title}</h3>
                   </div>
-                  <p class="text-sm text-gray-600 leading-relaxed flex-1">{way.description}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed flex-1">{way.description}</p>
                   <a
                     href={way.href}
                     target={way.href.startsWith('http') || way.href.startsWith('mailto') ? '_blank' : undefined}
@@ -141,17 +141,17 @@ const steps = [
           </div>
 
           <!-- Getting started steps -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
-            <h2 class="text-2xl font-bold text-gray-900 tracking-tight mb-6">Getting started</h2>
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight mb-6">Getting started</h2>
             <div class="space-y-6">
               {steps.map((item) => (
                 <div class="flex gap-4">
-                  <div class="flex-shrink-0 flex items-center justify-center size-10 rounded-full bg-blue-100 text-blue-600 font-bold text-lg">
+                  <div class="flex-shrink-0 flex items-center justify-center size-10 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-lg">
                     {item.step}
                   </div>
                   <div>
-                    <h3 class="text-lg font-semibold text-gray-900">{item.title}</h3>
-                    <p class="mt-1 text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{item.title}</h3>
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               ))}
@@ -159,9 +159,9 @@ const steps = [
           </div>
 
           <!-- No gatekeeping -->
-          <div class="bg-gradient-to-br from-green-50 via-white to-green-50 rounded-xl shadow-sm border border-green-200 p-6 sm:p-8">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">No gatekeeping, ever</h2>
-            <div class="space-y-4 text-sm text-gray-600 leading-relaxed">
+          <div class="bg-gradient-to-br from-green-50 via-white to-green-50 dark:from-green-950/30 dark:via-gray-800 dark:to-green-950/30 rounded-xl shadow-sm border border-green-200 dark:border-green-800/50 p-6 sm:p-8">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">No gatekeeping, ever</h2>
+            <div class="space-y-4 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
               <p>
                 We don't care about your experience level, your resume, or how many GitHub stars you have. If you want to help build free WordPress software, you're welcome here.
               </p>
@@ -185,7 +185,7 @@ const steps = [
               href={GITHUB_ORG_URL}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-center gap-2 px-6 py-4 text-base font-medium rounded-lg text-blue-600 bg-white border border-blue-600 hover:bg-blue-50 shadow-sm transition-all duration-200"
+              class="flex items-center justify-center gap-2 px-6 py-4 text-base font-medium rounded-lg text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-900 border border-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 shadow-sm transition-all duration-200"
             >
               View GitHub
             </a>
@@ -193,7 +193,7 @@ const steps = [
               href={`${GITHUB_ORG_URL}/.github/blob/main/CONTRIBUTING.md`}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-center gap-2 px-6 py-4 text-base font-medium rounded-lg text-blue-600 bg-white border border-blue-600 hover:bg-blue-50 shadow-sm transition-all duration-200"
+              class="flex items-center justify-center gap-2 px-6 py-4 text-base font-medium rounded-lg text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-900 border border-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 shadow-sm transition-all duration-200"
             >
               Contributing guide
             </a>

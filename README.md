@@ -1,84 +1,66 @@
 # Open WP Club Website
 
-A modern, responsive community website for WordPress open source enthusiasts. Built with HTML, TailwindCSS, and vanilla JavaScript.
+The community website for [Open WP Club](https://openwpclub.com) — free, open-source WordPress plugins built by the community. Powered by [Astro](https://astro.build), Tailwind CSS v4, and deployed on Cloudflare Workers.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
-- Node.js (version 14 or higher)
-- npm or yarn package manager
+- Node.js (version 18 or higher)
+- npm
 
 ### Installation
 
-1. **Clone the repository**
+```bash
+git clone https://github.com/Open-WP-Club/www.git
+cd www
+npm install
+```
 
-   ```bash
-   git clone https://github.com/Open-WP-Club/www.git
-   cd www
-   ```
+### Development
 
-2. **Install dependencies**
+```bash
+npm run dev
+```
 
-   ```bash
-   npm install
-   ```
+The site will be available at `http://localhost:4321`.
 
-3. **Build the CSS**
+### Build
 
-   ```bash
-   npm run build
-   ```
+```bash
+npm run build
+npm run preview   # preview the production build locally
+```
 
-4. **Start development server**
+## Project Structure
 
-   ```bash
-   npm run serve
-   ```
+```
+src/
+  components/    # Reusable Astro components (Nav, Footer, Sidebar, etc.)
+  content/       # Content collections (blog posts, plugin data)
+  layouts/       # Base layout with SEO, Open Graph, structured data
+  lib/           # Config, GitHub API fetching, types
+  pages/         # File-based routing (plugins, blog, contributors, etc.)
+  styles/        # Global CSS (Tailwind v4)
+public/          # Static assets (favicon, OG image)
+```
 
-The website will be available at `http://localhost:8000`
+## Key Features
 
-## 🛠️ Development
+- Plugin catalog fetched from GitHub at build time (stats, READMEs)
+- Blog with tag filtering and RSS feed
+- Contributors page from GitHub API
+- SEO: sitemap, structured data, Open Graph, Twitter Cards
+- View Transitions (SPA-style navigation)
+- Dark mode with system preference detection
+- Deployed to Cloudflare Workers ($0/month)
 
-### Available Scripts
+## License
 
-- **`npm run build`** - Build production CSS from Tailwind
-- **`npm run watch`** - Watch for changes and rebuild CSS automatically
-- **`npm run serve`** - Start a local development server on port 8000
+MIT - see [LICENSE](LICENSE) for details.
 
-### Development Workflow
+## Community
 
-1. **Start the development environment**
-
-   ```bash
-   npm run watch
-   ```
-
-   This will watch for changes in your source files and automatically rebuild the CSS.
-
-2. **In a separate terminal, start the server**
-
-   ```bash
-   npm run serve
-   ```
-
-3. **Make your changes**
-   - Edit HTML files directly in the root directory
-   - Modify styles in `assets/css/styles.css` (imports TailwindCSS)
-   - Update JavaScript in `assets/js/` directory
-
-4. **View your changes**
-   - Open `http://localhost:8000` in your browser
-   - Changes to CSS will be reflected after the watch process rebuilds
-   - JavaScript and HTML changes are immediate (just refresh the page)
-
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🌟 Support
-
-- **GitHub Issues**: Report bugs and request features
-- **Discord**: Join our community at <https://discord.gg/ESTDmmjj>
-- **GitHub Discussions**: For general questions and community chat
+- [GitHub](https://github.com/Open-WP-Club)
+- [Discord](https://discord.gg/ESTDmmjj)
+- Email: contact@openwpclub.com

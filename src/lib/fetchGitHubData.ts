@@ -91,7 +91,16 @@ export interface Contributor {
   profileUrl: string;
 }
 
+// Module-level cache so contributors are fetched once per build
+let _contributorCache: Contributor[] | null = null;
+let _contributorCacheKey: string | null = null;
+
 export async function fetchOrgContributors(repoNames: string[]): Promise<Contributor[]> {
+  const cacheKey = repoNames.slice().sort().join(',');
+  if (_contributorCache && _contributorCacheKey === cacheKey) {
+    return _contributorCache;
+  }
+
   const contributorMap = new Map<string, Contributor>();
 
   for (let i = 0; i < repoNames.length; i += BATCH_SIZE) {
@@ -123,7 +132,10 @@ export async function fetchOrgContributors(repoNames: string[]): Promise<Contrib
     }
   }
 
-  return Array.from(contributorMap.values()).sort((a, b) => b.contributions - a.contributions);
+  const result = Array.from(contributorMap.values()).sort((a, b) => b.contributions - a.contributions);
+  _contributorCache = result;
+  _contributorCacheKey = cacheKey;
+  return result;
 }
 
 export async function fetchAllGitHubData(

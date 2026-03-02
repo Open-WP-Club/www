@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Class-based dark mode for Tailwind v4 */
+@variant dark (&:is(.dark, .dark *));
+
 /* Plugin card hover effects */
 .plugin-card {
   transition: all 0.2s ease-in-out;
@@ -23,6 +26,30 @@
 .prose h2 {
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #e5e7eb;
+}
+
+/* Dark mode prose overrides */
+.dark .prose {
+  --tw-prose-body: #d1d5db;
+  --tw-prose-headings: #f3f4f6;
+  --tw-prose-links: #60a5fa;
+  --tw-prose-bold: #f3f4f6;
+  --tw-prose-counters: #9ca3af;
+  --tw-prose-bullets: #6b7280;
+  --tw-prose-hr: #374151;
+  --tw-prose-quotes: #d1d5db;
+  --tw-prose-quote-borders: #3b82f6;
+  --tw-prose-code: #f3f4f6;
+  --tw-prose-th-borders: #4b5563;
+  --tw-prose-td-borders: #374151;
+}
+
+.dark .prose h2 {
+  border-bottom-color: #374151;
+}
+
+.dark .prose pre {
+  background-color: #111827;
 }
 
 /* Line clamp utility */
