@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Contact from '../components/Contact.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { getCollection } from 'astro:content';
 import { fetchOrgContributors } from '../lib/fetchGitHubData';
 
@@ -14,8 +15,10 @@ const contributors = await fetchOrgContributors(repoNames);
   title="Contributors - Open WP Club"
   description="Meet the people building free WordPress software. Every contributor — from code to bug reports — makes Open WP Club possible."
 >
+  <Breadcrumbs items={[{ label: 'Contributors' }]} />
+
   <!-- Hero -->
-  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+  <section class="pt-8 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">

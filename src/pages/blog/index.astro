@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog')).sort(
@@ -14,8 +15,10 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
   title="Blog - Open WP Club"
   description="Updates, guides, and thoughts on building free WordPress software."
 >
+  <Breadcrumbs items={[{ label: 'Blog' }]} />
+
   <!-- Hero -->
-  <section class="pt-32 pb-20 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+  <section class="pt-8 pb-20 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">Blog</h1>

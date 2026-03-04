@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import Newsletter from '../../components/Newsletter.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -13,14 +16,39 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  author: {
+    '@type': post.data.author === 'Open WP Club' ? 'Organization' : 'Person',
+    name: post.data.author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Open WP Club',
+    logo: { '@type': 'ImageObject', url: 'https://openwpclub.com/favicon.svg' },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `https://openwpclub.com/blog/${post.id}/`,
+  },
+};
 ---
 
 <BaseLayout
   title={`${post.data.title} - Open WP Club`}
   description={post.data.description}
+  ogType="article"
+  jsonLd={articleSchema}
 >
+  <Breadcrumbs items={[{ label: 'Blog', href: '/blog/' }, { label: post.data.title }]} />
+
   <!-- Hero -->
-  <section class="pt-32 pb-12 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+  <section class="pt-8 pb-12 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <a href="/blog/" class="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 mb-8 transition-colors">
         <svg class="size-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -48,6 +76,9 @@ const { Content } = await render(post);
           <article class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8 lg:p-10 prose prose-gray dark:prose-invert max-w-none">
             <Content />
           </article>
+          <div class="mt-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <ShareButtons title={post.data.title} url={`https://openwpclub.com/blog/${post.id}/`} />
+          </div>
         </div>
 
         <!-- Sidebar -->
@@ -60,4 +91,6 @@ const { Content } = await render(post);
       </div>
     </div>
   </section>
+
+  <Newsletter />
 </BaseLayout>

@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Contact from '../components/Contact.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { GITHUB_ORG_URL, DISCORD_URL, CONTACT_EMAIL } from '../lib/config';
+
+const faqs = [
+  {
+    question: 'Are your plugins really free?',
+    answer: 'Yes, 100%. Every plugin we build is free to download, use, and modify. There are no "pro" versions, no premium tiers, and no features locked behind a paywall. This is a permanent commitment, not a temporary marketing strategy.',
+  },
+  {
+    question: 'How are the plugins licensed?',
+    answer: 'All WordPress plugins are licensed under the GPL (GNU General Public License), which is the same license WordPress itself uses. Our website, tools, and non-plugin code use the MIT license. Both licenses allow you to freely use, modify, and distribute the software.',
+  },
+  {
+    question: 'Can I use your plugins on client sites?',
+    answer: 'Absolutely. You can use our plugins on any number of sites — personal, client, commercial, or otherwise. There are no usage restrictions.',
+  },
+  {
+    question: 'How do I install a plugin?',
+    answer: 'Download the ZIP file from our plugin page or GitHub, then go to your WordPress dashboard > Plugins > Add New > Upload Plugin. Some of our plugins are also available directly from WordPress.org.',
+  },
+  {
+    question: 'Do you offer support?',
+    answer: 'We provide community-based support through our Discord server and GitHub Issues. While we don\'t offer paid or guaranteed support, our community is active and helpful. For bug reports, please open a GitHub issue.',
+  },
+  {
+    question: 'How can I contribute?',
+    answer: 'There are many ways to contribute: write code, report bugs, improve documentation, help others in Discord, write blog posts, or sponsor the project. Visit our "How to Join" page for details. No application or approval needed — just start contributing.',
+  },
+  {
+    question: 'How is the project funded?',
+    answer: 'Open WP Club runs on community contributions and sponsorships. We keep our infrastructure costs at $0 by using free and open-source tools. Sponsorships go directly toward plugin maintenance and development time.',
+  },
+  {
+    question: 'Will the plugins always be free?',
+    answer: 'Yes. This is a core promise of Open WP Club. We will never introduce paid tiers, premium upsells, or freemium models. If we can\'t sustain a plugin through community support, we\'d rather archive it openly than lock features behind a paywall.',
+  },
+  {
+    question: 'Are the plugins safe to use?',
+    answer: 'All our code is open source and publicly auditable on GitHub. We follow WordPress coding standards and security best practices. If you find a security issue, please report it responsibly through our security.txt contact.',
+  },
+  {
+    question: 'Can I request a new plugin?',
+    answer: `Yes! Open a feature request on our GitHub Issues page or suggest it in our Discord. We prioritize plugins that solve real gaps in the WordPress ecosystem and align with our "one problem, one plugin" philosophy.`,
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="FAQ - Open WP Club"
+  description="Frequently asked questions about Open WP Club's free WordPress plugins, licensing, support, and contributing."
+  jsonLd={faqSchema}
+>
+  <Breadcrumbs items={[{ label: 'FAQ' }]} />
+
+  <!-- Hero -->
+  <section class="pt-8 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
+          Frequently asked <span class="text-blue-600">questions</span>
+        </h1>
+        <p class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
+          Common questions about our plugins, licensing, contributing, and how the project works.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-column: Content + Sidebar -->
+  <section class="py-12 bg-gray-50 dark:bg-gray-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+
+        <!-- Main content -->
+        <div class="lg:col-span-2 space-y-4">
+          {faqs.map((faq) => (
+            <details class="group bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+              <summary class="flex items-center justify-between cursor-pointer p-6 text-left">
+                <h2 class="text-base font-semibold text-gray-900 dark:text-white pr-4">{faq.question}</h2>
+                <svg class="size-5 shrink-0 text-gray-400 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </summary>
+              <div class="px-6 pb-6 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                {faq.answer}
+              </div>
+            </details>
+          ))}
+
+          <!-- Still have questions -->
+          <div class="bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-blue-950/30 dark:via-gray-800 dark:to-blue-950/30 rounded-xl shadow-sm border border-blue-100 dark:border-blue-900/50 p-6 sm:p-8 text-center mt-8">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Still have questions?</h2>
+            <p class="mt-3 text-gray-600 dark:text-gray-400 leading-relaxed">
+              Ask in our Discord or send us an email. We're happy to help.
+            </p>
+            <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href={DISCORD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+              >
+                Join Discord
+              </a>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                class="inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-lg text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                Send us an email
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="mt-8 lg:mt-0">
+          <div class="lg:sticky lg:top-24">
+            <Sidebar />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <Contact />
+</BaseLayout>

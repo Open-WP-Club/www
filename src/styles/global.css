@@ -94,3 +94,35 @@ select:focus-visible,
 ::view-transition-new(plugin-content) {
   animation: slide-in-from-right 0.3s ease-out;
 }
+
+/* Print styles */
+@media print {
+  nav, footer, #back-to-top, .copy-link-btn {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .lg\:col-span-1:last-child,
+  .lg\:sticky {
+    display: none !important;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  a[href^="/"]::after {
+    content: " (https://openwpclub.com" attr(href) ")";
+  }
+
+  a[href^="#"]::after,
+  a[href^="javascript"]::after {
+    content: "";
+  }
+}

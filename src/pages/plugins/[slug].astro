@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCollection } from 'astro:content';
 import { GITHUB_ORG_URL, DISCORD_URL } from '../../lib/config';
 import sanitizeHtml from 'sanitize-html';
@@ -51,18 +52,7 @@ const softwareSchema = {
 ---
 
 <BaseLayout title={`${name} - Open WP Club`} description={description} ogType="article" jsonLd={softwareSchema}>
-  <!-- Breadcrumb -->
-  <div class="pt-20 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <nav class="flex text-sm text-gray-500 dark:text-gray-400">
-        <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
-        <span class="mx-2">/</span>
-        <a href="/plugins/" class="hover:text-blue-600 transition-colors">Plugins</a>
-        <span class="mx-2">/</span>
-        <span class="text-gray-900 dark:text-white font-medium">{name}</span>
-      </nav>
-    </div>
-  </div>
+  <Breadcrumbs items={[{ label: 'Plugins', href: '/plugins/' }, { label: name }]} />
 
   <!-- Header -->
   <section class="bg-white dark:bg-gray-900 pb-8">

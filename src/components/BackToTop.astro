@@ -1,0 +1,39 @@
+---
+/**
+ * Back to Top button. Appears after scrolling down 400px.
+ */
+---
+
+<button
+  id="back-to-top"
+  class="fixed bottom-6 right-6 z-40 hidden size-10 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition-all duration-200 hover:scale-110"
+  aria-label="Back to top"
+>
+  <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+  </svg>
+</button>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const btn = document.getElementById('back-to-top');
+    if (!btn) return;
+
+    const toggle = () => {
+      if (window.scrollY > 400) {
+        btn.classList.remove('hidden');
+        btn.classList.add('flex');
+      } else {
+        btn.classList.add('hidden');
+        btn.classList.remove('flex');
+      }
+    };
+
+    window.addEventListener('scroll', toggle, { passive: true });
+    toggle();
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>

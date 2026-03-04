@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { CONTACT_EMAIL } from '../lib/config';
+---
+
+<BaseLayout
+  title="Privacy Policy - Open WP Club"
+  description="How Open WP Club handles your data. We collect minimal information and respect your privacy."
+>
+  <Breadcrumbs items={[{ label: 'Privacy Policy' }]} />
+
+  <!-- Hero -->
+  <section class="pt-8 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
+          Privacy <span class="text-blue-600">Policy</span>
+        </h1>
+        <p class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
+          We believe in transparency. Here's exactly how we handle your data.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="py-12 bg-gray-50 dark:bg-gray-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+        <div class="lg:col-span-2">
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8 lg:p-10 prose prose-gray dark:prose-invert max-w-none">
+
+            <p class="text-sm text-gray-500 dark:text-gray-500">Last updated: February 2026</p>
+
+            <h2>Overview</h2>
+            <p>
+              Open WP Club ("we", "us", "our") operates the website openwpclub.com. We are committed to protecting your privacy and being transparent about what little data we collect.
+            </p>
+
+            <h2>What we collect</h2>
+            <h3>Website analytics</h3>
+            <p>
+              We use privacy-friendly analytics to understand how visitors use our website. This may include:
+            </p>
+            <ul>
+              <li>Page views and referral sources</li>
+              <li>Country-level location (no precise geolocation)</li>
+              <li>Browser and device type</li>
+            </ul>
+            <p>
+              We do not use cookies for analytics. We do not track individual users across sessions or websites. Our analytics are aggregate-only and cannot identify you personally.
+            </p>
+
+            <h3>Information you provide</h3>
+            <p>
+              If you contact us via email, join our Discord, or subscribe to our newsletter, you voluntarily provide information such as your email address or username. We use this only for the purpose you provided it.
+            </p>
+
+            <h2>What we don't collect</h2>
+            <ul>
+              <li>We do not sell, rent, or share your personal data with third parties</li>
+              <li>We do not use tracking cookies or third-party advertising</li>
+              <li>We do not collect personal data from our WordPress plugins — they run entirely on your own server</li>
+            </ul>
+
+            <h2>Third-party services</h2>
+            <p>Our website uses the following third-party services:</p>
+            <ul>
+              <li><strong>Cloudflare</strong> — CDN and DDoS protection. Subject to <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare's Privacy Policy</a>.</li>
+              <li><strong>GitHub</strong> — Code hosting and issue tracking. Subject to <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub's Privacy Statement</a>.</li>
+              <li><strong>Discord</strong> — Community chat. Subject to <a href="https://discord.com/privacy" target="_blank" rel="noopener noreferrer">Discord's Privacy Policy</a>.</li>
+            </ul>
+
+            <h2>Our WordPress plugins</h2>
+            <p>
+              Our plugins are self-hosted on your WordPress installation. They do not phone home, collect telemetry, or transmit data to our servers. Any data the plugins process stays on your server, under your control.
+            </p>
+
+            <h2>Your rights</h2>
+            <p>You have the right to:</p>
+            <ul>
+              <li>Request access to any personal data we hold about you</li>
+              <li>Request deletion of your personal data</li>
+              <li>Unsubscribe from any communications at any time</li>
+            </ul>
+
+            <h2>Contact</h2>
+            <p>
+              If you have questions about this privacy policy, contact us at <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+            </p>
+
+          </div>
+        </div>
+
+        <div class="mt-8 lg:mt-0">
+          <div class="lg:sticky lg:top-24">
+            <Sidebar />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

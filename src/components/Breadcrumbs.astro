@@ -1,0 +1,45 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://openwpclub.com/' },
+    ...items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 2,
+      name: item.label,
+      ...(item.href ? { item: `https://openwpclub.com${item.href}` } : {}),
+    })),
+  ],
+};
+---
+
+<div class="pt-20 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex text-sm text-gray-500 dark:text-gray-400" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
+      {items.map((item) => (
+        <>
+          <span class="mx-2">/</span>
+          {item.href ? (
+            <a href={item.href} class="hover:text-blue-600 transition-colors">{item.label}</a>
+          ) : (
+            <span class="text-gray-900 dark:text-white font-medium">{item.label}</span>
+          )}
+        </>
+      ))}
+    </nav>
+  </div>
+</div>
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

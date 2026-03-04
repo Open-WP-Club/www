@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 
 const categories = [
   {
@@ -44,8 +45,10 @@ const categories = [
   title="Uses - Open WP Club"
   description="The tools, technologies, and services we use to build free WordPress software."
 >
+  <Breadcrumbs items={[{ label: 'Uses' }]} />
+
   <!-- Hero -->
-  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+  <section class="pt-8 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">

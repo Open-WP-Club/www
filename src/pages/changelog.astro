@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { GITHUB_ORG_URL } from '../lib/config';
+
+const entries = [
+  {
+    date: 'February 2026',
+    title: 'Website launch & plugin catalog',
+    items: [
+      'Launched openwpclub.com with full plugin catalog',
+      'Added dark mode support and theme toggle',
+      'Plugin pages with live GitHub data (stars, forks, README)',
+      'Blog with tag-based filtering',
+      'Contributors page with live GitHub data',
+      'SEO optimizations: sitemap, structured data, Open Graph',
+      'Accessibility: skip-to-content, focus indicators, semantic HTML',
+    ],
+  },
+  {
+    date: 'March 2026',
+    title: 'Community & content expansion',
+    items: [
+      'Added FAQ page with structured data for rich results',
+      'Added Privacy Policy page',
+      'Added Changelog page (you\'re reading it)',
+      'Added breadcrumb navigation to all inner pages',
+      'Added newsletter signup component',
+      'Added social sharing buttons to blog posts',
+      'Added robots.txt for better crawling',
+      'Added Twitter/X to footer social links',
+      'Enabled stats section on homepage',
+      'Added rel="me" social verification links',
+      'Added Back to Top button for long pages',
+      'Added print-friendly styles',
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Changelog - Open WP Club"
+  description="What's new at Open WP Club. Release notes, updates, and improvements to our website and plugins."
+>
+  <Breadcrumbs items={[{ label: 'Changelog' }]} />
+
+  <!-- Hero -->
+  <section class="pt-8 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
+          What's <span class="text-blue-600">new</span>
+        </h1>
+        <p class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
+          A log of updates, improvements, and new features across the Open WP Club website and project.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-column: Content + Sidebar -->
+  <section class="py-12 bg-gray-50 dark:bg-gray-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+
+        <!-- Main content -->
+        <div class="lg:col-span-2 space-y-8">
+          {entries.map((entry, index) => (
+            <div class="relative">
+              {index > 0 && (
+                <div class="absolute -top-4 left-6 w-px h-4 bg-gray-200 dark:bg-gray-700"></div>
+              )}
+              <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300">
+                    {entry.date}
+                  </span>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{entry.title}</h2>
+                <ul class="space-y-2">
+                  {entry.items.map((item) => (
+                    <li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400">
+                      <svg class="size-5 shrink-0 text-green-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+
+          <!-- CTA -->
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8 text-center">
+            <p class="text-gray-600 dark:text-gray-400 mb-4">
+              Want to see the full commit history?
+            </p>
+            <a
+              href={`${GITHUB_ORG_URL}/www/commits/main`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-6 py-3 text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-all duration-200"
+            >
+              <svg class="size-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
+              </svg>
+              View on GitHub
+            </a>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="mt-8 lg:mt-0">
+          <div class="lg:sticky lg:top-24">
+            <Sidebar />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>

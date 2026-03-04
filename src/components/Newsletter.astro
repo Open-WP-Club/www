@@ -1,0 +1,43 @@
+---
+/**
+ * Newsletter signup component.
+ * Currently uses a mailto: fallback. Replace the form action with your
+ * newsletter provider (Buttondown, Substack, Mailchimp) when ready.
+ */
+import { CONTACT_EMAIL } from '../lib/config';
+---
+
+<section class="py-16 bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-blue-950/20 dark:via-gray-900 dark:to-blue-950/20">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+      Stay in the loop
+    </h2>
+    <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+      Get notified when we release new plugins, publish articles, or ship major updates. No spam, unsubscribe anytime.
+    </p>
+    <form
+      class="mt-8 flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+      action={`mailto:${CONTACT_EMAIL}?subject=Newsletter Signup`}
+      method="GET"
+    >
+      <label for="newsletter-email" class="sr-only">Email address</label>
+      <input
+        id="newsletter-email"
+        name="body"
+        type="email"
+        required
+        placeholder="you@example.com"
+        class="flex-1 px-4 py-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      />
+      <button
+        type="submit"
+        class="px-6 py-3 text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors shrink-0"
+      >
+        Subscribe
+      </button>
+    </form>
+    <p class="mt-3 text-xs text-gray-500 dark:text-gray-500">
+      We respect your privacy. Unsubscribe at any time.
+    </p>
+  </div>
+</section>

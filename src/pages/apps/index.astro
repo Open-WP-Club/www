@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 const apps = [
   {
@@ -23,7 +24,9 @@ const apps = [
 ---
 
 <BaseLayout title="Apps - Open WP Club" description="Desktop and mobile apps for WooCommerce store management. Currently in development by Open WP Club.">
-  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+  <Breadcrumbs items={[{ label: 'Apps' }]} />
+
+  <section class="pt-8 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
