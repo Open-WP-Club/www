@@ -1,6 +1,8 @@
 import { marked } from 'marked';
 import type { GitHubRepoStats } from './types';
-import { ORG, BATCH_SIZE } from './config';
+import { ORG, BATCH_SIZE, AI_LOGINS } from './config';
+import type { Sponsor } from './types';
+import { readFileSync, existsSync } from 'node:fs';
 
 const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN || '';
 
@@ -91,6 +93,14 @@ export interface Contributor {
   profileUrl: string;
 }
 
+/** Load sponsor logins so AI accounts that are sponsors can stay in contributors. */
+function loadSponsorLogins(): Set<string> {
+  const path = 'src/data/sponsors.json';
+  if (!existsSync(path)) return new Set();
+  const sponsors: Sponsor[] = JSON.parse(readFileSync(path, 'utf-8'));
+  return new Set(sponsors.map((s) => s.login));
+}
+
 // Module-level cache so contributors are fetched once per build
 let _contributorCache: Contributor[] | null = null;
 let _contributorCacheKey: string | null = null;
@@ -101,6 +111,7 @@ export async function fetchOrgContributors(repoNames: string[]): Promise<Contrib
     return _contributorCache;
   }
 
+  const sponsorLogins = loadSponsorLogins();
   const contributorMap = new Map<string, Contributor>();
 
   for (let i = 0; i < repoNames.length; i += BATCH_SIZE) {
@@ -118,6 +129,8 @@ export async function fetchOrgContributors(repoNames: string[]): Promise<Contrib
       if (result.status !== 'fulfilled') continue;
       for (const c of result.value) {
         if (c.type === 'Bot') continue;
+        // Filter AI accounts unless they are sponsors
+        if (AI_LOGINS.has(c.login) && !sponsorLogins.has(c.login)) continue;
         const existing = contributorMap.get(c.login);
         if (existing) {
           existing.contributions += c.contributions;

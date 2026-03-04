@@ -21,6 +21,16 @@ export interface GitHubRepoStats {
   defaultBranch: string;
 }
 
+export interface Sponsor {
+  login: string;
+  name: string;
+  url: string;
+  avatarUrl: string;
+  tier: 'gold' | 'silver' | 'bronze';
+  description: string;
+  since: string;
+}
+
 export interface Plugin {
   slug: string;
   name: string;

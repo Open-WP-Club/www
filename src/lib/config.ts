@@ -10,3 +10,13 @@ export const TWITTER_HANDLE = '@OpenWPClub';
 export const TWITTER_URL = 'https://x.com/OpenWPClub';
 export const SHOW_STATS = true;
 export const BATCH_SIZE = 10;
+
+/** Known AI/LLM account logins to exclude from contributors (unless they are sponsors). */
+export const AI_LOGINS: ReadonlySet<string> = new Set([
+  'claude',
+  'copilot',
+  'github-copilot',
+  'devin-ai',
+  'coderabbitai',
+  'sweep-ai',
+]);

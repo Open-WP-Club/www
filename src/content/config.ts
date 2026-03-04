@@ -31,7 +31,6 @@ const plugins = defineCollection({
     license: z.string().nullable(),
     language: z.string().nullable(),
     defaultBranch: z.string(),
-    readmeHtml: z.string(),
     category: z.enum(['plugin', 'app', 'website', 'tool']).default('plugin'),
   }),
 });

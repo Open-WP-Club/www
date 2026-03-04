@@ -118,7 +118,11 @@ const sorted = allItems
       noResults!.classList.toggle('hidden', visible.length > 0);
     }
 
-    search.addEventListener('input', update);
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    search.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(update, 150);
+    });
     sort.addEventListener('change', update);
     update();
   });

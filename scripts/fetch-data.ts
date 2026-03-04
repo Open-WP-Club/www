@@ -10,15 +10,18 @@
  * instead of hitting the GitHub API again.
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 
 // Resolve paths
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const DATA_DIR = resolve(ROOT, 'src/data');
+const READMES_DIR = resolve(DATA_DIR, 'readmes');
+const CACHE_FILE = resolve(ROOT, '.fetch-cache.json');
 
 // Load .env file
 try {
@@ -39,10 +42,70 @@ const CSV_URL = `https://raw.githubusercontent.com/${ORG}/.github/main/plugins.c
 const BATCH_SIZE = 10;
 const TOKEN = process.env.GITHUB_TOKEN || '';
 
-function headers(): HeadersInit {
-  const h: HeadersInit = { Accept: 'application/vnd.github.v3+json', 'User-Agent': 'open-wp-club-site' };
+/** Known AI/LLM account logins — excluded from contributors unless they are sponsors. */
+const AI_LOGINS = new Set(['claude', 'copilot', 'github-copilot', 'devin-ai', 'coderabbitai', 'sweep-ai']);
+
+interface Sponsor { login: string; name: string; url: string; avatarUrl: string; tier: string; description: string; since: string; }
+
+function loadSponsorLogins(): Set<string> {
+  try {
+    const sponsors: Sponsor[] = JSON.parse(readFileSync(resolve(DATA_DIR, 'sponsors.json'), 'utf-8'));
+    return new Set(sponsors.map((s) => s.login));
+  } catch { return new Set(); }
+}
+
+function headers(): Record<string, string> {
+  const h: Record<string, string> = { Accept: 'application/vnd.github.v3+json', 'User-Agent': 'open-wp-club-site' };
   if (TOKEN) h.Authorization = `Bearer ${TOKEN}`;
   return h;
+}
+
+// ---------------------------------------------------------------------------
+// ETag cache — conditional requests (304) don't count against GitHub rate limit
+// ---------------------------------------------------------------------------
+interface CacheEntry { etag: string; data: unknown }
+type ETagCache = Record<string, CacheEntry>;
+
+let etagCache: ETagCache = {};
+let cacheHits = 0;
+let cacheMisses = 0;
+
+function loadCache(): void {
+  if (!existsSync(CACHE_FILE)) return;
+  try {
+    etagCache = JSON.parse(readFileSync(CACHE_FILE, 'utf-8'));
+  } catch { etagCache = {}; }
+}
+
+function saveCache(): void {
+  writeFileSync(CACHE_FILE, JSON.stringify(etagCache));
+}
+
+/**
+ * Fetch with ETag caching. On 304 (Not Modified) returns cached data
+ * without consuming a GitHub API rate-limit point.
+ */
+async function cachedFetch(url: string): Promise<{ data: unknown; status: number } | null> {
+  const h = headers();
+  const cached = etagCache[url];
+  if (cached?.etag) h['If-None-Match'] = cached.etag;
+
+  const res = await fetch(url, { headers: h });
+
+  if (res.status === 304 && cached) {
+    cacheHits++;
+    return { data: cached.data, status: 304 };
+  }
+
+  if (!res.ok) return null;
+
+  cacheMisses++;
+  const data = await res.json();
+  const etag = res.headers.get('etag');
+  if (etag) {
+    etagCache[url] = { etag, data };
+  }
+  return { data, status: res.status };
 }
 
 function parseCSVLine(line: string): string[] {
@@ -94,35 +157,37 @@ function rewriteImageUrls(html: string, repo: string, branch: string): string {
 }
 
 async function fetchRepoStats(repoName: string) {
-  const res = await fetch(`https://api.github.com/repos/${ORG}/${repoName}`, { headers: headers() });
-  if (!res.ok) {
-    console.warn(`  Failed: ${repoName} (${res.status})`);
+  const url = `https://api.github.com/repos/${ORG}/${repoName}`;
+  const result = await cachedFetch(url);
+  if (!result) {
+    console.warn(`  Failed: ${repoName}`);
     return { stars: 0, forks: 0, openIssues: 0, lastPush: '', createdAt: '', topics: [] as string[], license: null as string | null, language: null as string | null, defaultBranch: 'main' };
   }
-  const d = await res.json();
+  const d = result.data as Record<string, unknown>;
   return {
-    stars: d.stargazers_count ?? 0,
-    forks: d.forks_count ?? 0,
-    openIssues: d.open_issues_count ?? 0,
-    lastPush: d.pushed_at ?? '',
-    createdAt: d.created_at ?? '',
-    topics: d.topics ?? [],
-    license: d.license?.spdx_id ?? null,
-    language: d.language ?? null,
-    defaultBranch: d.default_branch ?? 'main',
+    stars: (d.stargazers_count as number) ?? 0,
+    forks: (d.forks_count as number) ?? 0,
+    openIssues: (d.open_issues_count as number) ?? 0,
+    lastPush: (d.pushed_at as string) ?? '',
+    createdAt: (d.created_at as string) ?? '',
+    topics: (d.topics as string[]) ?? [],
+    license: (d.license as Record<string, string>)?.spdx_id ?? null,
+    language: (d.language as string) ?? null,
+    defaultBranch: (d.default_branch as string) ?? 'main',
   };
 }
 
 async function fetchReadme(repoName: string, defaultBranch: string): Promise<string> {
-  // Try API first
-  const res = await fetch(`https://api.github.com/repos/${ORG}/${repoName}/readme`, { headers: headers() });
-  if (res.ok) {
-    const data = await res.json();
+  // Try API first (with ETag cache)
+  const url = `https://api.github.com/repos/${ORG}/${repoName}/readme`;
+  const result = await cachedFetch(url);
+  if (result) {
+    const data = result.data as Record<string, string>;
     const content = Buffer.from(data.content, 'base64').toString('utf-8');
     let html = await marked(content);
     return rewriteImageUrls(html, repoName, defaultBranch);
   }
-  // Fallback: raw file
+  // Fallback: raw file (not rate-limited)
   const rawRes = await fetch(`https://raw.githubusercontent.com/${ORG}/${repoName}/${defaultBranch}/README.md`);
   if (rawRes.ok) {
     const content = await rawRes.text();
@@ -132,8 +197,28 @@ async function fetchReadme(repoName: string, defaultBranch: string): Promise<str
   return '<p class="text-gray-500 italic">No README available for this plugin.</p>';
 }
 
+function sanitizeReadme(html: string): string {
+  return sanitizeHtml(html, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'details', 'summary', 'picture', 'source', 'video']),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+      a: ['href', 'title', 'target', 'rel'],
+      code: ['class'],
+      span: ['class'],
+      pre: ['class'],
+      div: ['class'],
+    },
+    allowedSchemes: ['http', 'https', 'mailto'],
+  });
+}
+
 async function main() {
   console.log('--- Open WP Club Data Fetch ---\n');
+
+  loadCache();
+  const cachedEntries = Object.keys(etagCache).length;
+  if (cachedEntries > 0) console.log(`Loaded ${cachedEntries} cached ETags from .fetch-cache.json\n`);
 
   // Check rate limit
   console.log('Checking GitHub API rate limit...');
@@ -221,8 +306,8 @@ async function main() {
           license: stats.license,
           language: stats.language,
           defaultBranch: stats.defaultBranch,
-          readmeHtml,
           category,
+          _readmeHtml: readmeHtml,
         });
       }
     }
@@ -235,20 +320,23 @@ async function main() {
 
   // Fetch contributors
   console.log('Fetching contributors...');
+  const sponsorLogins = loadSponsorLogins();
   const contributorMap = new Map<string, { login: string; contributions: number; profileUrl: string }>();
   for (let i = 0; i < csvPlugins.length; i += BATCH_SIZE) {
     const batch = csvPlugins.slice(i, i + BATCH_SIZE);
     const results = await Promise.allSettled(
       batch.map(async (p) => {
-        const res = await fetch(`https://api.github.com/repos/${ORG}/${p.slug}/contributors?per_page=100`, { headers: headers() });
-        if (!res.ok) return [];
-        return res.json();
+        const url = `https://api.github.com/repos/${ORG}/${p.slug}/contributors?per_page=100`;
+        const result = await cachedFetch(url);
+        return result ? result.data as Array<{ login: string; contributions: number; html_url: string; type: string }> : [];
       })
     );
     for (const r of results) {
       if (r.status !== 'fulfilled') continue;
       for (const c of r.value) {
         if (c.type === 'Bot') continue;
+        // Filter AI accounts unless they are sponsors
+        if (AI_LOGINS.has(c.login) && !sponsorLogins.has(c.login)) continue;
         const existing = contributorMap.get(c.login);
         if (existing) {
           existing.contributions += c.contributions;
@@ -263,14 +351,30 @@ async function main() {
 
   // Save to disk
   mkdirSync(DATA_DIR, { recursive: true });
+  mkdirSync(READMES_DIR, { recursive: true });
 
-  writeFileSync(resolve(DATA_DIR, 'plugins.json'), JSON.stringify(pluginData, null, 2));
+  // Write per-plugin sanitized README HTML files
+  for (const p of pluginData) {
+    const html = sanitizeReadme(p._readmeHtml as string);
+    writeFileSync(resolve(READMES_DIR, `${p.id}.html`), html);
+  }
+
+  // Strip internal _readmeHtml field before writing plugins.json
+  const cleanData = pluginData.map(({ _readmeHtml, ...rest }) => rest);
+  writeFileSync(resolve(DATA_DIR, 'plugins.json'), JSON.stringify(cleanData, null, 2));
   writeFileSync(resolve(DATA_DIR, 'contributors.json'), JSON.stringify(contributors, null, 2));
+
+  // Save ETag cache for next run
+  saveCache();
 
   const cats = pluginData.reduce((acc, p) => { const c = p.category as string; acc[c] = (acc[c] || 0) + 1; return acc; }, {} as Record<string, number>);
   console.log('=== Saved ===');
-  console.log(`  src/data/plugins.json      (${pluginData.length} repos: ${Object.entries(cats).map(([k,v]) => `${v} ${k}s`).join(', ')})`);
-  console.log(`  src/data/contributors.json (${contributors.length} contributors)`);
+  console.log(`  src/data/plugins.json       (${cleanData.length} repos: ${Object.entries(cats).map(([k,v]) => `${v} ${k}s`).join(', ')})`);
+  console.log(`  src/data/readmes/           (${cleanData.length} README HTML files)`);
+  console.log(`  src/data/contributors.json  (${contributors.length} contributors)`);
+  console.log();
+  console.log(`Cache: ${cacheHits} hits (304) / ${cacheMisses} misses (200) — ${cacheHits + cacheMisses} total API calls`);
+  if (cacheHits > 0) console.log(`  ${cacheHits} requests served from cache (did not count against rate limit)`);
   console.log();
   console.log('Run "npm run build" to build the site with this data.');
   console.log();

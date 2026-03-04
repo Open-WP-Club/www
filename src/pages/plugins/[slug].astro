@@ -4,7 +4,7 @@ import Sidebar from '../../components/Sidebar.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCollection } from 'astro:content';
 import { GITHUB_ORG_URL, DISCORD_URL } from '../../lib/config';
-import sanitizeHtml from 'sanitize-html';
+import { readFileSync } from 'node:fs';
 
 export async function getStaticPaths() {
   const allItems = await getCollection('plugins');
@@ -16,21 +16,9 @@ export async function getStaticPaths() {
 }
 
 const { plugin } = Astro.props;
-const { name, description, version, githubUrl, wordpressUrl, stars, forks, openIssues, lastPush, license, language, defaultBranch, readmeHtml } = plugin.data;
+const { name, description, version, githubUrl, wordpressUrl, stars, forks, openIssues, lastPush, license, language, defaultBranch } = plugin.data;
 
-const safeReadmeHtml = sanitizeHtml(readmeHtml, {
-  allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'details', 'summary', 'picture', 'source', 'video']),
-  allowedAttributes: {
-    ...sanitizeHtml.defaults.allowedAttributes,
-    img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
-    a: ['href', 'title', 'target', 'rel'],
-    code: ['class'],
-    span: ['class'],
-    pre: ['class'],
-    div: ['class'],
-  },
-  allowedSchemes: ['http', 'https', 'mailto'],
-});
+const safeReadmeHtml = readFileSync(`src/data/readmes/${plugin.id}.html`, 'utf-8');
 const downloadUrl = `${githubUrl}/archive/refs/heads/${defaultBranch}.zip`;
 
 function formatDate(dateStr: string): string {
