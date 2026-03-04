@@ -1,13 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
-import { fetchOrgContributors } from '../lib/fetchGitHubData';
+import { readFileSync, existsSync } from 'node:fs';
+import type { Contributor } from '../lib/fetchGitHubData';
 
 const allPlugins = await getCollection('plugins');
-const repoNames = allPlugins.map((p) => p.id);
-const contributors = await fetchOrgContributors(repoNames);
-
 const totalStars = allPlugins.reduce((sum, p) => sum + p.data.stars, 0);
 const totalForks = allPlugins.reduce((sum, p) => sum + p.data.forks, 0);
+
+const CONTRIBUTORS_CACHE = 'src/data/contributors.json';
+const contributors: Contributor[] = existsSync(CONTRIBUTORS_CACHE)
+  ? JSON.parse(readFileSync(CONTRIBUTORS_CACHE, 'utf-8'))
+  : [];
 
 const stats = [
   { label: 'Open-source plugins', value: allPlugins.length.toString() },

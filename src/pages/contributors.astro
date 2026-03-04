@@ -3,12 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Contact from '../components/Contact.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { getCollection } from 'astro:content';
-import { fetchOrgContributors } from '../lib/fetchGitHubData';
+import { readFileSync, existsSync } from 'node:fs';
+import type { Contributor } from '../lib/fetchGitHubData';
 
-const allPlugins = await getCollection('plugins');
-const repoNames = allPlugins.map((p) => p.id);
-const contributors = await fetchOrgContributors(repoNames);
+const CONTRIBUTORS_CACHE = 'src/data/contributors.json';
+const contributors: Contributor[] = existsSync(CONTRIBUTORS_CACHE)
+  ? JSON.parse(readFileSync(CONTRIBUTORS_CACHE, 'utf-8'))
+  : [];
 ---
 
 <BaseLayout

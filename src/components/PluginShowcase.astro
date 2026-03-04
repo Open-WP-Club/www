@@ -2,7 +2,8 @@
 import PluginCard from './PluginCard.astro';
 import { getCollection } from 'astro:content';
 
-const allPlugins = await getCollection('plugins');
+const allItems = await getCollection('plugins');
+const allPlugins = allItems.filter((p) => p.data.category === 'plugin');
 const featured = allPlugins
   .sort((a, b) => b.data.stars - a.data.stars)
   .slice(0, 6);

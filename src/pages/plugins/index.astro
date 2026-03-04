@@ -3,11 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PluginCard from '../../components/PluginCard.astro';
 import { getCollection } from 'astro:content';
 
-const allPlugins = await getCollection('plugins');
-const sorted = allPlugins.sort((a, b) => {
-  if (!a.data.lastPush || !b.data.lastPush) return 0;
-  return new Date(b.data.lastPush).getTime() - new Date(a.data.lastPush).getTime();
-});
+const allItems = await getCollection('plugins');
+const sorted = allItems
+  .filter((p) => p.data.category === 'plugin')
+  .sort((a, b) => {
+    if (!a.data.lastPush || !b.data.lastPush) return 0;
+    return new Date(b.data.lastPush).getTime() - new Date(a.data.lastPush).getTime();
+  });
 ---
 
 <BaseLayout title="All Plugins - Open WP Club" description={`${sorted.length} free, open-source WordPress plugins. Browse the full catalog, sorted by most recently updated.`}>

@@ -1,10 +1,38 @@
 /**
- * Fetches plugin + contributor data from GitHub and prints a summary.
+ * Fetches plugin + contributor data from GitHub and saves to src/data/.
  * Run with: npm run fetch-data
  *
- * Useful to verify your GITHUB_TOKEN works and see current data before building.
- * To actually update the site, run: npm run build
+ * Saves:
+ *   src/data/plugins.json      — CSV + GitHub stats + README for each plugin
+ *   src/data/contributors.json — aggregated contributors across all repos
+ *
+ * The Astro content collection loader reads these files at build time
+ * instead of hitting the GitHub API again.
  */
+
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { marked } from 'marked';
+
+// Resolve paths
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = resolve(__dirname, '..');
+const DATA_DIR = resolve(ROOT, 'src/data');
+
+// Load .env file
+try {
+  const envContent = readFileSync(resolve(ROOT, '.env'), 'utf-8');
+  for (const line of envContent.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eqIndex = trimmed.indexOf('=');
+    if (eqIndex === -1) continue;
+    const key = trimmed.slice(0, eqIndex).trim();
+    const value = trimmed.slice(eqIndex + 1).trim();
+    if (!process.env[key]) process.env[key] = value;
+  }
+} catch { /* .env not found — fine */ }
 
 const ORG = 'Open-WP-Club';
 const CSV_URL = `https://raw.githubusercontent.com/${ORG}/.github/main/plugins.csv`;
@@ -31,10 +59,83 @@ function parseCSVLine(line: string): string[] {
   return result.map((v) => v.replace(/^"|"$/g, ''));
 }
 
+const PLUGIN_TAGS = ['wordpress', 'wordpress-plugin', 'wp-plugin', 'woocommerce', 'woocommerce-plugin', 'php'];
+const APP_TAGS = ['electron', 'desktop', 'mobile', 'android', 'ios', 'tauri', 'react-native', 'flutter'];
+const WEBSITE_TAGS = ['astro', 'website'];
+
+function categorize(topics: string[], language: string | null, slug: string): string {
+  const t = topics.map((s) => s.toLowerCase());
+  const lang = (language || '').toLowerCase();
+
+  // Explicit app tags
+  if (t.some((tag) => APP_TAGS.includes(tag))) return 'app';
+
+  // Explicit website tags or known website slug
+  if (t.some((tag) => WEBSITE_TAGS.includes(tag)) || slug === 'openwpclub.com' || slug === 'www') return 'website';
+
+  // Explicit plugin tags
+  if (t.some((tag) => PLUGIN_TAGS.includes(tag))) return 'plugin';
+
+  // Fallback: PHP language → plugin
+  if (lang === 'php') return 'plugin';
+
+  // Default to plugin for repos in this org
+  return 'plugin';
+}
+
+function rewriteImageUrls(html: string, repo: string, branch: string): string {
+  return html.replace(
+    /(<img\s[^>]*src=")(?!https?:\/\/)([^"]+)(")/gi,
+    (_, prefix, src, suffix) => {
+      const cleanSrc = src.replace(/^\.\//, '');
+      return `${prefix}https://raw.githubusercontent.com/${ORG}/${repo}/${branch}/${cleanSrc}${suffix}`;
+    }
+  );
+}
+
+async function fetchRepoStats(repoName: string) {
+  const res = await fetch(`https://api.github.com/repos/${ORG}/${repoName}`, { headers: headers() });
+  if (!res.ok) {
+    console.warn(`  Failed: ${repoName} (${res.status})`);
+    return { stars: 0, forks: 0, openIssues: 0, lastPush: '', createdAt: '', topics: [] as string[], license: null as string | null, language: null as string | null, defaultBranch: 'main' };
+  }
+  const d = await res.json();
+  return {
+    stars: d.stargazers_count ?? 0,
+    forks: d.forks_count ?? 0,
+    openIssues: d.open_issues_count ?? 0,
+    lastPush: d.pushed_at ?? '',
+    createdAt: d.created_at ?? '',
+    topics: d.topics ?? [],
+    license: d.license?.spdx_id ?? null,
+    language: d.language ?? null,
+    defaultBranch: d.default_branch ?? 'main',
+  };
+}
+
+async function fetchReadme(repoName: string, defaultBranch: string): Promise<string> {
+  // Try API first
+  const res = await fetch(`https://api.github.com/repos/${ORG}/${repoName}/readme`, { headers: headers() });
+  if (res.ok) {
+    const data = await res.json();
+    const content = Buffer.from(data.content, 'base64').toString('utf-8');
+    let html = await marked(content);
+    return rewriteImageUrls(html, repoName, defaultBranch);
+  }
+  // Fallback: raw file
+  const rawRes = await fetch(`https://raw.githubusercontent.com/${ORG}/${repoName}/${defaultBranch}/README.md`);
+  if (rawRes.ok) {
+    const content = await rawRes.text();
+    let html = await marked(content);
+    return rewriteImageUrls(html, repoName, defaultBranch);
+  }
+  return '<p class="text-gray-500 italic">No README available for this plugin.</p>';
+}
+
 async function main() {
   console.log('--- Open WP Club Data Fetch ---\n');
 
-  // 1. Check GitHub API rate limit
+  // Check rate limit
   console.log('Checking GitHub API rate limit...');
   const rateRes = await fetch('https://api.github.com/rate_limit', { headers: headers() });
   if (rateRes.ok) {
@@ -43,71 +144,100 @@ async function main() {
     const resetTime = new Date(reset * 1000).toLocaleTimeString();
     console.log(`  API: ${remaining}/${limit} requests remaining (resets at ${resetTime})`);
     if (!TOKEN) console.log('  (no GITHUB_TOKEN set — limited to 60 req/hr)');
-    if (remaining < 50) {
-      console.log('  WARNING: Low API requests remaining. Consider setting GITHUB_TOKEN.');
-    }
+    if (remaining < 50) console.log('  WARNING: Low API requests remaining.');
   }
   console.log();
 
-  // 2. Fetch CSV
-  console.log(`Fetching plugin list from CSV...`);
+  // Fetch CSV
+  console.log('Fetching plugin list from CSV...');
   const csvRes = await fetch(CSV_URL);
-  if (!csvRes.ok) {
-    console.error(`  FAILED: HTTP ${csvRes.status}`);
-    process.exit(1);
-  }
+  if (!csvRes.ok) { console.error(`  FAILED: HTTP ${csvRes.status}`); process.exit(1); }
   const text = await csvRes.text();
   const lines = text.trim().split(/\r?\n/);
   const csvHeaders = lines[0].split(',').map((h) => h.replace(/^"|"$/g, '').trim().toLowerCase());
 
-  const plugins: { name: string; slug: string }[] = [];
+  interface CSVPlugin { name: string; description: string; version: string; downloads: string; rating: string; github_url: string; wordpress_url: string; slug: string; }
+  const csvPlugins: CSVPlugin[] = [];
+
   for (let i = 1; i < lines.length; i++) {
     const values = parseCSVLine(lines[i]);
     if (values.length < 2) continue;
     const row: Record<string, string> = {};
     csvHeaders.forEach((h, idx) => { row[h] = values[idx] || ''; });
     const name = row.name || row.plugin_name || row.title || values[0];
-    if (name?.trim()) {
-      const slug = row.slug || row.plugin_slug || name.trim().toLowerCase().replace(/\s+/g, '-');
-      plugins.push({ name: name.trim(), slug });
-    }
+    if (!name?.trim()) continue;
+    const description = row.description || row.desc || row.short_description || values[1];
+    const slug = row.slug || row.plugin_slug || name.trim().toLowerCase().replace(/\s+/g, '-');
+    csvPlugins.push({
+      name: name.trim(),
+      description: description?.trim() || 'WordPress plugin by Open WP Club',
+      version: row.version || row.ver || '',
+      downloads: row.downloads || row.download_count || '',
+      rating: row.rating || row.stars || '',
+      github_url: row.github_url || row.github || row.repo_url || '',
+      wordpress_url: row.wordpress_url || row.wp_url || row.plugin_url || '',
+      slug,
+    });
   }
-  console.log(`  Found ${plugins.length} plugins in CSV\n`);
+  console.log(`  Found ${csvPlugins.length} plugins in CSV\n`);
 
-  // 3. Fetch GitHub stats for each plugin
-  console.log('Fetching GitHub stats...');
-  let stars = 0, forks = 0, issues = 0, failed = 0;
+  // Fetch GitHub data for each plugin
+  console.log('Fetching GitHub data (stats + README)...');
+  let totalStars = 0, totalForks = 0, failedCount = 0;
 
-  for (let i = 0; i < plugins.length; i += BATCH_SIZE) {
-    const batch = plugins.slice(i, i + BATCH_SIZE);
+  const pluginData: Array<Record<string, unknown>> = [];
+
+  for (let i = 0; i < csvPlugins.length; i += BATCH_SIZE) {
+    const batch = csvPlugins.slice(i, i + BATCH_SIZE);
     const results = await Promise.allSettled(
       batch.map(async (p) => {
-        const res = await fetch(`https://api.github.com/repos/${ORG}/${p.slug}`, { headers: headers() });
-        if (!res.ok) { failed++; return null; }
-        return res.json();
+        const stats = await fetchRepoStats(p.slug);
+        const readmeHtml = await fetchReadme(p.slug, stats.defaultBranch);
+        return { csv: p, stats, readmeHtml };
       })
     );
     for (const r of results) {
-      if (r.status === 'fulfilled' && r.value) {
-        stars += r.value.stargazers_count || 0;
-        forks += r.value.forks_count || 0;
-        issues += r.value.open_issues_count || 0;
+      if (r.status === 'fulfilled') {
+        const { csv, stats, readmeHtml } = r.value;
+        totalStars += stats.stars;
+        totalForks += stats.forks;
+        if (stats.stars === 0 && stats.lastPush === '') failedCount++;
+        const category = categorize(stats.topics, stats.language, csv.slug);
+        pluginData.push({
+          id: csv.slug,
+          name: csv.name,
+          description: csv.description,
+          version: csv.version,
+          downloads: csv.downloads,
+          rating: csv.rating,
+          githubUrl: csv.github_url || `https://github.com/${ORG}/${csv.slug}`,
+          wordpressUrl: csv.wordpress_url,
+          stars: stats.stars,
+          forks: stats.forks,
+          openIssues: stats.openIssues,
+          lastPush: stats.lastPush,
+          createdAt: stats.createdAt,
+          topics: stats.topics,
+          license: stats.license,
+          language: stats.language,
+          defaultBranch: stats.defaultBranch,
+          readmeHtml,
+          category,
+        });
       }
     }
-    process.stdout.write(`  ${Math.min(i + BATCH_SIZE, plugins.length)}/${plugins.length} repos checked\r`);
+    process.stdout.write(`  ${Math.min(i + BATCH_SIZE, csvPlugins.length)}/${csvPlugins.length} repos done\r`);
   }
   console.log();
-  console.log(`  Total stars: ${stars}`);
-  console.log(`  Total forks: ${forks}`);
-  console.log(`  Open issues: ${issues}`);
-  if (failed > 0) console.log(`  Failed: ${failed} repos (probably private or renamed)`);
+  console.log(`  Stars: ${totalStars} | Forks: ${totalForks}`);
+  if (failedCount > 0) console.log(`  Failed: ${failedCount} repos`);
   console.log();
 
-  // 4. Fetch contributors
+  // Fetch contributors
   console.log('Fetching contributors...');
-  const contributorMap = new Map<string, number>();
-  for (let i = 0; i < plugins.length; i += BATCH_SIZE) {
-    const batch = plugins.slice(i, i + BATCH_SIZE);
+  const contributorMap = new Map<string, { login: string; contributions: number; profileUrl: string }>();
+  for (let i = 0; i < csvPlugins.length; i += BATCH_SIZE) {
+    const batch = csvPlugins.slice(i, i + BATCH_SIZE);
     const results = await Promise.allSettled(
       batch.map(async (p) => {
         const res = await fetch(`https://api.github.com/repos/${ORG}/${p.slug}/contributors?per_page=100`, { headers: headers() });
@@ -119,21 +249,30 @@ async function main() {
       if (r.status !== 'fulfilled') continue;
       for (const c of r.value) {
         if (c.type === 'Bot') continue;
-        contributorMap.set(c.login, (contributorMap.get(c.login) || 0) + c.contributions);
+        const existing = contributorMap.get(c.login);
+        if (existing) {
+          existing.contributions += c.contributions;
+        } else {
+          contributorMap.set(c.login, { login: c.login, contributions: c.contributions, profileUrl: c.html_url });
+        }
       }
     }
   }
-  console.log(`  Found ${contributorMap.size} unique contributors\n`);
+  const contributors = Array.from(contributorMap.values()).sort((a, b) => b.contributions - a.contributions);
+  console.log(`  Found ${contributors.length} unique contributors\n`);
 
-  // 5. Summary
-  console.log('=== Summary ===');
-  console.log(`  Plugins:      ${plugins.length}`);
-  console.log(`  Stars:        ${stars}`);
-  console.log(`  Forks:        ${forks}`);
-  console.log(`  Contributors: ${contributorMap.size}`);
+  // Save to disk
+  mkdirSync(DATA_DIR, { recursive: true });
+
+  writeFileSync(resolve(DATA_DIR, 'plugins.json'), JSON.stringify(pluginData, null, 2));
+  writeFileSync(resolve(DATA_DIR, 'contributors.json'), JSON.stringify(contributors, null, 2));
+
+  const cats = pluginData.reduce((acc, p) => { const c = p.category as string; acc[c] = (acc[c] || 0) + 1; return acc; }, {} as Record<string, number>);
+  console.log('=== Saved ===');
+  console.log(`  src/data/plugins.json      (${pluginData.length} repos: ${Object.entries(cats).map(([k,v]) => `${v} ${k}s`).join(', ')})`);
+  console.log(`  src/data/contributors.json (${contributors.length} contributors)`);
   console.log();
-  console.log('To update the site with this data, run:');
-  console.log('  npm run build');
+  console.log('Run "npm run build" to build the site with this data.');
   console.log();
 }
 
