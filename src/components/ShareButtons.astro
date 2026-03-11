@@ -1,4 +1,6 @@
 ---
+import TwitterIcon from './icons/TwitterIcon.astro';
+
 interface Props {
   title: string;
   url: string;
@@ -20,9 +22,7 @@ const encodedUrl = encodeURIComponent(url);
     class="inline-flex items-center justify-center size-9 rounded-lg text-gray-500 hover:text-white hover:bg-gray-900 dark:hover:bg-white dark:hover:text-gray-900 border border-gray-200 dark:border-gray-700 transition-all duration-200"
     aria-label="Share on Twitter/X"
   >
-    <svg class="size-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
+    <TwitterIcon class="size-4" />
   </a>
 
   <!-- LinkedIn -->
@@ -59,7 +59,18 @@ const encodedUrl = encodeURIComponent(url);
       btn.addEventListener('click', async () => {
         const url = (btn as HTMLElement).dataset.url;
         if (!url) return;
-        await navigator.clipboard.writeText(url);
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch {
+          const textarea = document.createElement('textarea');
+          textarea.value = url;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
         const copyIcon = btn.querySelector('.copy-icon');
         const checkIcon = btn.querySelector('.check-icon');
         copyIcon?.classList.add('hidden');

@@ -43,7 +43,7 @@ We're continuing to improve openwpclub.com with better search, filtering, and co
 
 Everything we build is open source from day one. The best way to influence what we build is to contribute:
 
-- **Join [Discord](https://discord.gg/ESTDmmjj)** for real-time discussion
+- **Join [Discord](/join/)** for real-time discussion
 - **Star and watch** repos you're interested in on [GitHub](https://github.com/Open-WP-Club)
 - **Open issues** for bugs, features, or ideas
 - **Submit PRs** — first-timers welcome

@@ -20,7 +20,7 @@ const {
   title,
   description = 'Open WP Club builds free, open-source WordPress plugins. Browse our catalog, read the source, and use them in your projects.',
   ogType = 'website',
-  ogImage = new URL('/og-image.svg', Astro.site).toString(),
+  ogImage = new URL('/og-image.png', Astro.site).toString(),
   jsonLd,
 } = Astro.props;
 
@@ -52,7 +52,10 @@ const orgSchema = {
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
 
     <!-- Resource hints -->
     <link rel="preconnect" href="https://github.com" />

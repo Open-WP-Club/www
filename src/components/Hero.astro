@@ -1,12 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+
+const allItems = await getCollection('plugins');
+const pluginCount = allItems.filter((p) => p.data.category === 'plugin').length;
+---
+
 <section class="pt-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
     <div class="text-center">
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
-        <span class="text-blue-600 dark:text-blue-400">WordPress</span> Plugins
-        <br />That Just Work
+        Every Feature. <span class="text-blue-600 dark:text-blue-400">Zero</span> Paywalls.
       </h1>
       <p class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-        One plugin per problem. No premium upsells, no locked features, no catch. We build free, open-source plugins that do one thing and do it well.
+        {pluginCount}+ focused plugins for WooCommerce, security, performance, and admin tools. Every feature included, every line of code open source.
       </p>
       <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
         <a
@@ -22,7 +28,7 @@
           href="#about"
           class="inline-flex items-center justify-center px-6 py-3 border border-blue-600 text-base font-medium rounded-lg text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-gray-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
         >
-          How It Works
+          Why Free?
         </a>
       </div>
     </div>

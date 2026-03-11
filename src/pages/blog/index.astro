@@ -25,6 +25,12 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
         <p class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
           Updates, releases, and thoughts on building free WordPress software.
         </p>
+        <a href="/rss.xml" class="inline-flex items-center gap-1.5 mt-4 px-3 py-1 rounded-full text-sm font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors" target="_blank" rel="noopener noreferrer">
+          <svg class="size-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.742-7.115-15.783-15.839-15.82zm0-8.18v4.819c12.432.058 22.505 10.118 22.565 22.508h4.81c-.061-15.092-12.345-27.347-27.375-27.327z"/>
+          </svg>
+          RSS Feed
+        </a>
         {allTags.length > 0 && (
           <div class="mt-6 flex flex-wrap justify-center gap-2">
             {allTags.map((tag) => (
@@ -78,7 +84,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
         <!-- Sidebar -->
         <div class="mt-8 lg:mt-0">
           <div class="lg:sticky lg:top-24">
-            <Sidebar />
+            <Sidebar showWriteForUs={true} />
           </div>
         </div>
 

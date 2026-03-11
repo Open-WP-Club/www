@@ -18,4 +18,4 @@ We now maintain over 30 plugins covering WooCommerce tools, admin utilities, sec
 
 We're expanding beyond plugins into desktop apps, mobile apps, and developer tools. If the WordPress ecosystem needs it and nobody's doing it right, we'll build it.
 
-Follow us on [GitHub](https://github.com/Open-WP-Club) or join our [Discord](https://discord.gg/ESTDmmjj) to stay updated.
+Follow us on [GitHub](https://github.com/Open-WP-Club) or join our [Discord](/join/) to stay updated.

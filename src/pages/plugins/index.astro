@@ -64,6 +64,7 @@ const sorted = allItems
             data-stars={plugin.data.stars}
             data-forks={plugin.data.forks}
             data-updated={plugin.data.lastPush}
+            data-topics={plugin.data.topics.join(' ').toLowerCase()}
           >
             <PluginCard
               slug={plugin.id}
@@ -73,6 +74,7 @@ const sorted = allItems
               stars={plugin.data.stars}
               forks={plugin.data.forks}
               lastPush={plugin.data.lastPush}
+              downloads={plugin.data.downloads}
               language={plugin.data.language}
             />
           </div>
@@ -100,7 +102,8 @@ const sorted = allItems
       let visible = items.filter((item) => {
         const name = item.dataset.name || '';
         const desc = item.dataset.description || '';
-        const match = !query || name.includes(query) || desc.includes(query);
+        const topics = item.dataset.topics || '';
+        const match = !query || name.includes(query) || desc.includes(query) || topics.includes(query);
         item.style.display = match ? '' : 'none';
         return match;
       });
@@ -116,6 +119,15 @@ const sorted = allItems
       sorted.forEach((el) => grid!.appendChild(el));
       countEl!.textContent = query ? `Showing ${visible.length} of ${total} plugins` : `${total} plugins`;
       noResults!.classList.toggle('hidden', visible.length > 0);
+
+      // Sync state to URL
+      const params = new URLSearchParams();
+      const q = search!.value.trim();
+      const s = sort!.value;
+      if (q) params.set('q', q);
+      if (s && s !== 'updated') params.set('sort', s);
+      const newUrl = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;
+      history.replaceState(null, '', newUrl);
     }
 
     let debounceTimer: ReturnType<typeof setTimeout>;
@@ -124,6 +136,14 @@ const sorted = allItems
       debounceTimer = setTimeout(update, 150);
     });
     sort.addEventListener('change', update);
+
+    // Read URL params and set initial values
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get('q') || '';
+    const initialSort = params.get('sort') || 'updated';
+    search.value = initialQuery;
+    sort.value = initialSort;
+
     update();
   });
 </script>

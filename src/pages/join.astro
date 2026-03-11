@@ -3,7 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Contact from '../components/Contact.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { getCollection } from 'astro:content';
 import { GITHUB_ORG_URL, DISCORD_URL, CONTACT_EMAIL } from '../lib/config';
+
+const allItems = await getCollection('plugins');
+const pluginCount = allItems.filter((p) => p.data.category === 'plugin').length;
 
 const ways = [
   {
@@ -44,7 +48,7 @@ const ways = [
   {
     icon: 'heart',
     title: 'Sponsor',
-    description: 'We run entirely on contributions. Even small sponsorships help us maintain 30+ plugins and keep everything free for everyone.',
+    description: `We run entirely on contributions. Even small sponsorships help us maintain ${pluginCount}+ plugins and keep everything free for everyone.`,
     action: 'Contact about sponsoring',
     href: `mailto:${CONTACT_EMAIL}?subject=Sponsorship Inquiry`,
   },

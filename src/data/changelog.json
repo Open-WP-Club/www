@@ -1,0 +1,37 @@
+[
+  {
+    "date": "February 2026",
+    "title": "Website launch & plugin catalog",
+    "items": [
+      "Launched openwpclub.com with full plugin catalog",
+      "Added dark mode support and theme toggle",
+      "Plugin pages with live GitHub data (stars, forks, README)",
+      "Blog with tag-based filtering",
+      "Contributors page with live GitHub data",
+      "SEO optimizations: sitemap, structured data, Open Graph",
+      "Accessibility: skip-to-content, focus indicators, semantic HTML"
+    ]
+  },
+  {
+    "date": "March 2026",
+    "title": "Community & content expansion",
+    "items": [
+      "Added FAQ page with structured data for rich results",
+      "Added Privacy Policy page",
+      "Added Changelog page",
+      "Added breadcrumb navigation to all inner pages",
+      "Added social sharing buttons to blog posts",
+      "Added robots.txt for better crawling",
+      "Added Twitter/X to footer social links",
+      "Enabled stats section on homepage",
+      "Added rel=\"me\" social verification links",
+      "Added Back to Top button for long pages",
+      "Added print-friendly styles",
+      "Security headers, OG image, apple-touch-icon improvements",
+      "Reusable icon components and Logo component",
+      "Plugin search with URL state sync and topic filtering",
+      "Blog next/prev navigation and RSS button",
+      "Language color indicators on plugin cards"
+    ]
+  }
+]

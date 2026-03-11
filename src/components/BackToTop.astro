@@ -19,6 +19,7 @@
     const btn = document.getElementById('back-to-top');
     if (!btn) return;
 
+    let ticking = false;
     const toggle = () => {
       if (window.scrollY > 400) {
         btn.classList.remove('hidden');
@@ -27,9 +28,15 @@
         btn.classList.add('hidden');
         btn.classList.remove('flex');
       }
+      ticking = false;
     };
 
-    window.addEventListener('scroll', toggle, { passive: true });
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(toggle);
+        ticking = true;
+      }
+    }, { passive: true });
     toggle();
 
     btn.addEventListener('click', () => {

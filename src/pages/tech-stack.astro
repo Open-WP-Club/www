@@ -3,7 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Contact from '../components/Contact.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { getCollection } from 'astro:content';
 import { GITHUB_ORG_URL } from '../lib/config';
+
+const allItems = await getCollection('plugins');
+const pluginCount = allItems.filter((p) => p.data.category === 'plugin').length;
 
 const categories = [
   {
@@ -58,6 +62,16 @@ const categories = [
     ],
   },
   {
+    emoji: '🧪',
+    title: 'Testing & Quality',
+    description: 'Automated testing and code quality tools.',
+    tools: [
+      { name: 'Vitest', note: 'Unit testing for the website — open source' },
+      { name: 'PHPUnit', note: 'Unit testing for WordPress plugins — open source' },
+      { name: 'WordPress Coding Standards', note: 'PHP_CodeSniffer rules for WP conventions' },
+    ],
+  },
+  {
     emoji: '🛠️',
     title: 'Dev Tools',
     description: 'The tools we actually use, every day.',
@@ -91,7 +105,7 @@ const stats = [
           Our <span class="text-blue-600">tech stack</span>
         </h1>
         <p class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
-          Every tool we use is either free or open source. We run the entire organization — 30+ plugins, this website, CI/CD, community — at <strong class="text-gray-900 dark:text-white">$0 per month</strong>.
+          Every tool we use is either free or open source. We run the entire organization — {pluginCount}+ plugins, this website, CI/CD, community — at <strong class="text-gray-900 dark:text-white">$0 per month</strong>.
         </p>
       </div>
     </div>

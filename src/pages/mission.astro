@@ -3,7 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Contact from '../components/Contact.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { getCollection } from 'astro:content';
 import { GITHUB_ORG_URL } from '../lib/config';
+
+const allItems = await getCollection('plugins');
+const pluginCount = allItems.filter((p) => p.data.category === 'plugin').length;
 
 const values = [
   {
@@ -33,7 +37,7 @@ const softwareTypes = [
     title: 'Plugins',
     description: 'Focused WordPress plugins that solve one problem well - from WooCommerce tools to admin utilities, security helpers, and SEO automation.',
     href: '/plugins/',
-    count: '30+',
+    count: `${pluginCount}+`,
   },
   {
     title: 'Desktop & Mobile Apps',

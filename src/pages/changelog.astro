@@ -3,40 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { GITHUB_ORG_URL } from '../lib/config';
-
-const entries = [
-  {
-    date: 'February 2026',
-    title: 'Website launch & plugin catalog',
-    items: [
-      'Launched openwpclub.com with full plugin catalog',
-      'Added dark mode support and theme toggle',
-      'Plugin pages with live GitHub data (stars, forks, README)',
-      'Blog with tag-based filtering',
-      'Contributors page with live GitHub data',
-      'SEO optimizations: sitemap, structured data, Open Graph',
-      'Accessibility: skip-to-content, focus indicators, semantic HTML',
-    ],
-  },
-  {
-    date: 'March 2026',
-    title: 'Community & content expansion',
-    items: [
-      'Added FAQ page with structured data for rich results',
-      'Added Privacy Policy page',
-      'Added Changelog page (you\'re reading it)',
-      'Added breadcrumb navigation to all inner pages',
-      'Added newsletter signup component',
-      'Added social sharing buttons to blog posts',
-      'Added robots.txt for better crawling',
-      'Added Twitter/X to footer social links',
-      'Enabled stats section on homepage',
-      'Added rel="me" social verification links',
-      'Added Back to Top button for long pages',
-      'Added print-friendly styles',
-    ],
-  },
-];
+import entries from '../data/changelog.json';
 ---
 
 <BaseLayout

@@ -1,19 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
-import { readFileSync, existsSync } from 'node:fs';
 import type { Contributor } from '../lib/fetchGitHubData';
+import contributorsData from '../data/contributors.json';
 
 const allPlugins = await getCollection('plugins');
 const totalStars = allPlugins.reduce((sum, p) => sum + p.data.stars, 0);
 const totalForks = allPlugins.reduce((sum, p) => sum + p.data.forks, 0);
 
-const CONTRIBUTORS_CACHE = 'src/data/contributors.json';
-const contributors: Contributor[] = existsSync(CONTRIBUTORS_CACHE)
-  ? JSON.parse(readFileSync(CONTRIBUTORS_CACHE, 'utf-8'))
-  : [];
+const contributors = contributorsData as Contributor[];
 
 const stats = [
-  { label: 'Open-source plugins', value: allPlugins.length.toString() },
+  { label: 'Open-source projects', value: allPlugins.length.toString() },
   { label: 'GitHub stars', value: totalStars.toLocaleString() },
   { label: 'Forks', value: totalForks.toLocaleString() },
   { label: 'Contributors', value: contributors.length.toLocaleString() },

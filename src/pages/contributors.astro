@@ -3,13 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Contact from '../components/Contact.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { readFileSync, existsSync } from 'node:fs';
+import { GITHUB_ORG_URL } from '../lib/config';
 import type { Contributor } from '../lib/fetchGitHubData';
+import contributorsData from '../data/contributors.json';
 
-const CONTRIBUTORS_CACHE = 'src/data/contributors.json';
-const contributors: Contributor[] = existsSync(CONTRIBUTORS_CACHE)
-  ? JSON.parse(readFileSync(CONTRIBUTORS_CACHE, 'utf-8'))
-  : [];
+const contributors = contributorsData as Contributor[];
 ---
 
 <BaseLayout
@@ -54,6 +52,7 @@ const contributors: Contributor[] = existsSync(CONTRIBUTORS_CACHE)
                   width="64"
                   height="64"
                   loading="lazy"
+                decoding="async"
                   class="mx-auto size-16 rounded-full ring-2 ring-gray-100 dark:ring-gray-700 group-hover:ring-blue-200 dark:group-hover:ring-blue-700 transition-all"
                 />
                 <p class="mt-3 text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors truncate">
@@ -73,7 +72,7 @@ const contributors: Contributor[] = existsSync(CONTRIBUTORS_CACHE)
               We welcome contributions of any kind — code, bug reports, documentation, translations, or ideas. Every PR counts.
             </p>
             <a
-              href="https://github.com/Open-WP-Club"
+              href={GITHUB_ORG_URL}
               target="_blank"
               rel="noopener noreferrer"
               class="mt-6 inline-flex items-center px-6 py-3 text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-all"
