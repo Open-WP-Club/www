@@ -4,7 +4,7 @@ import Sidebar from '../../components/Sidebar.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCollection } from 'astro:content';
 import { GITHUB_ORG_URL, DISCORD_URL } from '../../lib/config';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 
 export async function getStaticPaths() {
   const allItems = await getCollection('plugins');
@@ -18,7 +18,8 @@ export async function getStaticPaths() {
 const { plugin } = Astro.props;
 const { name, description, version, githubUrl, wordpressUrl, stars, forks, openIssues, lastPush, license, language, defaultBranch } = plugin.data;
 
-const safeReadmeHtml = readFileSync(`src/data/readmes/${plugin.id}.html`, 'utf-8');
+const readmePath = `src/data/readmes/${plugin.id}.html`;
+const safeReadmeHtml = existsSync(readmePath) ? readFileSync(readmePath, 'utf-8') : `<p>No README available. Visit the <a href="${githubUrl}">GitHub repository</a> for more information.</p>`;
 const downloadUrl = `${githubUrl}/archive/refs/heads/${defaultBranch}.zip`;
 
 function formatDate(dateStr: string): string {
