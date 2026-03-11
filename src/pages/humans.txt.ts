@@ -28,7 +28,13 @@ export const GET: APIRoute = async () => {
 
   lines.push('/* SITE */');
   lines.push('');
-  lines.push('  Last update: ' + new Date().toISOString().split('T')[0]);
+  // Use most recent plugin push date instead of build date
+  const lastPush = plugins
+    .map((p) => p.data.lastPush)
+    .filter(Boolean)
+    .sort()
+    .pop();
+  lines.push('  Last update: ' + (lastPush ? new Date(lastPush).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]));
   lines.push('  Language: English');
   lines.push('  Standards: HTML5, CSS3');
   lines.push('  Framework: Astro');
