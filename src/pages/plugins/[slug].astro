@@ -94,7 +94,7 @@ const softwareSchema = {
         <div class="flex flex-wrap gap-3 shrink-0">
           <a
             href={downloadUrl}
-            class="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200"
+            class="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition-colors duration-200"
           >
             <svg class="size-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -117,7 +117,7 @@ const softwareSchema = {
               href={wordpressUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center px-5 py-2.5 border border-blue-600 text-sm font-medium rounded-lg text-blue-600 bg-white dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200"
+              class="inline-flex items-center px-5 py-2.5 border border-blue-500 text-sm font-medium rounded-lg text-blue-500 bg-white dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200"
             >
               WordPress.org
             </a>
@@ -150,7 +150,7 @@ const softwareSchema = {
                 {toc.map((item) => (
                   <a
                     href={`#${item.id}`}
-                    class={`block text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate ${item.level === 3 ? 'pl-3' : ''}`}
+                    class={`block text-sm text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors truncate ${item.level === 3 ? 'pl-3' : ''}`}
                   >
                     {item.text}
                   </a>
@@ -218,7 +218,7 @@ const softwareSchema = {
             <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">Download</h3>
             <a
               href={downloadUrl}
-              class="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200"
+              class="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition-colors duration-200"
             >
               <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -230,7 +230,7 @@ const softwareSchema = {
                 href={wordpressUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center justify-center gap-2 w-full mt-3 px-4 py-3 text-sm font-medium rounded-lg text-blue-600 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                class="flex items-center justify-center gap-2 w-full mt-3 px-4 py-3 text-sm font-medium rounded-lg text-blue-500 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200"
               >
                 Get from WordPress.org
               </a>

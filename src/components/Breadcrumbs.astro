@@ -28,12 +28,12 @@ const breadcrumbSchema = {
 <div class="pt-20 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
     <nav class="flex text-sm text-gray-500 dark:text-gray-400" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
+      <a href="/" class="hover:text-blue-500 transition-colors">Home</a>
       {items.map((item) => (
         <>
           <span class="mx-2">/</span>
           {item.href ? (
-            <a href={item.href} class="hover:text-blue-600 transition-colors">{item.label}</a>
+            <a href={item.href} class="hover:text-blue-500 transition-colors">{item.label}</a>
           ) : (
             <span class="text-gray-900 dark:text-white font-medium">{item.label}</span>
           )}

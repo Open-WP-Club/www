@@ -20,7 +20,7 @@
 }
 
 .prose blockquote {
-  border-left-color: #2563eb;
+  border-left-color: #3b82f6;
 }
 
 .prose h2 {
@@ -54,7 +54,7 @@
 
 /* Focus indicators for accessibility */
 :focus-visible {
-  outline: 2px solid #2563eb;
+  outline: 2px solid #3b82f6;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -64,7 +64,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid #2563eb;
+  outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }
 

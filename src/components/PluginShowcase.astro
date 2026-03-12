@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import PluginCard from './PluginCard.astro';
 import { getCollection } from 'astro:content';
 
@@ -37,12 +38,10 @@ const featured = allPlugins
     <div class="mt-10 text-center">
       <a
         href="/plugins/"
-        class="inline-flex items-center px-6 py-3 border border-blue-600 text-base font-medium rounded-lg text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-gray-800 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
+        class="inline-flex items-center px-6 py-3 border border-blue-500 text-base font-medium rounded-lg text-blue-500 dark:text-blue-400 bg-white dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-gray-800 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
       >
         View All {allPlugins.length} Plugins
-        <svg class="ml-2 size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-        </svg>
+        <Icon name="lucide:arrow-right" class="ml-2 size-5" />
       </a>
     </div>
   </div>
