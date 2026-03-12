@@ -3,7 +3,6 @@ import { Icon } from 'astro-icon/components';
 
 interface Props {
   stars: number;
-  forks: number;
   lastPush: string;
   downloads?: string;
   language?: string | null;
@@ -11,7 +10,7 @@ interface Props {
   compact?: boolean;
 }
 
-const { stars, forks, lastPush, downloads, language, license, compact = false } = Astro.props;
+const { stars, lastPush, downloads, language, license, compact = false } = Astro.props;
 
 const downloadsNum = downloads ? parseInt(downloads, 10) : 0;
 
@@ -39,10 +38,6 @@ function timeAgo(dateStr: string): string {
   <span class="inline-flex items-center gap-1">
     <Icon name="lucide:star" class="size-4" />
     {stars}
-  </span>
-  <span class="inline-flex items-center gap-1">
-    <Icon name="lucide:git-fork" class="size-4" />
-    {forks}
   </span>
   {downloadsNum > 0 && (
     <span class="inline-flex items-center gap-1">

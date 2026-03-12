@@ -1,4 +1,7 @@
 ---
+import { Icon } from 'astro-icon/components';
+import GitHubIcon from '../../components/icons/GitHubIcon.astro';
+import PluginCard from '../../components/PluginCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
@@ -11,11 +14,11 @@ export async function getStaticPaths() {
   const plugins = allItems.filter((p) => p.data.category === 'plugin');
   return plugins.map((plugin) => ({
     params: { slug: plugin.id },
-    props: { plugin },
+    props: { plugin, allPlugins: plugins },
   }));
 }
 
-const { plugin } = Astro.props;
+const { plugin, allPlugins } = Astro.props;
 const { name, description, version, githubUrl, wordpressUrl, stars, forks, openIssues, lastPush, license, language, defaultBranch, downloads } = plugin.data;
 
 const downloadsNum = downloads ? parseInt(downloads, 10) : 0;
@@ -23,6 +26,29 @@ const downloadsNum = downloads ? parseInt(downloads, 10) : 0;
 const readmePath = `src/data/readmes/${plugin.id}.html`;
 const safeReadmeHtml = existsSync(readmePath) ? readFileSync(readmePath, 'utf-8') : `<p>No README available. Visit the <a href="${githubUrl}">GitHub repository</a> for more information.</p>`;
 const downloadUrl = `${githubUrl}/archive/refs/heads/${defaultBranch}.zip`;
+const wpCliCommand = `wp plugin install ${downloadUrl} --activate`;
+
+// Load per-repo contributors
+interface RepoContributor { login: string; avatar: string; profileUrl: string; contributions: number; }
+const repoContribPath = 'src/data/repo-contributors.json';
+let pluginContributors: RepoContributor[] = [];
+if (existsSync(repoContribPath)) {
+  const allRepoContribs = JSON.parse(readFileSync(repoContribPath, 'utf-8'));
+  pluginContributors = (allRepoContribs[plugin.id] || []).slice(0, 10);
+}
+
+// Related plugins: find plugins with overlapping topics
+const currentTopics = new Set(plugin.data.topics.map((t: string) => t.toLowerCase()));
+const related = allPlugins
+  .filter((p) => p.id !== plugin.id)
+  .map((p) => {
+    const overlap = p.data.topics.filter((t: string) => currentTopics.has(t.toLowerCase())).length;
+    return { plugin: p, overlap };
+  })
+  .filter((r) => r.overlap > 0)
+  .sort((a, b) => b.overlap - a.overlap || b.plugin.data.stars - a.plugin.data.stars)
+  .slice(0, 3)
+  .map((r) => r.plugin);
 
 // Parse headings from README HTML for Table of Contents
 const headingRegex = /<h([23])[^>]*(?:id="([^"]*)")?[^>]*>(.*?)<\/h[23]>/gi;
@@ -73,7 +99,7 @@ const softwareSchema = {
 };
 ---
 
-<BaseLayout title={`${name} - Open WP Club`} description={description} ogType="article" jsonLd={softwareSchema}>
+<BaseLayout title={`${name} - Open WP Club`} description={description} ogType="article" ogImage={new URL(`/og/plugin/${plugin.id}.png`, Astro.site).toString()} jsonLd={softwareSchema}>
   <Breadcrumbs items={[{ label: 'Plugins', href: '/plugins/' }, { label: name }]} />
 
   <!-- Header -->
@@ -96,9 +122,7 @@ const softwareSchema = {
             href={downloadUrl}
             class="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition-colors duration-200"
           >
-            <svg class="size-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
+            <Icon name="lucide:download" class="size-4 mr-2" />
             Download ZIP
           </a>
           <a
@@ -107,10 +131,17 @@ const softwareSchema = {
             rel="noopener noreferrer"
             class="inline-flex items-center px-5 py-2.5 border border-gray-900 text-sm font-medium rounded-lg text-white bg-gray-900 hover:bg-gray-800 transition-colors duration-200"
           >
-            <svg class="size-4 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-              <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
-            </svg>
+            <GitHubIcon class="size-4 mr-2" />
             GitHub
+          </a>
+          <a
+            href={`${githubUrl}/issues/new`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-5 py-2.5 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+          >
+            <Icon name="lucide:circle-alert" class="size-4 mr-2" />
+            Report Issue
           </a>
           {wordpressUrl && (
             <a
@@ -200,10 +231,6 @@ const softwareSchema = {
                 <dt class="text-gray-500 dark:text-gray-400">Stars</dt>
                 <dd class="text-gray-900 dark:text-white font-medium">{stars}</dd>
               </div>
-              <div class="flex justify-between">
-                <dt class="text-gray-500 dark:text-gray-400">Forks</dt>
-                <dd class="text-gray-900 dark:text-white font-medium">{forks}</dd>
-              </div>
               {openIssues > 0 && (
                 <div class="flex justify-between">
                   <dt class="text-gray-500 dark:text-gray-400">Open issues</dt>
@@ -220,9 +247,7 @@ const softwareSchema = {
               href={downloadUrl}
               class="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition-colors duration-200"
             >
-              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-              </svg>
+              <Icon name="lucide:download" class="size-4" />
               Download ZIP
             </a>
             {wordpressUrl && (
@@ -237,6 +262,50 @@ const softwareSchema = {
             )}
           </div>
 
+          <!-- WP-CLI Install -->
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">WP-CLI</h3>
+            <div class="relative group">
+              <pre class="bg-gray-900 text-gray-100 text-xs rounded-lg p-3 pr-10 overflow-x-auto"><code id="wpcli-command">{wpCliCommand}</code></pre>
+              <button
+                id="copy-wpcli"
+                class="absolute top-2 right-2 p-1.5 rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white transition-colors"
+                title="Copy to clipboard"
+                aria-label="Copy WP-CLI command"
+              >
+                <Icon name="lucide:copy" class="size-4" id="copy-icon" />
+                <Icon name="lucide:check" class="size-4 hidden" id="copied-icon" />
+              </button>
+            </div>
+          </div>
+
+          {pluginContributors.length > 0 && (
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">Contributors</h3>
+              <div class="flex flex-wrap gap-2">
+                {pluginContributors.map((c) => (
+                  <a
+                    href={c.profileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`${c.login} (${c.contributions} commits)`}
+                    class="group relative"
+                  >
+                    <img
+                      src={`${c.avatar}&s=64`}
+                      alt={c.login}
+                      width="32"
+                      height="32"
+                      loading="lazy"
+                      class="size-8 rounded-full ring-2 ring-white dark:ring-gray-800 group-hover:ring-blue-500 transition-all"
+                    />
+                  </a>
+                ))}
+              </div>
+              <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">{pluginContributors.length} contributor{pluginContributors.length !== 1 ? 's' : ''}</p>
+            </div>
+          )}
+
           <!-- Shared sidebar -->
           <Sidebar />
 
@@ -244,4 +313,46 @@ const softwareSchema = {
       </div>
     </div>
   </section>
+
+  {related.length > 0 && (
+    <section class="py-12 bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Plugins</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {related.map((rel) => (
+            <PluginCard
+              slug={rel.id}
+              name={rel.data.name}
+              description={rel.data.description}
+              version={rel.data.version}
+              stars={rel.data.stars}
+              lastPush={rel.data.lastPush}
+              downloads={rel.data.downloads}
+              language={rel.data.language}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const btn = document.getElementById('copy-wpcli');
+    const command = document.getElementById('wpcli-command');
+    const copyIcon = document.getElementById('copy-icon');
+    const copiedIcon = document.getElementById('copied-icon');
+    if (!btn || !command || !copyIcon || !copiedIcon) return;
+
+    btn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(command.textContent || '');
+      copyIcon.classList.add('hidden');
+      copiedIcon.classList.remove('hidden');
+      setTimeout(() => {
+        copyIcon.classList.remove('hidden');
+        copiedIcon.classList.add('hidden');
+      }, 2000);
+    });
+  });
+</script>

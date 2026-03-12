@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
@@ -26,23 +27,34 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
           Updates, releases, and thoughts on building free WordPress software.
         </p>
         <a href="/rss.xml" class="inline-flex items-center gap-1.5 mt-4 px-3 py-1 rounded-full text-sm font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors" target="_blank" rel="noopener noreferrer">
-          <svg class="size-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.742-7.115-15.783-15.839-15.82zm0-8.18v4.819c12.432.058 22.505 10.118 22.565 22.508h4.81c-.061-15.092-12.345-27.347-27.375-27.327z"/>
-          </svg>
+          <Icon name="lucide:rss" class="size-4" />
           RSS Feed
         </a>
         {allTags.length > 0 && (
-          <div class="mt-6 flex flex-wrap justify-center gap-2">
+          <div class="mt-6 flex flex-wrap justify-center gap-2" id="tag-filters">
+            <button data-tag="all" class="tag-btn inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-500 text-white transition-colors">
+              All
+            </button>
             {allTags.map((tag) => (
-              <a
-                href={`/blog/tag/${tag}/`}
-                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/60 transition-colors"
+              <button
+                data-tag={tag}
+                class="tag-btn inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/60 transition-colors"
               >
                 #{tag}
-              </a>
+              </button>
             ))}
           </div>
         )}
+        <div class="mt-4 max-w-md mx-auto relative">
+          <Icon name="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400 pointer-events-none" />
+          <input
+            id="blog-search"
+            type="search"
+            placeholder="Search posts..."
+            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            aria-label="Search blog posts"
+          />
+        </div>
       </div>
     </div>
   </section>
@@ -62,12 +74,19 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
           {posts.map((post) => (
             <a
               href={`/blog/${post.id}/`}
-              class="block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-700 transition-all duration-200"
+              class="blog-item block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-700 transition-all duration-200"
+              data-title={post.data.title.toLowerCase()}
+              data-description={post.data.description.toLowerCase()}
+              data-tags={post.data.tags.join(' ').toLowerCase()}
             >
               <div class="flex items-center gap-3 flex-wrap">
                 <time class="text-xs font-medium text-blue-500 uppercase tracking-wider">
                   {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </time>
+                <span class="inline-flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
+                  <Icon name="lucide:clock" class="size-3" />
+                  {Math.max(1, Math.round((post.body?.split(/\s+/).length || 0) / 200))} min
+                </span>
                 {post.data.tags.map((tag) => (
                   <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                     #{tag}
@@ -81,6 +100,9 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
           ))}
         </div>
 
+          <p id="no-blog-results" class="hidden text-center text-gray-500 dark:text-gray-500 py-8">No posts match your search.</p>
+        </div>
+
         <!-- Sidebar -->
         <div class="mt-8 lg:mt-0">
           <div class="lg:sticky lg:top-24">
@@ -92,3 +114,60 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const search = document.getElementById('blog-search') as HTMLInputElement | null;
+    const noResults = document.getElementById('no-blog-results');
+    const tagBtns = document.querySelectorAll('.tag-btn') as NodeListOf<HTMLButtonElement>;
+    if (!search || !noResults) return;
+
+    const items = [...document.querySelectorAll('.blog-item')] as HTMLElement[];
+    let activeTag = 'all';
+
+    function updateTagButtons() {
+      tagBtns.forEach((btn) => {
+        const tag = btn.dataset.tag;
+        const isActive = tag === activeTag;
+        if (isActive) {
+          btn.className = 'tag-btn inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-500 text-white transition-colors';
+        } else {
+          btn.className = 'tag-btn inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/60 transition-colors';
+        }
+      });
+    }
+
+    function update() {
+      const query = search!.value.toLowerCase().trim();
+      let visibleCount = 0;
+      items.forEach((item) => {
+        const title = item.dataset.title || '';
+        const desc = item.dataset.description || '';
+        const tags = item.dataset.tags || '';
+        const matchSearch = !query || title.includes(query) || desc.includes(query) || tags.includes(query);
+        const matchTag = activeTag === 'all' || tags.includes(activeTag);
+        const show = matchSearch && matchTag;
+        item.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+      noResults!.classList.toggle('hidden', visibleCount > 0);
+    }
+
+    tagBtns.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        activeTag = btn.dataset.tag || 'all';
+        updateTagButtons();
+        update();
+      });
+    });
+
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    search.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(update, 150);
+    });
+
+    update();
+  });
+</script>

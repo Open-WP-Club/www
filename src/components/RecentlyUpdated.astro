@@ -5,8 +5,9 @@ import { getCollection } from 'astro:content';
 
 const allItems = await getCollection('plugins');
 const allPlugins = allItems.filter((p) => p.data.category === 'plugin');
-const featured = allPlugins
-  .sort((a, b) => b.data.stars - a.data.stars)
+const recent = allPlugins
+  .filter((p) => p.data.lastPush)
+  .sort((a, b) => new Date(b.data.lastPush).getTime() - new Date(a.data.lastPush).getTime())
   .slice(0, 6);
 
 const now = new Date();
@@ -16,17 +17,17 @@ const starThreshold = allPlugins.length > 0
   : 0;
 ---
 
-<section id="plugins" class="py-16 bg-gray-50 dark:bg-gray-950">
+<section class="py-16 bg-white dark:bg-gray-900">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center">
-      <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Popular Plugins</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Recently Updated</h2>
       <p class="mt-3 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        Most-starred plugins from the Open WP Club GitHub org. All free, all open source.
+        Plugins with the most recent activity. Fresh code, fresh features.
       </p>
     </div>
 
     <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {featured.map((plugin) => (
+      {recent.map((plugin) => (
         <PluginCard
           slug={plugin.id}
           name={plugin.data.name}
@@ -44,10 +45,10 @@ const starThreshold = allPlugins.length > 0
 
     <div class="mt-10 text-center">
       <a
-        href="/plugins/"
+        href="/plugins/?sort=updated"
         class="inline-flex items-center px-6 py-3 border border-blue-500 text-base font-medium rounded-lg text-blue-500 dark:text-blue-400 bg-white dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-gray-800 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
       >
-        View All {allPlugins.length} Plugins
+        View All Recently Updated
         <Icon name="lucide:arrow-right" class="ml-2 size-5" />
       </a>
     </div>

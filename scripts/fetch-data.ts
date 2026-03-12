@@ -322,21 +322,26 @@ async function main() {
   console.log('Fetching contributors...');
   const sponsorLogins = loadSponsorLogins();
   const contributorMap = new Map<string, { login: string; contributions: number; profileUrl: string }>();
+  const perRepoContributors = new Map<string, Array<{ login: string; avatar: string; profileUrl: string; contributions: number }>>();
   for (let i = 0; i < csvPlugins.length; i += BATCH_SIZE) {
     const batch = csvPlugins.slice(i, i + BATCH_SIZE);
     const results = await Promise.allSettled(
       batch.map(async (p) => {
         const url = `https://api.github.com/repos/${ORG}/${p.slug}/contributors?per_page=100`;
         const result = await cachedFetch(url);
-        return result ? result.data as Array<{ login: string; contributions: number; html_url: string; type: string }> : [];
+        const data = result ? result.data as Array<{ login: string; contributions: number; html_url: string; avatar_url: string; type: string }> : [];
+        return { slug: p.slug, data };
       })
     );
     for (const r of results) {
       if (r.status !== 'fulfilled') continue;
-      for (const c of r.value) {
+      const { slug, data } = r.value;
+      const repoContribs: Array<{ login: string; avatar: string; profileUrl: string; contributions: number }> = [];
+      for (const c of data) {
         if (c.type === 'Bot') continue;
         // Filter AI accounts unless they are sponsors
         if (AI_LOGINS.has(c.login) && !sponsorLogins.has(c.login)) continue;
+        repoContribs.push({ login: c.login, avatar: c.avatar_url, profileUrl: c.html_url, contributions: c.contributions });
         const existing = contributorMap.get(c.login);
         if (existing) {
           existing.contributions += c.contributions;
@@ -344,6 +349,7 @@ async function main() {
           contributorMap.set(c.login, { login: c.login, contributions: c.contributions, profileUrl: c.html_url });
         }
       }
+      perRepoContributors.set(slug, repoContribs);
     }
   }
   const contributors = Array.from(contributorMap.values()).sort((a, b) => b.contributions - a.contributions);
@@ -364,6 +370,10 @@ async function main() {
   writeFileSync(resolve(DATA_DIR, 'plugins.json'), JSON.stringify(cleanData, null, 2));
   writeFileSync(resolve(DATA_DIR, 'contributors.json'), JSON.stringify(contributors, null, 2));
 
+  // Save per-repo contributor data
+  const repoContribData = Object.fromEntries(perRepoContributors);
+  writeFileSync(resolve(DATA_DIR, 'repo-contributors.json'), JSON.stringify(repoContribData, null, 2));
+
   // Save ETag cache for next run
   saveCache();
 
@@ -372,6 +382,7 @@ async function main() {
   console.log(`  src/data/plugins.json       (${cleanData.length} repos: ${Object.entries(cats).map(([k,v]) => `${v} ${k}s`).join(', ')})`);
   console.log(`  src/data/readmes/           (${cleanData.length} README HTML files)`);
   console.log(`  src/data/contributors.json  (${contributors.length} contributors)`);
+  console.log(`  src/data/repo-contributors.json (per-repo contributor data)`);
   console.log();
   console.log(`Cache: ${cacheHits} hits (304) / ${cacheMisses} misses (200) — ${cacheHits + cacheMisses} total API calls`);
   if (cacheHits > 0) console.log(`  ${cacheHits} requests served from cache (did not count against rate limit)`);

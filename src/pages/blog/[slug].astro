@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
@@ -21,6 +22,9 @@ export async function getStaticPaths() {
 
 const { post, prevPost, nextPost } = Astro.props;
 const { Content } = await render(post);
+
+const wordCount = post.body ? post.body.split(/\s+/).length : 0;
+const readingTime = Math.max(1, Math.round(wordCount / 200));
 
 const articleSchema = {
   '@context': 'https://schema.org',
@@ -57,14 +61,18 @@ const articleSchema = {
   <section class="pt-8 pb-12 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <a href="/blog/" class="inline-flex items-center text-sm text-blue-500 hover:text-blue-600 mb-8 transition-colors">
-        <svg class="size-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-        </svg>
+        <Icon name="lucide:arrow-left" class="size-4 mr-1" />
         Back to blog
       </a>
-      <time class="text-sm font-medium text-blue-500 uppercase tracking-wider">
-        {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-      </time>
+      <div class="flex items-center gap-3 flex-wrap">
+        <time class="text-sm font-medium text-blue-500 uppercase tracking-wider">
+          {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+        <span class="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+          <Icon name="lucide:clock" class="size-3.5" />
+          {readingTime} min read
+        </span>
+      </div>
       <h1 class="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
         {post.data.title}
       </h1>

@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PluginCard from '../../components/PluginCard.astro';
 import { getCollection } from 'astro:content';
@@ -10,6 +11,60 @@ const sorted = allItems
     if (!a.data.lastPush || !b.data.lastPush) return 0;
     return new Date(b.data.lastPush).getTime() - new Date(a.data.lastPush).getTime();
   });
+
+// Build category filters from topics
+const categoryMap: Record<string, { label: string; icon: string; keywords: string[] }> = {
+  woocommerce: {
+    label: 'WooCommerce',
+    icon: 'lucide:shopping-cart',
+    keywords: ['woocommerce', 'woocommerce-plugin', 'wooco', 'woocoommerce', 'e-commerce', 'order-management', 'stock-management', 'pre-order', 'order-history', 'hpos', 'sku', 'inventory-management', 'inventory-management-system', 'shopify-app'],
+  },
+  admin: {
+    label: 'Admin Tools',
+    icon: 'lucide:settings',
+    keywords: ['admin', 'backend', 'admin-notice', 'remover-tool', 'bulk-operation', 'bulk-editing', 'staging', 'tag-management'],
+  },
+  security: {
+    label: 'Security',
+    icon: 'lucide:shield',
+    keywords: ['gdpr', 'sensitive-data', 'blocking', 'ip-blocking', 'restrict-access'],
+  },
+  seo: {
+    label: 'SEO',
+    icon: 'lucide:search',
+    keywords: ['seo', 'seo-optimization', 'rank-math', 'google-scholar', 'google-scholar-scrapper'],
+  },
+  users: {
+    label: 'Users & Roles',
+    icon: 'lucide:users',
+    keywords: ['users', 'user-management', 'roles-management', 'customers', 'historical-preserve'],
+  },
+  content: {
+    label: 'Content & Forms',
+    icon: 'lucide:file-text',
+    keywords: ['forms', 'gravity', 'gravity-forms', 'metadata', 'search', 'searching', 'html-to-markdown', 'markdown', 'llm', 'integration', 'integrations', 'file-sharing', 'filesystem', 'manager-system', 'logo-design'],
+  },
+};
+
+// Count plugins per category
+const categoryCounts: Record<string, number> = {};
+for (const [key, cat] of Object.entries(categoryMap)) {
+  categoryCounts[key] = sorted.filter((p) =>
+    p.data.topics.some((t) => cat.keywords.includes(t.toLowerCase()))
+  ).length;
+}
+
+// Build a JSON-friendly version for the client script
+const categoryKeywordsJson = Object.fromEntries(
+  Object.entries(categoryMap).map(([key, cat]) => [key, cat.keywords])
+);
+
+// Badge logic
+const now = new Date();
+const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+const starThreshold = sorted.length > 0
+  ? [...sorted].sort((a, b) => b.data.stars - a.data.stars)[Math.min(4, sorted.length - 1)]?.data.stars ?? 0
+  : 0;
 ---
 
 <BaseLayout title="All Plugins - Open WP Club" description={`${sorted.length} free, open-source WordPress plugins. Browse the full catalog, sorted by most recently updated.`}>
@@ -20,16 +75,41 @@ const sorted = allItems
           All Plugins
         </h1>
         <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          {sorted.length} plugins. Search, sort, and click any card to read the full README.
+          {sorted.length} plugins. Filter, search, and click any card to read the full README.
         </p>
+        <a href="/plugins-rss.xml" class="inline-flex items-center gap-1.5 mt-3 px-3 py-1 rounded-full text-sm font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors" target="_blank" rel="noopener noreferrer">
+          <Icon name="lucide:rss" class="size-4" />
+          Plugin Updates RSS
+        </a>
+      </div>
+
+      <!-- Category filters -->
+      <div class="mt-8 flex flex-wrap justify-center gap-2" id="category-filters">
+        <button
+          data-category="all"
+          class="category-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-200 bg-blue-500 text-white border-blue-500"
+        >
+          All
+          <span class="text-xs opacity-75">{sorted.length}</span>
+        </button>
+        {Object.entries(categoryMap).map(([key, cat]) => (
+          categoryCounts[key] > 0 && (
+            <button
+              data-category={key}
+              class="category-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-500"
+            >
+              <Icon name={cat.icon} class="size-4" />
+              {cat.label}
+              <span class="text-xs opacity-60">{categoryCounts[key]}</span>
+            </button>
+          )
+        ))}
       </div>
 
       <!-- Search & Sort controls -->
-      <div class="mt-8 max-w-2xl mx-auto flex flex-col sm:flex-row gap-3">
+      <div class="mt-4 max-w-2xl mx-auto flex flex-col sm:flex-row gap-3">
         <div class="relative flex-1">
-          <svg class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-          </svg>
+          <Icon name="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400 pointer-events-none" />
           <input
             id="plugin-search"
             type="search"
@@ -45,7 +125,6 @@ const sorted = allItems
         >
           <option value="updated">Recently updated</option>
           <option value="stars">Most stars</option>
-          <option value="forks">Most forks</option>
           <option value="name">Name A-Z</option>
         </select>
       </div>
@@ -62,7 +141,6 @@ const sorted = allItems
             data-name={plugin.data.name.toLowerCase()}
             data-description={plugin.data.description.toLowerCase()}
             data-stars={plugin.data.stars}
-            data-forks={plugin.data.forks}
             data-updated={plugin.data.lastPush}
             data-topics={plugin.data.topics.join(' ').toLowerCase()}
           >
@@ -72,18 +150,23 @@ const sorted = allItems
               description={plugin.data.description}
               version={plugin.data.version}
               stars={plugin.data.stars}
-              forks={plugin.data.forks}
               lastPush={plugin.data.lastPush}
               downloads={plugin.data.downloads}
               language={plugin.data.language}
+              isNew={new Date(plugin.data.lastPush) > thirtyDaysAgo}
+              isPopular={plugin.data.stars >= starThreshold && starThreshold > 0}
             />
           </div>
         ))}
       </div>
-      <p id="no-results" class="hidden text-center text-gray-500 dark:text-gray-500 py-12">No plugins match your search.</p>
+      <p id="no-results" class="hidden text-center text-gray-500 dark:text-gray-500 py-12">No plugins match your search or filter.</p>
     </div>
   </section>
 </BaseLayout>
+
+<script define:vars={{ categoryKeywordsJson }}>
+  window.__categoryKeywords = categoryKeywordsJson;
+</script>
 
 <script>
   document.addEventListener('astro:page-load', () => {
@@ -92,10 +175,32 @@ const sorted = allItems
     const grid = document.getElementById('plugin-grid');
     const countEl = document.getElementById('plugin-count');
     const noResults = document.getElementById('no-results');
+    const filterBtns = document.querySelectorAll('.category-btn') as NodeListOf<HTMLButtonElement>;
     if (!search || !sort || !grid || !countEl || !noResults) return;
 
     const items = [...grid.querySelectorAll('.plugin-item')] as HTMLElement[];
     const total = items.length;
+    const categoryKeywords = (window as any).__categoryKeywords as Record<string, string[]>;
+
+    let activeCategory = 'all';
+
+    function matchesCategory(topics: string): boolean {
+      if (activeCategory === 'all') return true;
+      const keywords = categoryKeywords[activeCategory] || [];
+      return keywords.some((kw) => topics.includes(kw));
+    }
+
+    function updateFilterButtons() {
+      filterBtns.forEach((btn) => {
+        const cat = btn.dataset.category;
+        const isActive = cat === activeCategory;
+        btn.className = `category-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-200 ${
+          isActive
+            ? 'bg-blue-500 text-white border-blue-500'
+            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-500'
+        }`;
+      });
+    }
 
     function update() {
       const query = search!.value.toLowerCase().trim();
@@ -103,21 +208,26 @@ const sorted = allItems
         const name = item.dataset.name || '';
         const desc = item.dataset.description || '';
         const topics = item.dataset.topics || '';
-        const match = !query || name.includes(query) || desc.includes(query) || topics.includes(query);
-        item.style.display = match ? '' : 'none';
-        return match;
+        const matchSearch = !query || name.includes(query) || desc.includes(query) || topics.includes(query);
+        const matchCat = matchesCategory(topics);
+        const show = matchSearch && matchCat;
+        item.style.display = show ? '' : 'none';
+        return show;
       });
 
       const sortBy = sort!.value;
       const sorted = [...visible].sort((a, b) => {
         if (sortBy === 'stars') return Number(b.dataset.stars) - Number(a.dataset.stars);
-        if (sortBy === 'forks') return Number(b.dataset.forks) - Number(a.dataset.forks);
         if (sortBy === 'name') return (a.dataset.name || '').localeCompare(b.dataset.name || '');
         return (b.dataset.updated || '').localeCompare(a.dataset.updated || '');
       });
 
       sorted.forEach((el) => grid!.appendChild(el));
-      countEl!.textContent = query ? `Showing ${visible.length} of ${total} plugins` : `${total} plugins`;
+
+      const label = activeCategory === 'all' ? '' : ` in this category`;
+      countEl!.textContent = query
+        ? `Showing ${visible.length} of ${total} plugins${label}`
+        : `${visible.length} plugin${visible.length !== 1 ? 's' : ''}${label}`;
       noResults!.classList.toggle('hidden', visible.length > 0);
 
       // Sync state to URL
@@ -126,9 +236,19 @@ const sorted = allItems
       const s = sort!.value;
       if (q) params.set('q', q);
       if (s && s !== 'updated') params.set('sort', s);
+      if (activeCategory !== 'all') params.set('cat', activeCategory);
       const newUrl = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;
       history.replaceState(null, '', newUrl);
     }
+
+    // Filter button clicks
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        activeCategory = btn.dataset.category || 'all';
+        updateFilterButtons();
+        update();
+      });
+    });
 
     let debounceTimer: ReturnType<typeof setTimeout>;
     search.addEventListener('input', () => {
@@ -141,8 +261,11 @@ const sorted = allItems
     const params = new URLSearchParams(window.location.search);
     const initialQuery = params.get('q') || '';
     const initialSort = params.get('sort') || 'updated';
+    const initialCat = params.get('cat') || 'all';
     search.value = initialQuery;
     sort.value = initialSort;
+    activeCategory = initialCat;
+    updateFilterButtons();
 
     update();
   });
