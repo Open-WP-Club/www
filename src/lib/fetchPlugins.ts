@@ -23,7 +23,7 @@ export function parseCSVLine(line: string): string[] {
     }
   }
   result.push(current.trim());
-  return result.map((val) => val.replace(/^"|"$/g, ''));
+  return result;
 }
 
 export async function fetchPluginsFromCSV(): Promise<PluginCSVRow[]> {

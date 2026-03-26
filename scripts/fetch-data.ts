@@ -119,7 +119,7 @@ function parseCSVLine(line: string): string[] {
     } else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; } else { current += char; }
   }
   result.push(current.trim());
-  return result.map((v) => v.replace(/^"|"$/g, ''));
+  return result;
 }
 
 const PLUGIN_TAGS = ['wordpress', 'wordpress-plugin', 'wp-plugin', 'woocommerce', 'woocommerce-plugin', 'php'];

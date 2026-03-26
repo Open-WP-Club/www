@@ -9,6 +9,7 @@ let fontData: ArrayBuffer | null = null;
 async function getFont(): Promise<ArrayBuffer> {
   if (fontData) return fontData;
   const res = await fetch('https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-700-normal.woff');
+  if (!res.ok) throw new Error(`Failed to fetch bold font: HTTP ${res.status}`);
   fontData = await res.arrayBuffer();
   return fontData;
 }
@@ -17,6 +18,7 @@ let fontDataRegular: ArrayBuffer | null = null;
 async function getFontRegular(): Promise<ArrayBuffer> {
   if (fontDataRegular) return fontDataRegular;
   const res = await fetch('https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.woff');
+  if (!res.ok) throw new Error(`Failed to fetch regular font: HTTP ${res.status}`);
   fontDataRegular = await res.arrayBuffer();
   return fontDataRegular;
 }
