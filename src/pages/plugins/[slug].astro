@@ -12,8 +12,7 @@ import { readFileSync, existsSync } from 'node:fs';
 export async function getStaticPaths() {
   const allItems = await getCollection('plugins');
   const plugins = allItems.filter((p) => p.data.category === 'plugin');
-  const routable = allItems.filter((p) => p.data.category === 'plugin' || p.data.category === 'app');
-  return routable.map((plugin) => ({
+  return plugins.map((plugin) => ({
     params: { slug: plugin.id },
     props: { plugin, allPlugins: plugins },
   }));
