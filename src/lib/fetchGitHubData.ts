@@ -4,7 +4,7 @@ import { ORG, BATCH_SIZE, AI_LOGINS } from './config';
 import type { Sponsor } from './types';
 import { readFileSync, existsSync } from 'node:fs';
 
-const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN || '';
+const GITHUB_TOKEN = import.meta.env?.GITHUB_TOKEN || process.env.GITHUB_TOKEN || '';
 
 function githubHeaders(): HeadersInit {
   const headers: HeadersInit = {
@@ -19,7 +19,7 @@ function githubHeaders(): HeadersInit {
 
 export async function fetchRepoStats(repoName: string): Promise<GitHubRepoStats> {
   const url = `https://api.github.com/repos/${ORG}/${repoName}`;
-  const res = await fetch(url, { headers: githubHeaders() });
+  const res = await fetch(url, { headers: githubHeaders(), signal: AbortSignal.timeout(15000) });
 
   if (!res.ok) {
     console.warn(`Failed to fetch stats for ${repoName}: ${res.status}`);
@@ -53,7 +53,7 @@ export async function fetchRepoStats(repoName: string): Promise<GitHubRepoStats>
 export async function fetchReadme(repoName: string, defaultBranch: string = 'main'): Promise<string> {
   // Try the GitHub API first
   const url = `https://api.github.com/repos/${ORG}/${repoName}/readme`;
-  const res = await fetch(url, { headers: githubHeaders() });
+  const res = await fetch(url, { headers: githubHeaders(), signal: AbortSignal.timeout(15000) });
 
   if (res.ok) {
     const data = await res.json();
@@ -65,7 +65,7 @@ export async function fetchReadme(repoName: string, defaultBranch: string = 'mai
 
   // Fallback: fetch raw README directly (not rate-limited like the API)
   const rawUrl = `https://raw.githubusercontent.com/${ORG}/${repoName}/${defaultBranch}/README.md`;
-  const rawRes = await fetch(rawUrl);
+  const rawRes = await fetch(rawUrl, { signal: AbortSignal.timeout(15000) });
 
   if (rawRes.ok) {
     const content = await rawRes.text();
@@ -119,7 +119,7 @@ export async function fetchOrgContributors(repoNames: string[]): Promise<Contrib
     const batchResults = await Promise.allSettled(
       batch.map(async (repo) => {
         const url = `https://api.github.com/repos/${ORG}/${repo}/contributors?per_page=100`;
-        const res = await fetch(url, { headers: githubHeaders() });
+        const res = await fetch(url, { headers: githubHeaders(), signal: AbortSignal.timeout(15000) });
         if (!res.ok) return [];
         return (await res.json()) as Array<{ login: string; contributions: number; html_url: string; type: string }>;
       })

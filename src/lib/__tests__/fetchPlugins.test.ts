@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { parseCSVLine, fetchPluginsFromCSV } from '../fetchPlugins';
+import { fetchPluginsFromCSV } from '../fetchPlugins';
+import { parseCSVLine } from '../csv';
 
 describe('parseCSVLine', () => {
   it('splits simple comma-separated values', () => {
@@ -11,11 +12,7 @@ describe('parseCSVLine', () => {
   });
 
   it('handles escaped double quotes inside quoted fields', () => {
-    // Note: the trailing .replace(/^"|"$/g, '') in parseCSVLine strips a
-    // trailing quote when the parsed value ends with one. This is a known
-    // limitation that doesn't affect real CSV data (plugin names/descriptions
-    // don't end with literal double quotes).
-    expect(parseCSVLine('"say ""hello""",b')).toEqual(['say "hello', 'b']);
+    expect(parseCSVLine('"say ""hello""",b')).toEqual(['say "hello"', 'b']);
   });
 
   it('trims whitespace from values', () => {

@@ -44,7 +44,7 @@ const ghHeaders: Record<string, string> = { 'User-Agent': 'open-wp-club-site', A
 if (token) ghHeaders.Authorization = `Bearer ${token}`;
 
 try {
-  const releaseRes = await fetch(`https://api.github.com/repos/${ORG}/${app.id}/releases/latest`, { headers: ghHeaders });
+  const releaseRes = await fetch(`https://api.github.com/repos/${ORG}/${app.id}/releases/latest`, { headers: ghHeaders, signal: AbortSignal.timeout(15000) });
   if (releaseRes.ok) {
     const release = await releaseRes.json();
     for (const asset of (release.assets || []) as ReleaseAsset[]) {
@@ -61,9 +61,14 @@ try {
 
 const downloadUrl = `${githubUrl}/archive/refs/heads/${defaultBranch}.zip`;
 const readmePath = `src/data/readmes/${app.id}.html`;
-const safeReadmeHtml = existsSync(readmePath)
-  ? readFileSync(readmePath, 'utf-8')
-  : `<p>No README available. Visit the <a href="${githubUrl}">GitHub repository</a> for more information.</p>`;
+let safeReadmeHtml = `<p>No README available. Visit the <a href="${githubUrl}">GitHub repository</a> for more information.</p>`;
+if (existsSync(readmePath)) {
+  try {
+    safeReadmeHtml = readFileSync(readmePath, 'utf-8');
+  } catch (e) {
+    console.warn(`[apps/${app.id}] Failed to read README: ${(e as Error).message}`);
+  }
+}
 
 interface RepoContributor { login: string; avatar: string; profileUrl: string; contributions: number; }
 const repoContribPath = 'src/data/repo-contributors.json';

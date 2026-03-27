@@ -24,7 +24,14 @@ const { name, description, version, githubUrl, wordpressUrl, stars, forks, openI
 const downloadsNum = downloads ? parseInt(downloads, 10) : 0;
 
 const readmePath = `src/data/readmes/${plugin.id}.html`;
-const safeReadmeHtml = existsSync(readmePath) ? readFileSync(readmePath, 'utf-8') : `<p>No README available. Visit the <a href="${githubUrl}">GitHub repository</a> for more information.</p>`;
+let safeReadmeHtml = `<p>No README available. Visit the <a href="${githubUrl}">GitHub repository</a> for more information.</p>`;
+if (existsSync(readmePath)) {
+  try {
+    safeReadmeHtml = readFileSync(readmePath, 'utf-8');
+  } catch (e) {
+    console.warn(`[plugins/${plugin.id}] Failed to read README: ${(e as Error).message}`);
+  }
+}
 const downloadUrl = `${githubUrl}/archive/refs/heads/${defaultBranch}.zip`;
 const wpCliCommand = `wp plugin install ${downloadUrl} --activate`;
 const playgroundBlueprint = JSON.stringify({ steps: [{ step: 'installPlugin', pluginZipFile: { resource: 'url', url: downloadUrl }, options: { activate: true } }] });

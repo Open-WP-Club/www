@@ -15,6 +15,9 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
+import { parseCSVLine } from '../src/lib/csv';
+import { rewriteImageUrls } from '../src/lib/fetchGitHubData';
+import { categorize } from '../src/lib/categorize';
 
 // Resolve paths
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -90,7 +93,7 @@ async function cachedFetch(url: string): Promise<{ data: unknown; status: number
   const cached = etagCache[url];
   if (cached?.etag) h['If-None-Match'] = cached.etag;
 
-  const res = await fetch(url, { headers: h });
+  const res = await fetch(url, { headers: h, signal: AbortSignal.timeout(15000) });
 
   if (res.status === 304 && cached) {
     cacheHits++;
@@ -108,56 +111,6 @@ async function cachedFetch(url: string): Promise<{ data: unknown; status: number
   return { data, status: res.status };
 }
 
-function parseCSVLine(line: string): string[] {
-  const result: string[] = [];
-  let current = '';
-  let inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    if (char === '"') {
-      if (inQuotes && line[i + 1] === '"') { current += '"'; i++; } else { inQuotes = !inQuotes; }
-    } else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; } else { current += char; }
-  }
-  result.push(current.trim());
-  return result;
-}
-
-const PLUGIN_TAGS = ['wordpress', 'wordpress-plugin', 'wp-plugin', 'woocommerce', 'woocommerce-plugin', 'php'];
-const APP_TAGS = ['electron', 'desktop', 'mobile', 'android', 'ios', 'tauri', 'react-native', 'flutter'];
-const WEBSITE_TAGS = ['astro', 'website'];
-
-function categorize(topics: string[], language: string | null, slug: string): string {
-  const t = topics.map((s) => s.toLowerCase());
-  const lang = (language || '').toLowerCase();
-
-  // Explicit app tags
-  if (t.some((tag) => APP_TAGS.includes(tag))) return 'app';
-
-  // Explicit website tags or known website slug
-  if (t.some((tag) => WEBSITE_TAGS.includes(tag)) || slug === 'openwpclub.com' || slug === 'www') return 'website';
-
-  // Explicit plugin tags
-  if (t.some((tag) => PLUGIN_TAGS.includes(tag))) return 'plugin';
-
-  // Fallback: PHP language → plugin
-  if (lang === 'php') return 'plugin';
-
-  // TypeScript/JavaScript repos → app
-  if (lang === 'typescript' || lang === 'javascript') return 'app';
-
-  // Default to plugin for repos in this org
-  return 'plugin';
-}
-
-function rewriteImageUrls(html: string, repo: string, branch: string): string {
-  return html.replace(
-    /(<img\s[^>]*src=")(?!https?:\/\/)([^"]+)(")/gi,
-    (_, prefix, src, suffix) => {
-      const cleanSrc = src.replace(/^\.\//, '');
-      return `${prefix}https://raw.githubusercontent.com/${ORG}/${repo}/${branch}/${cleanSrc}${suffix}`;
-    }
-  );
-}
 
 async function fetchRepoStats(repoName: string) {
   const url = `https://api.github.com/repos/${ORG}/${repoName}`;
@@ -191,7 +144,7 @@ async function fetchReadme(repoName: string, defaultBranch: string): Promise<str
     return rewriteImageUrls(html, repoName, defaultBranch);
   }
   // Fallback: raw file (not rate-limited)
-  const rawRes = await fetch(`https://raw.githubusercontent.com/${ORG}/${repoName}/${defaultBranch}/README.md`);
+  const rawRes = await fetch(`https://raw.githubusercontent.com/${ORG}/${repoName}/${defaultBranch}/README.md`, { signal: AbortSignal.timeout(15000) });
   if (rawRes.ok) {
     const content = await rawRes.text();
     let html = await marked(content);
@@ -225,7 +178,7 @@ async function main() {
 
   // Check rate limit
   console.log('Checking GitHub API rate limit...');
-  const rateRes = await fetch('https://api.github.com/rate_limit', { headers: headers() });
+  const rateRes = await fetch('https://api.github.com/rate_limit', { headers: headers(), signal: AbortSignal.timeout(10000) });
   if (rateRes.ok) {
     const rate = await rateRes.json();
     const { remaining, limit, reset } = rate.resources.core;
@@ -238,7 +191,7 @@ async function main() {
 
   // Fetch CSV
   console.log('Fetching plugin list from CSV...');
-  const csvRes = await fetch(CSV_URL);
+  const csvRes = await fetch(CSV_URL, { signal: AbortSignal.timeout(15000) });
   if (!csvRes.ok) { console.error(`  FAILED: HTTP ${csvRes.status}`); process.exit(1); }
   const text = await csvRes.text();
   const lines = text.trim().split(/\r?\n/);
@@ -318,7 +271,7 @@ async function main() {
   }
   console.log();
   console.log(`  Stars: ${totalStars} | Forks: ${totalForks}`);
-  if (failedCount > 0) console.log(`  Failed: ${failedCount} repos`);
+  if (failedCount > 0) console.warn(`  Failed: ${failedCount} repos`);
   console.log();
 
   // Fetch contributors

@@ -1,30 +1,8 @@
 import type { PluginCSVRow } from './types';
 import { CSV_URL } from './config';
+import { parseCSVLine } from './csv';
 
-export function parseCSVLine(line: string): string[] {
-  const result: string[] = [];
-  let current = '';
-  let inQuotes = false;
-
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    if (char === '"') {
-      if (inQuotes && line[i + 1] === '"') {
-        current += '"';
-        i++;
-      } else {
-        inQuotes = !inQuotes;
-      }
-    } else if (char === ',' && !inQuotes) {
-      result.push(current.trim());
-      current = '';
-    } else {
-      current += char;
-    }
-  }
-  result.push(current.trim());
-  return result;
-}
+export { parseCSVLine };
 
 export async function fetchPluginsFromCSV(): Promise<PluginCSVRow[]> {
   const response = await fetch(CSV_URL);
