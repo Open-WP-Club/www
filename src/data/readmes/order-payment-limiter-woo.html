@@ -1,0 +1,44 @@
+<h1>WooCommerce Order Payment Limiter</h1>
+<p>Automatically cancels WooCommerce orders after failed payment attempts.</p>
+<h2>Supported Gateways</h2>
+<ul>
+<li>Official WooCommerce Stripe Gateway</li>
+<li>Payment Plugins for Stripe WooCommerce</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Upload plugin folder to <code>/wp-content/plugins/</code></li>
+<li>Activate through WordPress admin</li>
+<li>Configure at WooCommerce &gt; Payment Limiter</li>
+</ol>
+<h2>Settings</h2>
+<ul>
+<li><strong>Max Attempts</strong>: Number of failed payments before auto-cancel (default: 3)</li>
+<li><strong>Cancel Status</strong>: Order status after cancellation (default: cancelled)</li>
+<li><strong>Custom Note</strong>: Optional cancellation message</li>
+<li><strong>Logging</strong>: Enable/disable detailed logs</li>
+<li><strong>Reset on Success</strong>: Clear attempt counter on successful payment</li>
+</ul>
+<h2>How It Works</h2>
+<ol>
+<li>Tracks failed payment attempts per order</li>
+<li>Adds order notes for each failed attempt</li>
+<li>Cancels order when max attempts reached</li>
+<li>Logs all activity to WooCommerce logs</li>
+</ol>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 5.0+</li>
+<li>WooCommerce 5.0+</li>
+<li>PHP 7.4+</li>
+<li>One of the supported Stripe plugins</li>
+</ul>
+<h2>Hooks</h2>
+<p>The plugin hooks into:</p>
+<ul>
+<li><code>wc_gateway_stripe_process_payment_error</code> (Official Stripe)</li>
+<li><code>wc_stripe_process_charge_failed</code> (Payment Plugins)</li>
+<li><code>woocommerce_payment_failed</code> (Fallback)</li>
+</ul>
+<h2>License</h2>
+<p>GPL v2 or later</p>

@@ -1,0 +1,168 @@
+<h1>LLMs.txt Generator</h1>
+<p>Generate llms.txt and Markdown versions of your WordPress content for AI/LLM consumption.</p>
+<h2>Description</h2>
+<p>This plugin implements the <a href="https://llmstxt.org/">llms.txt specification</a> for WordPress, making your content easily accessible to AI language models and crawlers.</p>
+<h3>Features</h3>
+<ul>
+<li><strong>llms.txt Generation</strong>: Creates a standardized llms.txt file at <code>/llms.txt</code></li>
+<li><strong>Markdown Output</strong>: Access any post in Markdown via <code>.md</code> URL extension</li>
+<li><strong>Content Negotiation</strong>: Supports <code>Accept: text/markdown</code> HTTP header</li>
+<li><strong>ACF Integration</strong>: Includes Advanced Custom Fields in Markdown output</li>
+<li><strong>SEO Meta Support</strong>: Uses meta descriptions from Yoast, Rank Math, or All in One SEO</li>
+<li><strong>Custom Taxonomies</strong>: Full support for custom taxonomies including ACF-registered ones</li>
+<li><strong>Caching</strong>: Transient-based caching with automatic invalidation</li>
+<li><strong>Link Descriptions</strong>: Optional short descriptions next to links</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 6.4 or higher</li>
+<li>PHP 8.2 or higher</li>
+<li>Composer (for installation)</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Upload the plugin to <code>/wp-content/plugins/llms-txt-generator</code></li>
+<li>Run <code>composer install --no-dev</code> in the plugin directory</li>
+<li>Activate the plugin through the 'Plugins' menu</li>
+<li>Configure settings under Settings &gt; LLMs.txt</li>
+</ol>
+<h2>Usage</h2>
+<h3>llms.txt File</h3>
+<p>Access your llms.txt file at:</p>
+<pre><code>https://yoursite.com/llms.txt
+</code></pre>
+<h3>Markdown Versions</h3>
+<p>Access any post or page in Markdown by adding <code>.md</code> to the URL:</p>
+<pre><code>https://yoursite.com/sample-page.md
+</code></pre>
+<p>Or send an HTTP request with the Accept header:</p>
+<pre><code>Accept: text/markdown
+</code></pre>
+<h3>Settings</h3>
+<p>Navigate to <strong>Settings &gt; LLMs.txt</strong> to configure:</p>
+<ul>
+<li><strong>Post Types</strong>: Choose which post types to include</li>
+<li><strong>Taxonomies</strong>: Select taxonomies to list as sections</li>
+<li><strong>Posts Per Type</strong>: Limit the number of posts per type</li>
+<li><strong>Link Descriptions</strong>: Toggle short descriptions next to links</li>
+<li><strong>ACF Fields</strong>: Include ACF data in Markdown output</li>
+<li><strong>SEO Meta</strong>: Use SEO plugin meta descriptions</li>
+<li><strong>Custom Header</strong>: Override the site title</li>
+<li><strong>Custom Description</strong>: Override the site tagline</li>
+<li><strong>Cache Duration</strong>: Set how long to cache the generated content</li>
+</ul>
+<h2>Content Processing</h2>
+<p>The plugin processes your content to generate clean, readable descriptions for the llms.txt file.</p>
+<h3>How Descriptions are Generated</h3>
+<p>For each post/page, the plugin looks for a description in this order:</p>
+<ol>
+<li><strong>SEO Meta Description</strong> (recommended) - From Yoast SEO, Rank Math, or All in One SEO</li>
+<li><strong>Post Excerpt</strong> - The manual excerpt if set</li>
+<li><strong>Post Content</strong> - Extracted from the actual content</li>
+</ol>
+<h3>Shortcodes &amp; Gutenberg Blocks</h3>
+<p>The plugin attempts to process shortcodes and Gutenberg blocks to extract their rendered content:</p>
+<ul>
+<li><strong>Standard shortcodes</strong> - Processed via <code>do_shortcode()</code></li>
+<li><strong>Gutenberg blocks</strong> - Processed via <code>do_blocks()</code></li>
+</ul>
+<h4>Limitations</h4>
+<p>Some shortcodes and blocks may not render properly because they:</p>
+<ul>
+<li><strong>Require JavaScript</strong> - Many modern plugins render content client-side via JavaScript/AJAX. Server-side processing cannot execute JavaScript.</li>
+<li><strong>Check for frontend context</strong> - Some plugins check <code>is_singular()</code>, <code>is_main_query()</code>, or similar conditions and return empty when not on a real page.</li>
+<li><strong>Need user interaction</strong> - Dynamic content that depends on user state won't work.</li>
+<li><strong>Load data asynchronously</strong> - AJAX-based content loaders won't execute.</li>
+</ul>
+<p><strong>Examples of potentially problematic shortcodes:</strong></p>
+<ul>
+<li>External data fetchers</li>
+<li>Interactive elements</li>
+</ul>
+<h4>Recommended Solution</h4>
+<p>For pages with dynamic shortcodes or blocks, <strong>use SEO meta descriptions</strong>:</p>
+<ol>
+<li>Install an SEO plugin (Yoast, Rank Math, or All in One SEO)</li>
+<li>Edit the page and add a custom meta description</li>
+<li>The plugin will use this description instead of parsing the content</li>
+</ol>
+<p>This gives you full control over how each page is described in llms.txt, and ensures consistent, clean output regardless of what shortcodes or blocks the page uses.</p>
+<h4>Unprocessed Shortcodes</h4>
+<p>Any shortcodes that fail to process are automatically stripped from the output, so you won't see raw <code>[shortcode]</code> syntax in your llms.txt file.</p>
+<h2>Hooks &amp; Filters</h2>
+<h3>Filters</h3>
+<pre><code class="language-php">// Modify the complete llms.txt content
+add_filter('llms_txt_content', function(string $content, array $settings): string {
+    return $content;
+}, 10, 2);
+
+// Modify the header (H1)
+add_filter('llms_txt_header', function(string $title, array $settings): string {
+    return $title;
+}, 10, 2);
+
+// Modify the description (blockquote)
+add_filter('llms_txt_description', function(string $description, array $settings): string {
+    return $description;
+}, 10, 2);
+
+// Add additional info lines
+add_filter('llms_txt_additional_info', function(array $info): array {
+    $info[] = 'Contact: hello@example.com';
+    return $info;
+});
+
+// Modify content collection
+add_filter('llms_txt_content_collection', function(ContentCollection $collection, array $settings): ContentCollection {
+    return $collection;
+}, 10, 2);
+
+// Modify markdown output for a post
+add_filter('llms_txt_post_markdown', function(string $markdown, WP_Post $post): string {
+    return $markdown;
+}, 10, 2);
+
+// Modify response headers
+add_filter('llms_txt_response_headers', function(array $headers): array {
+    $headers['X-Custom-Header'] = 'value';
+    return $headers;
+});
+</code></pre>
+<h3>Actions</h3>
+<pre><code class="language-php">// Before llms.txt is served
+add_action('llms_txt_before_serve', function(): void {
+    // Your code here
+});
+
+// After llms.txt is served
+add_action('llms_txt_after_serve', function(string $content): void {
+    // Your code here
+});
+
+// After cache is invalidated
+add_action('llms_txt_cache_invalidated', function(): void {
+    // Your code here
+});
+</code></pre>
+<h2>llms.txt Format</h2>
+<p>The generated file follows the llms.txt specification:</p>
+<pre><code class="language-markdown"># Site Name
+
+&gt; Site description goes here
+
+Website: https://yoursite.com
+
+## Posts
+
+- [Post Title](https://yoursite.com/post-slug.md): Post description
+
+## Pages
+
+- [Page Title](https://yoursite.com/page-slug.md): Page description
+
+## Categories
+
+- [Category Name](https://yoursite.com/category/slug.md): Category description
+</code></pre>
+<h2>License</h2>
+<p>GPL v2 or later</p>

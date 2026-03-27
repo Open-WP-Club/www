@@ -543,7 +543,7 @@
     "stars": 0,
     "forks": 0,
     "openIssues": 0,
-    "lastPush": "2026-03-04T09:05:40Z",
+    "lastPush": "2026-03-26T11:14:31Z",
     "createdAt": "2025-05-19T19:01:14Z",
     "topics": [],
     "license": "MIT",
@@ -838,7 +838,7 @@
   {
     "id": "static-export-wp",
     "name": "static-export-wp",
-    "description": "No description available",
+    "description": "Export your WordPress site as static HTML files. Crawls every page like a browser and saves a complete static copy with all referenced assets.",
     "version": "N/A",
     "downloads": "",
     "rating": "",
@@ -849,10 +849,34 @@
     "openIssues": 0,
     "lastPush": "2026-03-02T11:39:51Z",
     "createdAt": "2026-02-21T19:09:21Z",
-    "topics": [],
+    "topics": [
+      "exporting-data",
+      "exporting-pages",
+      "wordpress"
+    ],
     "license": null,
     "language": "PHP",
     "defaultBranch": "main",
     "category": "plugin"
+  },
+  {
+    "id": "fulfill-for-woocommerce",
+    "name": "FulFill-for-WooCommerce",
+    "description": "No description available",
+    "version": "0.1.0",
+    "downloads": "",
+    "rating": "",
+    "githubUrl": "https://github.com/Open-WP-Club/fulfill-for-woocommerce",
+    "wordpressUrl": "",
+    "stars": 0,
+    "forks": 0,
+    "openIssues": 0,
+    "lastPush": "2026-03-16T22:18:14Z",
+    "createdAt": "2026-03-11T22:41:56Z",
+    "topics": [],
+    "license": null,
+    "language": "TypeScript",
+    "defaultBranch": "main",
+    "category": "app"
   }
 ]

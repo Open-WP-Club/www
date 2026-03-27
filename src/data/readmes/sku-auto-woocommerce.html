@@ -1,0 +1,209 @@
+<h1>SKU Automatics for WooCommerce</h1>
+<p>A comprehensive WordPress plugin that automatically generates and manages SKUs for WooCommerce products with advanced validation, cleanup tools, variation support, and GTIN integration.</p>
+<h2>Features</h2>
+<h3>SKU Generation</h3>
+<ul>
+<li>Bulk SKU generation for products without SKUs</li>
+<li><strong>Automatic variation SKU generation</strong> (Parent-1, Parent-2, etc.)</li>
+<li>Customizable SKU patterns with multiple components</li>
+<li>Permalink-based SKUs for human-readable identifiers</li>
+<li>HPOS compatible with automatic detection</li>
+<li>Batch processing to handle large product catalogs</li>
+<li>Progress tracking with visual indicators</li>
+</ul>
+<h3>Variation Support</h3>
+<ul>
+<li>Automatic SKU generation for product variations</li>
+<li>Sequential numbering based on parent SKU</li>
+<li>Format: <code>ParentSKU-1</code>, <code>ParentSKU-2</code>, <code>ParentSKU-3</code>, etc.</li>
+<li>Respects existing variation SKUs</li>
+<li>Bulk generation for all variations without SKUs</li>
+</ul>
+<h3>Pattern Customization</h3>
+<ul>
+<li>Flexible prefixes and suffixes</li>
+<li>Multiple pattern types (alphanumeric, numeric, alphabetic, custom)</li>
+<li>Product permalink integration for meaningful SKUs</li>
+<li>Category codes with configurable length</li>
+<li>Date stamps in multiple formats</li>
+<li>Product ID inclusion</li>
+<li>Custom separators (hyphens or underscores)</li>
+</ul>
+<h3>Validation &amp; Quality Control</h3>
+<ul>
+<li>Comprehensive SKU validation against WooCommerce standards</li>
+<li>Duplicate detection across all products</li>
+<li>Format checking for invalid characters</li>
+<li>Automatic fixing of problematic SKUs</li>
+<li>Detailed reporting of validation results</li>
+</ul>
+<h3>GTIN Integration</h3>
+<ul>
+<li>Automatic GTIN copying when generating SKUs</li>
+<li>Bulk copy existing SKUs to GTIN fields</li>
+<li>Multi-plugin compatibility (supports 10+ barcode plugins)</li>
+<li>Smart field detection for existing GTIN fields</li>
+</ul>
+<h3>Cleanup Tools</h3>
+<ul>
+<li>Remove all SKUs from products</li>
+<li>Smart removal of generated SKUs only</li>
+<li>GTIN field cleanup</li>
+<li>Empty SKU cleanup</li>
+<li>Pattern-based detection for safe removal</li>
+</ul>
+<h3>Debug &amp; Analysis</h3>
+<ul>
+<li>Comprehensive debugging tools</li>
+<li>System information reporting</li>
+<li>Product analysis and statistics</li>
+<li>HPOS detection and compatibility checking</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Upload the <code>woocommerce-sku-auto</code> folder to <code>/wp-content/plugins/</code></li>
+<li>Activate the plugin through the 'Plugins' menu in WordPress</li>
+<li>Access the plugin settings through <strong>WooCommerce &gt; SKU Automatics</strong></li>
+</ol>
+<h2>Configuration</h2>
+<h3>Basic Settings</h3>
+<h4>SKU Components</h4>
+<ul>
+<li><strong>SKU Prefix</strong>: Add a prefix to all generated SKUs (e.g., "PROD")</li>
+<li><strong>SKU Suffix</strong>: Add a suffix to all generated SKUs (e.g., "2026")</li>
+<li><strong>Separator Character</strong>: Choose between hyphen (-) or underscore (_)</li>
+</ul>
+<h4>Main SKU Pattern</h4>
+<ul>
+<li><strong>Use Product Permalink</strong>: Use product URL slug for readable SKUs</li>
+<li><strong>Pattern Type</strong>: Alphanumeric, Numeric, Alphabetic, or Custom</li>
+<li><strong>Pattern Length</strong>: 4-32 characters for random generation</li>
+</ul>
+<h4>Additional Components</h4>
+<ul>
+<li><strong>Include Product ID</strong>: Add the WooCommerce product ID</li>
+<li><strong>Include Category</strong>: Add category code (1-5 characters)</li>
+<li><strong>Include Date</strong>: Add timestamp in various formats (YYYYMMDD, YYMMDD, YYMM, YY)</li>
+</ul>
+<h4>Integration Options</h4>
+<ul>
+<li><strong>Copy SKU to GTIN Field</strong>: Automatically copy generated SKUs to barcode fields</li>
+</ul>
+<h2>SKU Pattern Examples</h2>
+<h3>Traditional Random SKUs</h3>
+<pre><code>Settings: Prefix "PROD", Suffix "2026", Separator "-"
+Result: PROD-A7K9X2M8-2026
+</code></pre>
+<h3>Permalink-Based SKUs</h3>
+<pre><code>Product: "Awesome Gaming Mouse Pro"
+Permalink: awesome-gaming-mouse-pro
+Result: PROD-awesome-gaming-mouse-pro-2026
+</code></pre>
+<h3>Category + Date SKUs</h3>
+<pre><code>Settings: Category (2 chars), Date (YYMMDD), Product ID
+Product: Electronics &gt; Gaming Mouse (ID: 123)
+Result: EL-260201-123
+</code></pre>
+<h3>Variable Product with Variations</h3>
+<pre><code>Parent Product: "T-Shirt" with SKU "TSHIRT-001"
+Variations:
+  - Small Red:   TSHIRT-001-1
+  - Medium Red:  TSHIRT-001-2
+  - Large Red:   TSHIRT-001-3
+  - Small Blue:  TSHIRT-001-4
+  - Medium Blue: TSHIRT-001-5
+</code></pre>
+<h3>Full Combination</h3>
+<pre><code>Settings: All components enabled
+Result: PROD-EL-260201-awesome-gaming-mouse-pro-123-2026
+</code></pre>
+<h2>Usage Guide</h2>
+<h3>1. Generate SKUs</h3>
+<ol>
+<li>Go to <strong>WooCommerce &gt; SKU Automatics &gt; Generate SKUs</strong></li>
+<li>Configure your pattern in the Settings tab</li>
+<li>Click <strong>"Start Generating SKUs"</strong></li>
+<li>Monitor progress with the real-time progress bar</li>
+<li>Variations are automatically generated with parent SKU + number</li>
+</ol>
+<h3>2. Generate Variation SKUs Only</h3>
+<ol>
+<li>Navigate to the <strong>Generate SKUs</strong> tab</li>
+<li>Click <strong>"Generate Variation SKUs"</strong></li>
+<li>All variations without SKUs will receive sequential numbering</li>
+</ol>
+<h3>3. Validate Existing SKUs</h3>
+<ol>
+<li>Navigate to the <strong>Validate SKUs</strong> tab</li>
+<li>Click <strong>"Scan for Invalid SKUs"</strong></li>
+<li>Review the detailed validation report</li>
+<li>Use <strong>"Fix Invalid SKUs"</strong> to automatically correct issues</li>
+</ol>
+<h3>4. GTIN Integration</h3>
+<ol>
+<li>Enable <strong>"Copy SKU to GTIN Field"</strong> in settings</li>
+<li>Use <strong>"Copy Existing SKUs to GTIN"</strong> for bulk operations</li>
+<li>Compatible with popular barcode plugins</li>
+</ol>
+<h3>5. Cleanup Operations</h3>
+<ol>
+<li>Access the <strong>Clean Up</strong> tab</li>
+<li>Choose from four cleanup options:<ul>
+<li><strong>Remove All SKUs</strong>: Complete removal</li>
+<li><strong>Remove Generated SKUs Only</strong>: Smart pattern-based removal</li>
+<li><strong>Remove All GTIN Fields</strong>: Barcode field cleanup</li>
+<li><strong>Remove Empty SKUs</strong>: Database optimization</li>
+</ul>
+</li>
+</ol>
+<h2>GTIN Field Compatibility</h2>
+<p>The plugin automatically detects and works with these GTIN/barcode fields:</p>
+<ul>
+<li>WooCommerce core GTIN field (<code>_global_unique_id</code>) - WC 8.4+</li>
+<li>WP Marketing Robot (<code>_wpm_gtin_code</code>)</li>
+<li>YITH WooCommerce Barcodes (<code>_ywbc_barcode_value</code>)</li>
+<li>ThemeSense GTIN (<code>_ts_gtin</code>)</li>
+<li>WooCommerce UPC (<code>_woo_upc</code>)</li>
+<li>Generic fields (<code>_gtin</code>, <code>_upc</code>, <code>_ean</code>, <code>_isbn</code>, <code>_barcode</code>)</li>
+</ul>
+<h3>Data Safety</h3>
+<ul>
+<li>Unique SKU guarantee with conflict resolution</li>
+<li>Validation before saving ensures WooCommerce compliance</li>
+<li>Comprehensive backups recommended before cleanup operations</li>
+<li>Reversible operations where possible</li>
+</ul>
+<h2>WooCommerce SKU Requirements</h2>
+<p>Generated SKUs automatically comply with WooCommerce standards:</p>
+<ul>
+<li>Unique across all products</li>
+<li>Only alphanumeric characters, hyphens (-), and underscores (_)</li>
+<li>No spaces or special characters</li>
+<li>Maximum 100 characters</li>
+<li>No leading or trailing whitespace</li>
+</ul>
+<h2>Troubleshooting</h2>
+<h3>Debug Tools</h3>
+<p>Use the built-in debug functions to diagnose issues:</p>
+<ol>
+<li><strong>Debug Products</strong>: General system information</li>
+<li><strong>Debug Generation</strong>: Specific SKU generation analysis</li>
+</ol>
+<h3>Common Issues</h3>
+<ul>
+<li><strong>"Scanned 0 products"</strong>: Check debug output for HPOS detection</li>
+<li><strong>Invalid SKUs</strong>: Review pattern settings and character limits</li>
+<li><strong>Permission errors</strong>: Ensure user has <code>manage_woocommerce</code> capability</li>
+<li><strong>Variations not generating</strong>: Ensure parent product has a SKU first</li>
+</ul>
+<h2>System Requirements</h2>
+<ul>
+<li>WordPress: 6.7 or higher</li>
+<li>WooCommerce: 9.0 or higher (tested up to 9.6)</li>
+<li>PHP: 8.2 or higher</li>
+<li>MySQL: 5.6 or higher</li>
+</ul>
+<h2>License</h2>
+<p>This plugin is licensed under the Apache License 2.0. See the LICENSE file for complete terms.</p>
+<h2>Support</h2>
+<p>For support and feature requests, please visit <a href="https://openwpclub.com">openwpclub.com</a>.</p>

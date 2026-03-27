@@ -1,0 +1,87 @@
+<h1>Team Manager for WordPress</h1>
+<p>A lightweight WordPress plugin to manage and display team members with a responsive grid layout.</p>
+<h2>Features</h2>
+<ul>
+<li>Simple team member management interface</li>
+<li>Department taxonomy for organization</li>
+<li>Responsive CSS Grid layout</li>
+<li>Profile image support via Featured Image</li>
+<li>Contact fields (email, website)</li>
+<li>Shortcode with department filtering and limit support</li>
+<li>Transient caching for performance</li>
+<li>REST API compatible</li>
+<li>Translation ready</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 6.9+</li>
+<li>PHP 8.3+</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Upload the plugin folder to <code>/wp-content/plugins/</code></li>
+<li>Activate via the Plugins menu</li>
+<li>Access team management under Users &gt; Team Members</li>
+</ol>
+<h2>Usage</h2>
+<h3>Managing Departments</h3>
+<ol>
+<li>Go to Users &gt; Team Members</li>
+<li>Click "Manage Departments"</li>
+<li>Add your departments</li>
+</ol>
+<h3>Adding Team Members</h3>
+<ol>
+<li>Go to Users &gt; Team Members</li>
+<li>Click "Add New Member"</li>
+<li>Fill in:<ul>
+<li>Full Name</li>
+<li>Department(s)</li>
+<li>Email (optional)</li>
+<li>Website (optional)</li>
+<li>Featured Image for profile photo</li>
+</ul>
+</li>
+<li>Click Publish</li>
+</ol>
+<h3>Display Settings</h3>
+<ol>
+<li>Go to Users &gt; Team Members</li>
+<li>Click "Display Settings"</li>
+<li>Configure:<ul>
+<li>Members per row (1-6)</li>
+<li>Gap between members (0-100px)</li>
+</ul>
+</li>
+<li>Save Settings</li>
+</ol>
+<h3>Displaying Team Members</h3>
+<p>Use the shortcode in any post, page, or widget:</p>
+<pre><code>[team_members]
+[team_members department="engineering"]
+[team_members department="engineering,design" limit="6"]
+[team_members limit="4"]
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>department</code></td>
+<td>Filter by department slug(s), comma-separated</td>
+<td>all</td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>Maximum number of members to display</td>
+<td>all</td>
+</tr>
+</tbody></table>
+<h3>Reordering Members</h3>
+<p>Set the display order via the "Order" field in the Page Attributes box when editing a team member. Lower numbers appear first.</p>
+<h2>License</h2>
+<p>GPL v2 or later</p>

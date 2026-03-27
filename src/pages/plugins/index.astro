@@ -68,100 +68,169 @@ const starThreshold = sorted.length > 0
 ---
 
 <BaseLayout title="All Plugins - Open WP Club" description={`${sorted.length} free, open-source WordPress plugins. Browse the full catalog, sorted by most recently updated.`}>
-  <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
-          All Plugins
-        </h1>
-        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          {sorted.length} plugins. Filter, search, and click any card to read the full README.
-        </p>
-        <a href="/plugins-rss.xml" class="inline-flex items-center gap-1.5 mt-3 px-3 py-1 rounded-full text-sm font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors" target="_blank" rel="noopener noreferrer">
-          <Icon name="lucide:rss" class="size-4" />
-          Plugin Updates RSS
-        </a>
-      </div>
 
-      <!-- Category filters -->
-      <div class="mt-8 flex flex-wrap justify-center gap-2" id="category-filters">
-        <button
-          data-category="all"
-          class="category-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-200 bg-blue-500 text-white border-blue-500"
-        >
-          All
-          <span class="text-xs opacity-75">{sorted.length}</span>
-        </button>
-        {Object.entries(categoryMap).map(([key, cat]) => (
-          categoryCounts[key] > 0 && (
-            <button
-              data-category={key}
-              class="category-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-500"
-            >
-              <Icon name={cat.icon} class="size-4" />
-              {cat.label}
-              <span class="text-xs opacity-60">{categoryCounts[key]}</span>
-            </button>
-          )
-        ))}
-      </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
 
-      <!-- Search & Sort controls -->
-      <div class="mt-4 max-w-2xl mx-auto flex flex-col sm:flex-row gap-3">
-        <div class="relative flex-1">
-          <Icon name="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400 pointer-events-none" />
+    <!-- Page header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Plugins</h1>
+      <p class="mt-1 text-gray-500 dark:text-gray-400">{sorted.length} free, open-source WordPress plugins</p>
+    </div>
+
+    <div class="flex gap-8 items-start">
+
+      <!-- Left sidebar -->
+      <aside class="hidden lg:block w-56 shrink-0 sticky top-6">
+
+        <!-- Search -->
+        <div class="relative mb-6">
+          <Icon name="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
           <input
             id="plugin-search"
             type="search"
             placeholder="Search plugins..."
-            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            class="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             aria-label="Search plugins"
           />
         </div>
-        <select
-          id="plugin-sort"
-          class="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-          aria-label="Sort plugins"
-        >
-          <option value="updated">Recently updated</option>
-          <option value="stars">Most stars</option>
-          <option value="name">Name A-Z</option>
-        </select>
-      </div>
-    </div>
-  </section>
 
-  <section class="py-12 bg-gray-50 dark:bg-gray-950">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p id="plugin-count" class="text-sm text-gray-500 dark:text-gray-500 mb-6"></p>
-      <div id="plugin-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sorted.map((plugin) => (
-          <div
-            class="plugin-item"
-            data-name={plugin.data.name.toLowerCase()}
-            data-description={plugin.data.description.toLowerCase()}
-            data-stars={plugin.data.stars}
-            data-updated={plugin.data.lastPush}
-            data-topics={plugin.data.topics.join(' ').toLowerCase()}
+        <!-- Sort -->
+        <div class="mb-6">
+          <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Sort by</p>
+          <select
+            id="plugin-sort"
+            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            aria-label="Sort plugins"
           >
-            <PluginCard
-              slug={plugin.id}
-              name={plugin.data.name}
-              description={plugin.data.description}
-              version={plugin.data.version}
-              stars={plugin.data.stars}
-              lastPush={plugin.data.lastPush}
-              downloads={plugin.data.downloads}
-              language={plugin.data.language}
-              isNew={new Date(plugin.data.lastPush) > thirtyDaysAgo}
-              isPopular={plugin.data.stars >= starThreshold && starThreshold > 0}
+            <option value="updated">Recently updated</option>
+            <option value="stars">Most stars</option>
+            <option value="name">Name A-Z</option>
+          </select>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Category</p>
+          <nav class="space-y-0.5" id="category-filters">
+            <button
+              data-category="all"
+              class="category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+            >
+              <span class="flex items-center gap-2">
+                <Icon name="lucide:layout-grid" class="size-4 shrink-0" />
+                All plugins
+              </span>
+              <span class="text-xs text-gray-400 dark:text-gray-500">{sorted.length}</span>
+            </button>
+            {Object.entries(categoryMap).map(([key, cat]) => (
+              categoryCounts[key] > 0 && (
+                <button
+                  data-category={key}
+                  class="category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
+                >
+                  <span class="flex items-center gap-2">
+                    <Icon name={cat.icon} class="size-4 shrink-0" />
+                    {cat.label}
+                  </span>
+                  <span class="text-xs text-gray-400 dark:text-gray-500">{categoryCounts[key]}</span>
+                </button>
+              )
+            ))}
+          </nav>
+        </div>
+
+        <!-- RSS -->
+        <div class="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+          <a
+            href="/plugins-rss.xml"
+            class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="lucide:rss" class="size-4 shrink-0" />
+            Plugin Updates RSS
+          </a>
+        </div>
+
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1 min-w-0">
+
+        <!-- Mobile controls -->
+        <div class="lg:hidden mb-4 flex gap-2">
+          <div class="relative flex-1">
+            <Icon name="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
+            <input
+              id="plugin-search-mobile"
+              type="search"
+              placeholder="Search plugins..."
+              class="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              aria-label="Search plugins"
             />
           </div>
-        ))}
+          <select
+            id="plugin-sort-mobile"
+            class="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          >
+            <option value="updated">Recent</option>
+            <option value="stars">Stars</option>
+            <option value="name">A-Z</option>
+          </select>
+        </div>
+
+        <!-- Mobile category pills -->
+        <div class="lg:hidden flex flex-wrap gap-2 mb-4" id="category-filters-mobile">
+          <button data-category="all" class="category-btn-mobile inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-blue-500 text-white border-blue-500">
+            All <span class="opacity-75">{sorted.length}</span>
+          </button>
+          {Object.entries(categoryMap).map(([key, cat]) => (
+            categoryCounts[key] > 0 && (
+              <button
+                data-category={key}
+                class="category-btn-mobile inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700"
+              >
+                {cat.label} <span class="opacity-60">{categoryCounts[key]}</span>
+              </button>
+            )
+          ))}
+        </div>
+
+        <p id="plugin-count" class="text-sm text-gray-500 dark:text-gray-500 mb-4"></p>
+
+        <div id="plugin-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          {sorted.map((plugin) => (
+            <div
+              class="plugin-item"
+              data-name={plugin.data.name.toLowerCase()}
+              data-description={plugin.data.description.toLowerCase()}
+              data-stars={plugin.data.stars}
+              data-updated={plugin.data.lastPush}
+              data-topics={plugin.data.topics.join(' ').toLowerCase()}
+            >
+              <PluginCard
+                slug={plugin.id}
+                name={plugin.data.name}
+                description={plugin.data.description}
+                version={plugin.data.version}
+                stars={plugin.data.stars}
+                lastPush={plugin.data.lastPush}
+                downloads={plugin.data.downloads}
+                language={plugin.data.language}
+                isNew={new Date(plugin.data.lastPush) > thirtyDaysAgo}
+                isPopular={plugin.data.stars >= starThreshold && starThreshold > 0}
+              />
+            </div>
+          ))}
+        </div>
+        <p id="no-results" class="hidden text-center text-gray-500 dark:text-gray-500 py-12">No plugins match your search or filter.</p>
+
+        <!-- Pagination -->
+        <div id="pagination" class="hidden mt-8 flex items-center justify-center gap-1"></div>
       </div>
-      <p id="no-results" class="hidden text-center text-gray-500 dark:text-gray-500 py-12">No plugins match your search or filter.</p>
+
     </div>
-  </section>
+  </div>
 </BaseLayout>
 
 <script define:vars={{ categoryKeywordsJson }}>
@@ -171,18 +240,26 @@ const starThreshold = sorted.length > 0
 <script>
   document.addEventListener('astro:page-load', () => {
     const search = document.getElementById('plugin-search') as HTMLInputElement | null;
+    const searchMobile = document.getElementById('plugin-search-mobile') as HTMLInputElement | null;
     const sort = document.getElementById('plugin-sort') as HTMLSelectElement | null;
+    const sortMobile = document.getElementById('plugin-sort-mobile') as HTMLSelectElement | null;
     const grid = document.getElementById('plugin-grid');
     const countEl = document.getElementById('plugin-count');
     const noResults = document.getElementById('no-results');
     const filterBtns = document.querySelectorAll('.category-btn') as NodeListOf<HTMLButtonElement>;
-    if (!search || !sort || !grid || !countEl || !noResults) return;
+    const filterBtnsMobile = document.querySelectorAll('.category-btn-mobile') as NodeListOf<HTMLButtonElement>;
+    if (!grid || !countEl || !noResults) return;
 
     const items = [...grid.querySelectorAll('.plugin-item')] as HTMLElement[];
-    const total = items.length;
     const categoryKeywords = (window as any).__categoryKeywords as Record<string, string[]>;
+    const pagination = document.getElementById('pagination');
+    const PAGE_SIZE = 15;
 
     let activeCategory = 'all';
+    let currentPage = 1;
+
+    function getSearch() { return (search?.value || searchMobile?.value || '').toLowerCase().trim(); }
+    function getSort() { return sort?.value || sortMobile?.value || 'updated'; }
 
     function matchesCategory(topics: string): boolean {
       if (activeCategory === 'all') return true;
@@ -191,58 +268,127 @@ const starThreshold = sorted.length > 0
     }
 
     function updateFilterButtons() {
-      filterBtns.forEach((btn) => {
+      [...filterBtns, ...filterBtnsMobile].forEach((btn) => {
         const cat = btn.dataset.category;
         const isActive = cat === activeCategory;
-        btn.className = `category-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-200 ${
-          isActive
-            ? 'bg-blue-500 text-white border-blue-500'
-            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-500'
-        }`;
+        if (btn.classList.contains('category-btn')) {
+          btn.className = `category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+            isActive
+              ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
+          }`;
+        } else {
+          btn.className = `category-btn-mobile inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+            isActive
+              ? 'bg-blue-500 text-white border-blue-500'
+              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700'
+          }`;
+        }
       });
     }
 
-    function update() {
-      const query = search!.value.toLowerCase().trim();
-      let visible = items.filter((item) => {
+    function makePaginationBtn(label: string, active: boolean, disabled: boolean, onClick: () => void): HTMLButtonElement {
+      const btn = document.createElement('button');
+      btn.textContent = label;
+      btn.disabled = disabled;
+      btn.className = `px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+        active
+          ? 'bg-blue-500 text-white border-blue-500'
+          : disabled
+            ? 'bg-white dark:bg-gray-800 text-gray-300 dark:text-gray-600 border-gray-200 dark:border-gray-700 cursor-not-allowed'
+            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-500'
+      }`;
+      if (!disabled) btn.addEventListener('click', onClick);
+      return btn;
+    }
+
+    function renderPagination(totalVisible: number, totalPages: number) {
+      if (!pagination) return;
+      if (totalPages <= 1) { pagination.classList.add('hidden'); return; }
+      pagination.classList.remove('hidden');
+      while (pagination.firstChild) pagination.removeChild(pagination.firstChild);
+
+      pagination.appendChild(makePaginationBtn('←', false, currentPage === 1, () => {
+        currentPage--; update(false); window.scrollTo({ top: 0, behavior: 'smooth' });
+      }));
+
+      for (let i = 1; i <= totalPages; i++) {
+        if (totalPages > 7 && i > 2 && i < totalPages - 1 && Math.abs(i - currentPage) > 1) {
+          if (i === 3 || i === totalPages - 2) {
+            const dot = document.createElement('span');
+            dot.textContent = '…';
+            dot.className = 'px-2 py-1.5 text-sm text-gray-400';
+            pagination.appendChild(dot);
+          }
+          continue;
+        }
+        const pageNum = i;
+        pagination.appendChild(makePaginationBtn(String(i), i === currentPage, false, () => {
+          currentPage = pageNum; update(false); window.scrollTo({ top: 0, behavior: 'smooth' });
+        }));
+      }
+
+      pagination.appendChild(makePaginationBtn('→', false, currentPage === totalPages, () => {
+        currentPage++; update(false); window.scrollTo({ top: 0, behavior: 'smooth' });
+      }));
+    }
+
+    function syncControls(source: 'desktop' | 'mobile') {
+      if (source === 'desktop') {
+        if (searchMobile && search) searchMobile.value = search.value;
+        if (sortMobile && sort) sortMobile.value = sort.value;
+      } else {
+        if (search && searchMobile) search.value = searchMobile.value;
+        if (sort && sortMobile) sort.value = sortMobile.value;
+      }
+    }
+
+    function update(resetPage = true) {
+      if (resetPage) currentPage = 1;
+      const query = getSearch();
+      const sortBy = getSort();
+
+      const matched = items.filter((item) => {
         const name = item.dataset.name || '';
         const desc = item.dataset.description || '';
         const topics = item.dataset.topics || '';
-        const matchSearch = !query || name.includes(query) || desc.includes(query) || topics.includes(query);
-        const matchCat = matchesCategory(topics);
-        const show = matchSearch && matchCat;
-        item.style.display = show ? '' : 'none';
-        return show;
+        return (!query || name.includes(query) || desc.includes(query) || topics.includes(query))
+          && matchesCategory(topics);
       });
 
-      const sortBy = sort!.value;
-      const sorted = [...visible].sort((a, b) => {
+      const sortedItems = [...matched].sort((a, b) => {
         if (sortBy === 'stars') return Number(b.dataset.stars) - Number(a.dataset.stars);
         if (sortBy === 'name') return (a.dataset.name || '').localeCompare(b.dataset.name || '');
         return (b.dataset.updated || '').localeCompare(a.dataset.updated || '');
       });
 
-      sorted.forEach((el) => grid!.appendChild(el));
+      const totalPages = Math.ceil(sortedItems.length / PAGE_SIZE);
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const pageItems = sortedItems.slice(start, start + PAGE_SIZE);
 
-      const label = activeCategory === 'all' ? '' : ` in this category`;
-      countEl!.textContent = query
-        ? `Showing ${visible.length} of ${total} plugins${label}`
-        : `${visible.length} plugin${visible.length !== 1 ? 's' : ''}${label}`;
-      noResults!.classList.toggle('hidden', visible.length > 0);
+      items.forEach((item) => { item.style.display = 'none'; });
+      pageItems.forEach((el) => { el.style.display = ''; grid!.appendChild(el); });
 
-      // Sync state to URL
-      const params = new URLSearchParams();
-      const q = search!.value.trim();
-      const s = sort!.value;
-      if (q) params.set('q', q);
-      if (s && s !== 'updated') params.set('sort', s);
-      if (activeCategory !== 'all') params.set('cat', activeCategory);
-      const newUrl = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;
+      const label = activeCategory === 'all' ? '' : ' in this category';
+      countEl!.textContent = matched.length > PAGE_SIZE
+        ? `Showing ${start + 1}–${Math.min(start + PAGE_SIZE, matched.length)} of ${matched.length} plugins${label}`
+        : `${matched.length} plugin${matched.length !== 1 ? 's' : ''}${label}`;
+      noResults!.classList.toggle('hidden', matched.length > 0);
+
+      renderPagination(matched.length, totalPages);
+
+      const urlParams = new URLSearchParams();
+      const q = getSearch();
+      const s = getSort();
+      if (q) urlParams.set('q', q);
+      if (s && s !== 'updated') urlParams.set('sort', s);
+      if (activeCategory !== 'all') urlParams.set('cat', activeCategory);
+      if (currentPage > 1) urlParams.set('page', String(currentPage));
+      const newUrl = urlParams.toString() ? `${window.location.pathname}?${urlParams}` : window.location.pathname;
       history.replaceState(null, '', newUrl);
     }
 
-    // Filter button clicks
-    filterBtns.forEach((btn) => {
+    [...filterBtns, ...filterBtnsMobile].forEach((btn) => {
       btn.addEventListener('click', () => {
         activeCategory = btn.dataset.category || 'all';
         updateFilterButtons();
@@ -251,24 +397,34 @@ const starThreshold = sorted.length > 0
     });
 
     let debounceTimer: ReturnType<typeof setTimeout>;
-    search.addEventListener('input', () => {
+    search?.addEventListener('input', () => {
+      syncControls('desktop');
       clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(update, 150);
+      debounceTimer = setTimeout(() => update(), 150);
     });
-    sort.addEventListener('change', update);
+    searchMobile?.addEventListener('input', () => {
+      syncControls('mobile');
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => update(), 150);
+    });
+    sort?.addEventListener('change', () => { syncControls('desktop'); update(); });
+    sortMobile?.addEventListener('change', () => { syncControls('mobile'); update(); });
 
-    // Read URL params and set initial values
     const params = new URLSearchParams(window.location.search);
     const initialQuery = params.get('q') || '';
     const initialSort = params.get('sort') || 'updated';
     const validCategories = new Set(['all', ...Object.keys(categoryKeywords)]);
     const rawCat = params.get('cat') || 'all';
     const initialCat = validCategories.has(rawCat) ? rawCat : 'all';
-    search.value = initialQuery;
-    sort.value = initialSort;
+    const initialPage = parseInt(params.get('page') || '1', 10);
+    if (search) search.value = initialQuery;
+    if (searchMobile) searchMobile.value = initialQuery;
+    if (sort) sort.value = initialSort;
+    if (sortMobile) sortMobile.value = initialSort;
     activeCategory = initialCat;
+    currentPage = isNaN(initialPage) || initialPage < 1 ? 1 : initialPage;
     updateFilterButtons();
 
-    update();
+    update(false);
   });
 </script>

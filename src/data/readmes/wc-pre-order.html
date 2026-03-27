@@ -1,0 +1,46 @@
+<h1>WooCommerce Pre-Order Plugin</h1>
+<h2>Description</h2>
+<p>This plugin enhances WooCommerce with pre-order functionality, allowing for specific promo code requirements on certain products and automatic application of promo codes after purchase.</p>
+<h2>Features</h2>
+<ul>
+<li>Adds a Pre-Order settings page under the WooCommerce tab.</li>
+<li>Allows admins to specify product IDs that require a promo code.</li>
+<li>Allows admins to specify the promo codes that must be applied.</li>
+<li>Prevents users from proceeding to checkout if the required promo code is not applied to the specified products.</li>
+<li>Supports auto-apply promo codes for future purchases.</li>
+<li>Automatically applies saved promo codes to the cart for eligible users.</li>
+<li>Provides usage limits for auto-apply promo codes.</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Download the plugin files and upload them to the <code>/wp-content/plugins/woocommerce-preorder-plugin</code> directory, or install the plugin through the WordPress plugins screen directly.</li>
+<li>Activate the plugin through the 'Plugins' screen in WordPress.</li>
+<li>Navigate to WooCommerce -&gt; Pre-Order to configure the plugin settings.</li>
+</ol>
+<h2>Usage</h2>
+<ol>
+<li>Go to WooCommerce -&gt; Pre-Order in the WordPress admin area.</li>
+<li>Enter the product IDs (comma-separated) that require a promo code.</li>
+<li>Enter the promo codes that must be applied for the specified products.</li>
+<li>Configure auto-apply promo codes settings:<ul>
+<li>Enter the auto-apply promo codes (one per line).</li>
+<li>Specify the product ID that triggers the auto-apply promo.</li>
+<li>Set the usage limit for auto-apply promos (optional).</li>
+</ul>
+</li>
+<li>Save the settings.</li>
+</ol>
+<h2>Auto-Apply Promo Codes</h2>
+<ul>
+<li>When a customer purchases the specified auto-apply trigger product, they will receive a promo code for their next purchase.</li>
+<li>The promo code will be automatically applied to their cart on their next visit.</li>
+<li>Usage limits can be set to restrict the number of times a user can benefit from auto-apply promos.</li>
+</ul>
+<h2>Notes</h2>
+<ul>
+<li>The plugin automatically adds auto-apply promo codes to the general list of promo codes.</li>
+<li>Promo codes are case-insensitive.</li>
+<li>The checkout button will be hidden if a required promo code is not applied to the cart containing pre-order products.</li>
+</ul>
+<h2>License</h2>
+<p>This plugin is licensed under the GPL-2.0 license.</p>

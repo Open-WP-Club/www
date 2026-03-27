@@ -1,0 +1,86 @@
+<h1>WordPress EU VAT</h1>
+<h2>Description</h2>
+<p>WordPress EU VAT is a plugin that helps online store owners comply with EU VAT regulations. It collects and validates VAT numbers at checkout, removes VAT charges for eligible EU businesses, and handles EU tax requirements for digital goods.</p>
+<h2>Features</h2>
+<ul>
+<li>Collect and validate EU VAT numbers at checkout</li>
+<li><strong>Real-time VAT validation with European VIES system</strong></li>
+<li>Exempt eligible businesses from paying VAT</li>
+<li>Validate user location in B2C transactions</li>
+<li>Handle EU tax requirements for digital goods</li>
+<li>Smart caching to minimize API calls and improve performance</li>
+<li>Automatic fallback to format validation if VIES is unavailable</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 6.4 or higher</li>
+<li>WooCommerce 8.0 or higher (tested up to 9.4)</li>
+<li>PHP 7.4 or higher</li>
+<li>PHP SOAP extension (for VIES validation)</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Download the plugin zip file.</li>
+<li>Log in to your WordPress admin panel.</li>
+<li>Go to Plugins &gt; Add New.</li>
+<li>Click on the "Upload Plugin" button at the top of the page.</li>
+<li>Select the plugin zip file and click "Install Now".</li>
+<li>After installation, click "Activate Plugin".</li>
+</ol>
+<h2>Usage</h2>
+<p>Once activated, the plugin will automatically:</p>
+<ol>
+<li>Add a VAT number field to the WooCommerce checkout page.</li>
+<li>Validate the format of entered VAT numbers.</li>
+<li>Remove VAT charges for valid business VAT numbers.</li>
+<li>Apply appropriate VAT rates for digital goods based on the customer's location.</li>
+</ol>
+<h2>Configuration</h2>
+<p>The plugin integrates with WooCommerce Tax settings. Go to <strong>WooCommerce &gt; Settings &gt; Tax</strong> to configure:</p>
+<h3>EU VAT Validation Settings</h3>
+<ul>
+<li><strong>Enable VIES Validation</strong>: Toggle real-time validation against the European VIES system</li>
+<li><strong>Cache Duration</strong>: Set how long validation results are cached (1-168 hours, default: 24 hours)</li>
+<li><strong>Clear VAT Cache</strong>: Manually clear all cached validation results</li>
+</ul>
+<p>These settings allow you to balance between accuracy, performance, and API usage.</p>
+<h2>Modern WordPress &amp; WooCommerce Standards</h2>
+<p>This plugin is built following the latest WordPress and WooCommerce development standards:</p>
+<h3>WooCommerce HPOS Compatibility</h3>
+<ul>
+<li><strong>Full HPOS (High-Performance Order Storage) support</strong> - Compatible with WooCommerce's modern order storage system</li>
+<li>Uses <code>wc_get_order()</code> and order object methods instead of deprecated <code>update_post_meta()</code></li>
+<li>Declared compatibility with <code>custom_order_tables</code> feature</li>
+</ul>
+<h3>Security Best Practices</h3>
+<ul>
+<li>Proper nonce verification for all admin actions</li>
+<li>Input sanitization with <code>sanitize_text_field()</code> and <code>wp_unslash()</code></li>
+<li>Output escaping with <code>esc_html()</code>, <code>esc_attr()</code>, <code>esc_url()</code></li>
+<li>Prepared SQL statements for database queries</li>
+<li>WordPress Coding Standards (WPCS) compliant</li>
+</ul>
+<h3>Internationalization (i18n)</h3>
+<ul>
+<li>Translation-ready with proper text domain (<code>wp-eu-vat</code>)</li>
+<li>Includes <code>.pot</code> translation template</li>
+<li>Bulgarian translation included as example</li>
+<li>Translations loaded via <code>load_plugin_textdomain()</code></li>
+</ul>
+<h2>Frequently Asked Questions</h2>
+<p><strong>Q: Does this plugin validate VAT numbers in real-time?</strong>
+A: Yes! The plugin validates VAT numbers against the European VIES (VAT Information Exchange System) using real-time SOAP API calls. Results are cached to improve performance and reduce API load. If the VIES service is unavailable, the plugin automatically falls back to format validation to prevent blocking legitimate transactions.</p>
+<p><strong>Q: What if my server doesn't have the SOAP extension?</strong>
+A: The plugin will automatically detect if the SOAP extension is missing and fall back to format validation only. While SOAP is recommended for full VIES validation, the plugin will continue to work without it by validating the VAT number format according to each EU country's standards.</p>
+<p><strong>Q: How does the caching work?</strong>
+A: When a VAT number is validated against VIES, the result is cached using WordPress transients. By default, results are cached for 24 hours (configurable from 1-168 hours). This reduces API calls and improves checkout performance. You can clear the cache anytime from the settings page.</p>
+<p><strong>Q: How does the plugin determine if a product is a digital good?</strong>
+A: The plugin considers products of type 'digital', 'downloadable', or 'virtual' as digital goods. You may need to adjust this logic based on your specific product categorization.</p>
+<p><strong>Q: Does this plugin handle VAT MOSS (Mini One Stop Shop) reporting?</strong>
+A: The current version does not include VAT MOSS reporting features. This may be added in future updates.</p>
+<h2>Support</h2>
+<p>For support, feature requests, or bug reports, please open an issue on the plugin's GitHub repository.</p>
+<h2>Contributing</h2>
+<p>Contributions to improve WordPress EU VAT are welcome. Please feel free to submit pull requests or open issues on GitHub.</p>
+<h2>License</h2>
+<p>This plugin is licensed under the GPL v2 or later.</p>

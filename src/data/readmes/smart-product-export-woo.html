@@ -1,0 +1,108 @@
+<h1>Smart Product Export for WooCommerce</h1>
+<p>A powerful WordPress plugin that enables flexible export of WooCommerce product data with advanced filtering options.</p>
+<h2>Features</h2>
+<h3>Filter Options</h3>
+<ul>
+<li><strong>All Products</strong> - Export entire product catalog</li>
+<li><strong>By SKU</strong> - Search with partial SKU matching</li>
+<li><strong>By Product ID(s)</strong> - Export specific products by ID</li>
+<li><strong>By Category</strong> - Multiple category selection with OR logic</li>
+<li><strong>By Tag</strong> - Multiple tag selection with OR logic</li>
+<li><strong>By Attribute</strong> - Filter by any product attribute</li>
+<li><strong>By Stock Status</strong> - Filter by In Stock, Out of Stock, or On Backorder</li>
+<li><strong>By Product Type</strong> - Filter by Simple, Variable, Grouped, or External products</li>
+</ul>
+<h3>Export Formats</h3>
+<ul>
+<li>SKU only</li>
+<li>SKU + Product Title</li>
+<li>SKU + Price</li>
+<li>SKU + Stock Level</li>
+<li>SKU + Title + Price + Stock (comprehensive export)</li>
+</ul>
+<h3>Delimiter Options</h3>
+<ul>
+<li>Comma (CSV-friendly)</li>
+<li>Semicolon (European CSV format)</li>
+<li>Tab (database-friendly)</li>
+<li>New Line (list format)</li>
+</ul>
+<h3>Advanced Features</h3>
+<ul>
+<li>✅ Product variation support</li>
+<li>✅ Performance optimized with caching (5-10 minute cache lifetime)</li>
+<li>✅ HPOS (High-Performance Order Storage) compatible</li>
+<li>✅ WCAG 2.1 accessibility compliant</li>
+<li>✅ Enhanced security (nonce verification, input validation, sanitization)</li>
+<li>✅ Responsive design</li>
+<li>✅ Real-time AJAX processing</li>
+<li>✅ Copy to clipboard functionality</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 5.8 or higher</li>
+<li>WooCommerce 5.0 or higher</li>
+<li>PHP 7.4 or higher</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Upload the plugin files to <code>/wp-content/plugins/smart-product-export/</code></li>
+<li>Activate the plugin through the WordPress admin</li>
+<li>Go to <strong>WooCommerce &gt; Smart Product Exporter</strong> to start exporting</li>
+</ol>
+<h2>Usage</h2>
+<h3>Basic Export</h3>
+<ol>
+<li>Navigate to <strong>WooCommerce &gt; Smart Product Exporter</strong></li>
+<li>Select a filter type from the dropdown</li>
+<li>Enter or select your filter criteria</li>
+<li>Choose export format and delimiter</li>
+<li>Click "Export Products"</li>
+<li>Copy the results to clipboard</li>
+</ol>
+<h3>Advanced Filtering</h3>
+<h4>Multiple Categories</h4>
+<pre><code>Filter Type: By Category
+Select: Electronics, Clothing, Books
+Result: Products in ANY of these categories
+</code></pre>
+<h4>Partial SKU Match</h4>
+<pre><code>Filter Type: By SKU
+Value: SHIRT
+Matches: SHIRT-001, TSHIRT-RED, SHIRT-BLUE-L, etc.
+</code></pre>
+<h4>Multiple Product IDs</h4>
+<pre><code>Filter Type: By Product ID(s)
+Value: 123, 456, 789
+Result: Only products with these specific IDs
+</code></pre>
+<h4>Stock Status Filtering</h4>
+<pre><code>Filter Type: By Stock Status
+Select: In Stock, On Backorder
+Result: Products that are either in stock or on backorder
+</code></pre>
+<h3>Export Format Examples</h3>
+<p><strong>SKU Only:</strong></p>
+<pre><code>SHIRT-001, SHIRT-002, PANTS-001
+</code></pre>
+<p><strong>SKU + Title:</strong></p>
+<pre><code>SHIRT-001 - Blue Cotton Shirt, SHIRT-002 - Red Polo Shirt
+</code></pre>
+<p><strong>SKU + All (using newline delimiter):</strong></p>
+<pre><code>SHIRT-001 | Blue Cotton Shirt | $29.99 | 45
+SHIRT-002 | Red Polo Shirt | $34.99 | 23
+</code></pre>
+<h2>Performance Optimization</h2>
+<h3>Caching Strategy</h3>
+<ul>
+<li>Taxonomy terms (categories, tags, attributes): 10-minute cache</li>
+<li>Product query results: 5-minute cache</li>
+<li>Cache keys: Automatically generated based on filter criteria</li>
+</ul>
+<h2>Support</h2>
+<p>For support, bug reports, or feature requests:</p>
+<ul>
+<li>Website: <a href="https://openwpclub.com/support/">https://openwpclub.com/support/</a></li>
+</ul>
+<h2>License</h2>
+<p>GPL v2 or later - <a href="https://www.gnu.org/licenses/gpl-2.0.html">https://www.gnu.org/licenses/gpl-2.0.html</a></p>

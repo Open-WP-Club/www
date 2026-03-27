@@ -1,0 +1,153 @@
+<h1>Google Scholar Profile Display</h1>
+<p>A WordPress plugin that allows you to display your Google Scholar profile information on your website using a simple shortcode.</p>
+<h2>Description</h2>
+<p>This plugin fetches and displays information from Google Scholar profiles, including:</p>
+<ul>
+<li>Profile avatar</li>
+<li>Basic information (name, affiliation)</li>
+<li>Publications list with pagination</li>
+<li>Citation metrics</li>
+<li>Interactive sorting and filtering</li>
+</ul>
+<p>The data can be automatically updated on a schedule or manually refreshed as needed.</p>
+<h2>Installation</h2>
+<ol>
+<li>Download the plugin files and upload them to your <code>/wp-content/plugins/google-scholar-profile</code> directory</li>
+<li>Activate the plugin through the 'Plugins' menu in WordPress</li>
+<li>Go to Settings &gt; Scholar Profile to configure the plugin</li>
+</ol>
+<h2>Configuration</h2>
+<h3>Required Settings</h3>
+<ul>
+<li><strong>Profile ID</strong>: Your Google Scholar profile ID (found in your profile URL)<ul>
+<li>Example: If your profile URL is <code>https://scholar.google.com/citations?user=XXXYYY</code>, then XXXYYY is your profile ID</li>
+</ul>
+</li>
+</ul>
+<h3>Optional Settings</h3>
+<ul>
+<li><strong>Display Options</strong>:<ul>
+<li>Show/hide avatar</li>
+<li>Show/hide profile information</li>
+<li>Show/hide publications list</li>
+<li>Show/hide co-authors</li>
+</ul>
+</li>
+<li><strong>Update Frequency</strong>:<ul>
+<li>Daily</li>
+<li>Weekly (default)</li>
+<li>Monthly</li>
+<li>Yearly</li>
+</ul>
+</li>
+<li><strong>Max Publications</strong>: Control how many publications to fetch (50, 100, 200, 500)</li>
+</ul>
+<h2>Usage</h2>
+<h3>Basic Usage</h3>
+<p>Add the shortcode to any post or page:</p>
+<pre><code>[scholar_profile]
+</code></pre>
+<h3>Pagination Options</h3>
+<p>Control how many publications are displayed per page:</p>
+<pre><code>[scholar_profile per_page="10"]
+[scholar_profile per_page="20"]
+[scholar_profile per_page="50"]
+</code></pre>
+<p><strong>Default</strong>: 20 publications per page
+<strong>Range</strong>: 1-100 publications per page</p>
+<h3>Sorting Options</h3>
+<p>You can sort publications by specifying sorting parameters:</p>
+<pre><code>[scholar_profile sort_by="year" sort_order="desc"]
+[scholar_profile sort_by="citations" sort_order="desc"]
+[scholar_profile sort_by="title" sort_order="asc"]
+</code></pre>
+<p><strong>Available sort_by values:</strong></p>
+<ul>
+<li><code>year</code> - Sort by publication year</li>
+<li><code>citations</code> - Sort by citation count</li>
+<li><code>title</code> - Sort alphabetically by title</li>
+</ul>
+<p><strong>Available sort_order values:</strong></p>
+<ul>
+<li><code>desc</code> - Descending order (default)</li>
+<li><code>asc</code> - Ascending order</li>
+</ul>
+<h3>Combined Parameters</h3>
+<p>You can combine pagination and sorting options:</p>
+<pre><code>[scholar_profile per_page="15" sort_by="citations" sort_order="desc"]
+</code></pre>
+<h3>Interactive Features</h3>
+<p><strong>Sorting:</strong></p>
+<ul>
+<li>Click any column header to sort by that field</li>
+<li>Click again to reverse the sort order</li>
+<li>Visual indicators (arrows) show the current sort direction</li>
+<li>Fully accessible with keyboard navigation (Tab + Enter/Space)</li>
+</ul>
+<p><strong>Pagination:</strong></p>
+<ul>
+<li>Navigate through pages using Previous/Next buttons</li>
+<li>Jump to specific pages using page numbers</li>
+<li>URL parameters are updated for bookmarkable pages</li>
+<li>Responsive design adapts to mobile devices</li>
+</ul>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>scholar_page</code> - Current page number</li>
+<li><code>scholar_sort_by</code> - Current sort field</li>
+<li><code>scholar_sort_order</code> - Current sort order</li>
+</ul>
+<h3>Manual Updates</h3>
+<ol>
+<li>Go to Settings &gt; Scholar Profile</li>
+<li>Click the "Refresh Profile Data" button to manually update the profile data</li>
+</ol>
+<h2>Advanced Features</h2>
+<h3>Performance Considerations</h3>
+<ul>
+<li><strong>Pagination</strong>: Large publication lists are automatically paginated for better performance</li>
+<li><strong>Client-side Sorting</strong>: Sorting within the current page happens instantly</li>
+<li><strong>Server-side Sorting</strong>: Full dataset sorting requires a page refresh</li>
+<li><strong>Responsive Design</strong>: Optimized for desktop, tablet, and mobile viewing</li>
+</ul>
+<h3>Accessibility</h3>
+<ul>
+<li>Full keyboard navigation support</li>
+<li>ARIA labels for screen readers</li>
+<li>Semantic HTML structure</li>
+<li>High contrast design</li>
+<li>Focus indicators for interactive elements</li>
+</ul>
+<h2>Styling</h2>
+<p>The plugin includes comprehensive CSS styles that can be customized through your theme's stylesheet. Main CSS classes:</p>
+<pre><code class="language-css">.scholar-profile {}              /* Main container */
+.scholar-header {}               /* Profile header section */
+.scholar-avatar {}               /* Profile image container */
+.scholar-basic-info {}           /* Profile information section */
+.scholar-publications {}         /* Publications section */
+.scholar-publications-table {}   /* Publications table */
+.scholar-pagination {}           /* Pagination navigation */
+.scholar-pagination-wrapper {}   /* Pagination container */
+.scholar-pagination-number {}    /* Individual page numbers */
+.scholar-pagination-btn {}       /* Previous/Next buttons */
+.scholar-metrics-box {}          /* Citation metrics */
+.scholar-coauthors {}            /* Co-authors section */
+</code></pre>
+<h3>CSS Custom Properties</h3>
+<p>The plugin uses CSS custom properties for easy theming:</p>
+<pre><code class="language-css">:root {
+  --scholar-primary-color: #1a73e8;
+  --scholar-primary-hover: #1557b0;
+  --scholar-border-color: #dadce0;
+  --scholar-text-color: #202124;
+  --scholar-text-secondary: #666;
+  --scholar-background-light: #f8f9fa;
+}
+</code></pre>
+<h2>Performance Tips</h2>
+<ol>
+<li><strong>Pagination</strong>: Use smaller <code>per_page</code> values (10-20) for better initial load times</li>
+<li><strong>Update Frequency</strong>: Use weekly or monthly updates for large profiles</li>
+<li><strong>Publication Limits</strong>: Consider limiting max publications in settings for very large profiles</li>
+<li><strong>Caching</strong>:</li>
+</ol>

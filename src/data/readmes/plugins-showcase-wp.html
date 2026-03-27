@@ -1,0 +1,139 @@
+<h1>Plugins Showcase</h1>
+<p>A WordPress plugin to display a GitHub organization as a plugin catalog. Each repository becomes a separate page with README content, statistics, and a link to GitHub.</p>
+<h2>Features</h2>
+<ul>
+<li>Automatic import of all public repositories from a GitHub organization</li>
+<li>Display README.md content as page content</li>
+<li>Search and filter by categories (based on GitHub topics)</li>
+<li>Gutenberg blocks for embedding anywhere on the site</li>
+<li>Automatic sync (daily, weekly, or monthly)</li>
+<li>REST API for AJAX search</li>
+<li><strong>Download button</strong> with latest release version</li>
+<li><strong>Contributors</strong> section with avatars</li>
+<li><strong>Screenshots</strong> gallery (auto-fetched from repo)</li>
+<li><strong>Requirements</strong> display (PHP, WordPress versions)</li>
+<li><strong>Open issues</strong> count and link to GitHub Issues</li>
+<li><strong>View counter</strong> analytics for each plugin</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Upload the <code>plugins-showcase-wp</code> folder to <code>/wp-content/plugins/</code></li>
+<li>Activate the plugin from the WordPress admin panel</li>
+<li>Go to <strong>Plugin Showcase &gt; Settings</strong></li>
+<li>Enter the GitHub organization and (optionally) a token</li>
+<li>Click <strong>Sync Now</strong></li>
+</ol>
+<h2>Settings</h2>
+<h3>GitHub Organization</h3>
+<p>Enter the organization name or full URL:</p>
+<ul>
+<li><code>your-org-name</code></li>
+<li><code>https://github.com/your-org-name</code></li>
+</ul>
+<h3>GitHub Token (Recommended)</h3>
+<p>Without a token, the GitHub API has a limit of <strong>60 requests per hour</strong>. With a token, the limit is <strong>5000 requests per hour</strong>.</p>
+<h4>How to Create a GitHub Token</h4>
+<ol>
+<li>Log in to your GitHub account</li>
+<li>Go to <strong>Settings</strong> (from the profile menu in the top right)</li>
+<li>In the left menu, select <strong>Developer settings</strong> (at the bottom)</li>
+<li>Click <strong>Personal access tokens</strong> &gt; <strong>Tokens (classic)</strong></li>
+<li>Click <strong>Generate new token</strong> &gt; <strong>Generate new token (classic)</strong></li>
+<li>Give the token a name (e.g., "WordPress Plugins Showcase")</li>
+<li>Select an expiration period (recommended: 90 days or more)</li>
+<li>Check the following scopes:<ul>
+<li><code>public_repo</code> - for access to public repositories</li>
+<li><code>read:org</code> - for reading organization information</li>
+</ul>
+</li>
+<li>Click <strong>Generate token</strong></li>
+<li><strong>Copy the token immediately!</strong> You won't be able to see it again.</li>
+<li>Paste the token in the plugin settings</li>
+<li>Click <strong>Test Token</strong> to verify it works</li>
+</ol>
+<blockquote>
+<p><strong>Important:</strong> Keep the token secret. Do not share it or publish it in code.</p>
+</blockquote>
+<h3>Sync Settings</h3>
+<p><strong>Auto Sync</strong> - Select the frequency of automatic synchronization:</p>
+<ul>
+<li>Disabled</li>
+<li>Once per day</li>
+<li>Once per week</li>
+<li>Once per month</li>
+</ul>
+<p><strong>Skip Forks</strong> - Skip forked repositories during sync</p>
+<p><strong>Skip Archived</strong> - Skip archived repositories during sync</p>
+<h2>Gutenberg Blocks</h2>
+<h3>Plugins Grid</h3>
+<p>Displays a grid of all plugins with search and filters.</p>
+<p>Settings:</p>
+<ul>
+<li>Columns (1-4) - number of columns</li>
+<li>Per Page - plugins per page</li>
+<li>Show Search - display search box</li>
+<li>Show Filters - display category filter</li>
+<li>Category - filter by specific category</li>
+<li>Show Stars - display GitHub stars</li>
+<li>Show Language - display programming language</li>
+</ul>
+<h3>Single Plugin</h3>
+<p>Displays information about a single plugin.</p>
+<p>Settings:</p>
+<ul>
+<li>Select Plugin - choose a plugin</li>
+<li>Show README - display README content</li>
+<li>Show Meta - display statistics</li>
+</ul>
+<h2>URL Structure</h2>
+<ul>
+<li>Plugin archive: <code>/plugins/</code></li>
+<li>Single plugin: <code>/plugins/plugin-name/</code></li>
+<li>Category: <code>/plugin-category/category-name/</code></li>
+</ul>
+<h2>REST API</h2>
+<p>The plugin provides REST API endpoints:</p>
+<pre><code class="language-http">GET /wp-json/plugins-showcase/v1/plugins
+GET /wp-json/plugins-showcase/v1/plugin/{id}
+</code></pre>
+<p>Parameters for <code>/plugins</code>:</p>
+<ul>
+<li><code>search</code> - search text</li>
+<li><code>category</code> - category slug</li>
+<li><code>per_page</code> - number of results (default: 12)</li>
+<li><code>page</code> - page number (default: 1)</li>
+</ul>
+<h2>Screenshots Setup</h2>
+<p>To display screenshots on your plugin pages, add images to one of these folders in your GitHub repository:</p>
+<ul>
+<li><code>.github/screenshots/</code> (recommended)</li>
+<li><code>screenshots/</code></li>
+<li><code>assets/screenshots/</code></li>
+<li><code>.wordpress-org/</code></li>
+</ul>
+<p>Name files with numbers for sorting: <code>01-dashboard.png</code>, <code>02-settings.png</code>, etc.</p>
+<p>See <code>examples/SCREENSHOTS.md</code> for detailed instructions and GitHub Action for automatic screenshot generation.</p>
+<h2>FAQ</h2>
+<h3>README not showing?</h3>
+<ol>
+<li>Check if you have added a GitHub token</li>
+<li>Re-sync the plugins from Settings &gt; Sync Now</li>
+<li>Check if the repository has a README.md file</li>
+</ol>
+<h3>Getting 403 error when searching?</h3>
+<p>Possible causes:</p>
+<ul>
+<li>Security plugin blocking REST API</li>
+<li>.htaccess rules blocking access</li>
+</ul>
+<p>Solution: Add an exception for <code>/wp-json/plugins-showcase/</code> in the security plugin.</p>
+<h3>How to change the appearance?</h3>
+<p>Add custom CSS in your theme or use the CSS classes:</p>
+<ul>
+<li><code>.plugins-showcase-grid</code> - grid container</li>
+<li><code>.plugins-showcase-card</code> - plugin card</li>
+<li><code>.plugins-showcase-single</code> - single page</li>
+<li><code>.plugins-showcase-readme</code> - README content</li>
+</ul>
+<h2>License</h2>
+<p>GPL-2.0+</p>

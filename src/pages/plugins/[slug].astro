@@ -27,6 +27,8 @@ const readmePath = `src/data/readmes/${plugin.id}.html`;
 const safeReadmeHtml = existsSync(readmePath) ? readFileSync(readmePath, 'utf-8') : `<p>No README available. Visit the <a href="${githubUrl}">GitHub repository</a> for more information.</p>`;
 const downloadUrl = `${githubUrl}/archive/refs/heads/${defaultBranch}.zip`;
 const wpCliCommand = `wp plugin install ${downloadUrl} --activate`;
+const playgroundBlueprint = JSON.stringify({ steps: [{ step: 'installPlugin', pluginZipFile: { resource: 'url', url: downloadUrl }, options: { activate: true } }] });
+const playgroundUrl = `https://playground.wordpress.net/#${playgroundBlueprint}`;
 
 // Load per-repo contributors
 interface RepoContributor { login: string; avatar: string; profileUrl: string; contributions: number; }
@@ -135,6 +137,15 @@ const softwareSchema = {
             GitHub
           </a>
           <a
+            href={playgroundUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-5 py-2.5 border border-blue-300 dark:border-blue-700 text-sm font-medium rounded-lg text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors duration-200"
+          >
+            <Icon name="lucide:play" class="size-4 mr-2" />
+            Try in Playground
+          </a>
+          <a
             href={`${githubUrl}/issues/new`}
             target="_blank"
             rel="noopener noreferrer"
@@ -177,7 +188,7 @@ const softwareSchema = {
           {toc.length > 2 && (
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
               <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">On this page</h3>
-              <nav class="space-y-1 max-h-64 overflow-y-auto">
+              <nav class="space-y-1">
                 {toc.map((item) => (
                   <a
                     href={`#${item.id}`}
@@ -260,6 +271,15 @@ const softwareSchema = {
                 Get from WordPress.org
               </a>
             )}
+            <a
+              href={playgroundUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-center gap-2 w-full mt-3 px-4 py-3 text-sm font-medium rounded-lg text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors duration-200"
+            >
+              <Icon name="lucide:play" class="size-4" />
+              Try in Playground
+            </a>
           </div>
 
           <!-- WP-CLI Install -->

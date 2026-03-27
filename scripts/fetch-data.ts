@@ -142,6 +142,9 @@ function categorize(topics: string[], language: string | null, slug: string): st
   // Fallback: PHP language → plugin
   if (lang === 'php') return 'plugin';
 
+  // TypeScript/JavaScript repos → app
+  if (lang === 'typescript' || lang === 'javascript') return 'app';
+
   // Default to plugin for repos in this org
   return 'plugin';
 }

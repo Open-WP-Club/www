@@ -1,0 +1,79 @@
+<h1>Disable Gutenberg for WP</h1>
+<p>Enable or disable Gutenberg editor for specific post types in WordPress. Perfect for sites where you want to use Classic Editor for selected content while keeping Gutenberg for others.</p>
+<h2>Features</h2>
+<ul>
+<li>Disable Gutenberg editor for selected post types</li>
+<li>Minimal performance impact</li>
+<li>Works seamlessly with custom post types</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 6.0 or higher</li>
+<li>PHP 7.4 or higher</li>
+</ul>
+<h2>Installation</h2>
+<h3>From GitHub</h3>
+<ol>
+<li><p>Download the latest release or clone this repository:</p>
+<pre><code class="language-bash">git clone https://github.com/Open-WP-Club/disable-gutenberg-for-wp.git
+</code></pre>
+</li>
+<li><p>Upload the <code>disable-gutenberg-for-wp</code> folder to your <code>/wp-content/plugins/</code> directory</p>
+</li>
+<li><p>Activate the plugin through the 'Plugins' menu in WordPress</p>
+</li>
+<li><p>Navigate to <strong>Tools &gt; Disable Gutenberg</strong> in the WordPress admin menu</p>
+</li>
+</ol>
+<h3>Manual Installation</h3>
+<ol>
+<li>Download the plugin files</li>
+<li>Create a folder named <code>disable-gutenberg-for-wp</code> in <code>/wp-content/plugins/</code></li>
+<li>Upload all plugin files to this folder</li>
+<li>Activate the plugin via the 'Plugins' menu in WordPress</li>
+</ol>
+<h2>Usage</h2>
+<ol>
+<li><p>After activation, go to <strong>Tools &gt; Disable Gutenberg</strong> in your WordPress admin menu</p>
+</li>
+<li><p>You'll see a list of all public post types on your site</p>
+</li>
+<li><p>Toggle the switch for any post type where you want to disable Gutenberg</p>
+</li>
+<li><p>Click Save Changes</p>
+</li>
+<li><p>The selected post types will now use the Classic Editor while others continue using Gutenberg</p>
+</li>
+</ol>
+<h2>How It Works</h2>
+<p>The plugin uses WordPress's built-in <code>use_block_editor_for_post_type</code> filter to selectively disable the block editor for chosen post types. This approach:</p>
+<ul>
+<li>Is officially supported by WordPress</li>
+<li>Works reliably across WordPress versions</li>
+<li>Doesn't require any theme modifications</li>
+<li>Is completely reversible</li>
+</ul>
+<h2>Frequently Asked Questions</h2>
+<h3>Does this plugin install Classic Editor?</h3>
+<p>No, this plugin does not install the Classic Editor plugin. It simply disables Gutenberg for selected post types, which causes WordPress to fall back to the classic editing experience. For the full Classic Editor plugin experience, you may want to install the official Classic Editor plugin alongside this one.</p>
+<h3>What happens to my existing Gutenberg content?</h3>
+<p>Your existing content remains unchanged. If you later re-enable Gutenberg for a post type, all block content will work normally.</p>
+<h3>Does this work with custom post types?</h3>
+<p>Yes! The plugin automatically detects all public post types, including custom ones registered by themes and plugins.</p>
+<h3>Why is the Media/Attachment post type not shown?</h3>
+<p>The Media (attachment) post type is excluded by default as it doesn't use the standard editor interface.</p>
+<h3>Can I programmatically control which post types are disabled?</h3>
+<p>Yes, you can use the <code>dgwp_disabled_post_types</code> filter in your theme or custom plugin.</p>
+<h3>Is this plugin compatible with multisite?</h3>
+<p>Yes, the plugin works on multisite installations. It needs to be activated per site, and each site can have its own configuration.</p>
+<h2>Compatibility</h2>
+<ul>
+<li>WordPress 6.0+</li>
+<li>PHP 7.4+</li>
+<li>Multisite compatible</li>
+<li>Works with all themes</li>
+<li>Compatible with popular page builders</li>
+<li>Translation ready</li>
+</ul>
+<h2>Contributing</h2>
+<p>Contributions are welcome! Please feel free to submit a Pull Request.</p>

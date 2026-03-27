@@ -1,0 +1,103 @@
+<h1>WP File Visibility Manager</h1>
+<h2>Description</h2>
+<p>File Visibility Manager is a WordPress plugin that provides granular control over file access and visibility on your WordPress site. It allows administrators to protect specific file types and manage access through an intuitive admin interface.</p>
+<h2>Features</h2>
+<ul>
+<li>Protect specific file types (e.g., PDF, DOC, DOCX)</li>
+<li>Exclude individual files from protection</li>
+<li>Custom redirect URL for unauthorized users</li>
+<li>User-friendly admin interface</li>
+<li>Secure file access control</li>
+<li>Compatible with WordPress multisite</li>
+<li>Lightweight and optimized performance</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Download the plugin files</li>
+<li>Upload the <code>file-visibility-manager</code> folder to the <code>/wp-content/plugins/</code> directory</li>
+<li>Activate the plugin through the 'Plugins' menu in WordPress</li>
+<li>Configure the plugin settings under 'File Visibility' in the admin menu</li>
+</ol>
+<h2>Usage</h2>
+<h3>Basic Configuration</h3>
+<ol>
+<li>Navigate to 'File Visibility' in your WordPress admin menu</li>
+<li>Enter file extensions you want to protect (comma-separated)</li>
+<li>Add any specific files you want to exclude from protection</li>
+<li>Set a custom redirect URL for unauthorized users</li>
+<li>Save your settings</li>
+</ol>
+<h3>Protected File Extensions</h3>
+<ul>
+<li>Default: pdf</li>
+<li>Format: Comma-separated list (e.g., pdf,doc,docx)</li>
+<li>Case-insensitive</li>
+</ul>
+<h3>Excluded Files</h3>
+<ul>
+<li><p>Enter one filename per line</p>
+</li>
+<li><p>Use exact filenames including extension</p>
+</li>
+<li><p>Example:</p>
+<pre><code>document1.pdf
+presentation.pdf
+report2023.pdf
+</code></pre>
+</li>
+</ul>
+<h3>Redirect URL</h3>
+<ul>
+<li>Default: Site homepage</li>
+<li>Must be a valid URL</li>
+<li>Can be internal or external</li>
+</ul>
+<h2>Security Features</h2>
+<ul>
+<li>Prevents direct file access</li>
+<li>WordPress nonce protection</li>
+<li>User capability validation</li>
+<li>Data sanitization</li>
+<li>Secure form handling</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 5.0 or higher</li>
+<li>PHP 7.2 or higher</li>
+</ul>
+<h2>Frequently Asked Questions</h2>
+<h3>How does the file protection work?</h3>
+<p>The plugin intercepts file requests and checks if the requested file matches the protected extensions. If it does and the user is not logged in, they are redirected to the specified URL.</p>
+<h3>Can I protect specific folders?</h3>
+<p>Currently, the plugin protects files based on their extension across the entire site. Folder-specific protection may be added in future versions.</p>
+<h3>Will this work with my existing files?</h3>
+<p>Yes, the plugin will protect all files with the specified extensions, including existing files.</p>
+<h3>Does this work with CDNs?</h3>
+<p>Yes, but you may need to configure your CDN to pass through WordPress authentication.</p>
+<h2>Support</h2>
+<p>For support, feature requests, or bug reports, please <a href="/issues">create an issue</a> on our GitHub repository.</p>
+<h2>Contributing</h2>
+<p>Contributions are welcome! Please feel free to submit a Pull Request.</p>
+<h2>License</h2>
+<p>This plugin is licensed under the GPL v2 or later.</p>
+<h2>Changelog</h2>
+<h3>1.0.0</h3>
+<ul>
+<li>Initial release</li>
+<li>Basic file protection functionality</li>
+<li>Admin interface</li>
+<li>File exclusion system</li>
+<li>Custom redirect URLs</li>
+</ul>
+<h3>Future Plans</h3>
+<ul>
+<li>Role-based access control</li>
+<li>Directory-specific protection</li>
+<li>Bulk file management</li>
+<li>Access logs</li>
+<li>API integration</li>
+</ul>
+<h2>Credits</h2>
+<p>Developed by [Your Name/Company]</p>
+<h2>Privacy Policy</h2>
+<p>This plugin does not collect or store any personal data. It only manages file access permissions within your WordPress installation.</p>

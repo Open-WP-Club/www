@@ -1,0 +1,66 @@
+<h1>Admin Notice Remover</h1>
+<h2>Description</h2>
+<p>Admin Notice Remover allows you to permanently remove specific admin notices that you don't want to see in your WordPress dashboard. Instead of just hiding them with CSS, this plugin completely removes the notices from the DOM, ensuring they don't take up any space or resources.</p>
+<h2>Features</h2>
+<ul>
+<li>Complete removal of specified notices (not just hiding them)</li>
+<li>Performance optimized with built-in caching</li>
+<li>Easy configuration through a separate config file</li>
+<li>Matches notices by both CSS class and content</li>
+<li>Works with all types of WordPress admin notices</li>
+<li>Minimal performance impact</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Download the plugin files</li>
+<li>Create a directory called <code>admin-notice-remover</code> in your <code>/wp-content/plugins/</code> directory</li>
+<li>Upload the following files to the directory:<ul>
+<li><code>admin-notice-remover.php</code></li>
+<li><code>notices-config.php</code></li>
+<li><code>README.md</code> (optional)</li>
+</ul>
+</li>
+<li>Activate the plugin through the 'Plugins' menu in WordPress</li>
+</ol>
+<h3>Example Configuration</h3>
+<pre><code class="language-php">return array(
+    array(
+        'class' =&gt; 'themeisle-sale',
+        'content_partial' =&gt; 'Themeisle Black Friday Sale'
+    ),
+    array(
+        'class' =&gt; 'update-nag',
+        'content_partial' =&gt; 'Please update now'
+    )
+);
+</code></pre>
+<h2>How It Works</h2>
+<ol>
+<li>The plugin loads the notice configuration from <code>notices-config.php</code></li>
+<li>Configurations are cached for optimal performance</li>
+<li>When the admin panel loads, the plugin intercepts the output</li>
+<li>Specified notices are completely removed from the page</li>
+<li>The cache is automatically refreshed every hour</li>
+</ol>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 4.7 or higher</li>
+<li>PHP 7.0 or higher</li>
+</ul>
+<h2>Frequently Asked Questions</h2>
+<h3>How do I add new notices to remove?</h3>
+<p>Edit the <code>notices-config.php</code> file and add new entries following the existing format.</p>
+<h3>Does this affect frontend performance?</h3>
+<p>No, the plugin only runs in the WordPress admin panel.</p>
+<h2>Troubleshooting</h2>
+<p>If a notice isn't being removed:</p>
+<ol>
+<li>Check the notice's HTML class in your browser's inspector</li>
+<li>Verify the class name in <code>notices-config.php</code></li>
+<li>Try adding some unique text from the notice as a <code>content_partial</code></li>
+<li>Clear the cache by deactivating and reactivating the plugin</li>
+</ol>
+<h2>Contributing</h2>
+<p>Feel free to submit issues and enhancement requests on our repository.</p>
+<h2>License</h2>
+<p>This project is licensed under the GPL v2 or later.</p>

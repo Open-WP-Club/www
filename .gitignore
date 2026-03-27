@@ -11,6 +11,3 @@ dist/
 
 # Fetch cache (ETag-based, local only)
 .fetch-cache.json
-
-# Generated README HTML files (created by fetch-data)
-src/data/readmes/

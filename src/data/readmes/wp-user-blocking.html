@@ -1,0 +1,91 @@
+<h1>WP User Blocking</h1>
+<h2>Description</h2>
+<p>WP User Blocking is a WordPress plugin that allows administrators to restrict access to their website for specific users based on email addresses or IP addresses. It provides a customizable block message and offers features such as email export/import functionality and debug mode.</p>
+<h2>Features</h2>
+<ul>
+<li>Block users by email address</li>
+<li>Block users by IP address</li>
+<li>Customizable block message</li>
+<li>Option to block admin users</li>
+<li>Export and import blocked email addresses</li>
+<li>Debug mode for testing</li>
+<li>wp-config.php debug mode override</li>
+<li>Bulk actions to block/unblock users</li>
+<li>User-friendly settings page in WordPress admin</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Download the plugin zip file.</li>
+<li>Log in to your WordPress admin panel.</li>
+<li>Go to Plugins &gt; Add New.</li>
+<li>Click on the "Upload Plugin" button.</li>
+<li>Choose the downloaded zip file and click "Install Now".</li>
+<li>After installation, click "Activate Plugin".</li>
+</ol>
+<h2>Usage</h2>
+<h3>Accessing the Settings</h3>
+<ol>
+<li>Log in to your WordPress admin panel.</li>
+<li>Go to Users &gt; User Blocking.</li>
+</ol>
+<h3>Configuring the Plugin</h3>
+<ol>
+<li><strong>Block Message</strong>: Customize the message displayed to blocked users.</li>
+<li><strong>Blocked Emails</strong>: Enter email addresses to block, one per line.</li>
+<li><strong>Blocked IPs</strong>: Enter IP addresses to block, one per line.</li>
+<li><strong>Button Email</strong>: Set an email address for the "Contact Us" button on the block page.</li>
+<li><strong>Debug Mode</strong>: Enable to allow access to wp-admin for testing.</li>
+<li><strong>Block Admins</strong>: Enable to block users with administrator roles.</li>
+</ol>
+<h3>Blocking/Unblocking Individual Users</h3>
+<ol>
+<li>Go to the Users page in the WordPress admin.</li>
+<li>Hover over a user and click "Block User" or "Unblock User".</li>
+</ol>
+<h3>Bulk Blocking/Unblocking Users</h3>
+<ol>
+<li>Go to the Users page in the WordPress admin.</li>
+<li>Select multiple users using the checkboxes.</li>
+<li>Choose "Block Users" or "Unblock Users" from the Bulk Actions dropdown.</li>
+<li>Click "Apply".</li>
+</ol>
+<h3>Exporting Blocked Emails</h3>
+<ol>
+<li>Go to Users &gt; User Blocking.</li>
+<li>Click the "Export Blocked Emails" button.</li>
+<li>A CSV file will be downloaded with all blocked email addresses.</li>
+</ol>
+<h3>Importing Blocked Emails</h3>
+<ol>
+<li>Go to Users &gt; User Blocking.</li>
+<li>Click "Choose File" under the Import Blocked Emails section.</li>
+<li>Select a CSV file containing email addresses to block.</li>
+<li>Click the "Import Blocked Emails" button.</li>
+</ol>
+<p>Note: The CSV file should have a header row with "Blocked Emails" as the column name. The import function will skip this header row.</p>
+<h3>Debug Mode</h3>
+<p>You can enable debug mode in two ways:</p>
+<ol>
+<li><p>Check the "Debug Mode" box in the plugin settings.</p>
+</li>
+<li><p>Add the following line to your wp-config.php file:</p>
+<pre><code class="language-php">define('WP_USER_BLOCKING_DEBUG', true);
+</code></pre>
+<p>This will override the setting in the admin panel.</p>
+</li>
+</ol>
+<h2>Frequently Asked Questions</h2>
+<p><strong>Q: Will this plugin block existing logged-in users?</strong>
+A: Yes, the plugin checks user access on each page load, so it will block existing sessions for newly blocked users.</p>
+<p><strong>Q: Can I block entire IP ranges?</strong>
+A: Currently, the plugin only supports blocking individual IP addresses. IP range blocking may be added in future updates.</p>
+<p><strong>Q: What happens if I block my own email or IP?</strong>
+A: If you block your own email or IP, you may lose access to your site. Always keep debug mode on or have an alternate admin account when testing.</p>
+<p><strong>Q: How do I unblock a user?</strong>
+A: You can unblock a user by removing their email from the Blocked Emails list in the plugin settings, or by using the "Unblock User" action on the Users page.</p>
+<h2>Contributing</h2>
+<p>We welcome contributions to the WP User Blocking plugin. Please fork the repository and submit a pull request with your changes.</p>
+<h2>License</h2>
+<p>WP User Blocking is licensed under the GPL v2 or later.</p>
+<hr />
+<p>© 2024 OpenWPclub.com. All rights reserved.</p>

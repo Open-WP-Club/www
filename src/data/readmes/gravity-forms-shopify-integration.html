@@ -1,0 +1,93 @@
+<h1>Gravity Forms Shopify Integration</h1>
+<p>A WordPress plugin that automatically sends Gravity Forms submissions to your Shopify customer database with marketing subscription opt-in.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Seamless Integration</strong>: Connects Gravity Forms with Shopify Customer API</li>
+<li><strong>Marketing Opt-in</strong>: Automatically subscribes customers to marketing emails with proper consent tracking</li>
+<li><strong>Custom Tags</strong>: Add configurable tags to customers (default: newsletter)</li>
+<li><strong>Name Field Support</strong>: Captures first and last names when available</li>
+<li><strong>Smart Updates</strong>: Creates new customers or updates existing ones with marketing preferences</li>
+<li><strong>Debug Logging</strong>: Comprehensive logging with retention controls</li>
+<li><strong>Modern Admin Interface</strong>: Clean two-column design with real-time status monitoring</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 5.0+</li>
+<li>PHP 7.4+</li>
+<li>Gravity Forms plugin</li>
+<li>Shopify store with Admin API access</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Upload the plugin files to <code>/wp-content/plugins/gravity-forms-shopify-integration/</code></li>
+<li>Activate the plugin through WordPress Admin → Plugins</li>
+<li>Configure the plugin at Settings → GF Shopify</li>
+</ol>
+<h2>Shopify Setup</h2>
+<h3>Create Private App</h3>
+<ol>
+<li>Go to Shopify Admin → Apps → App and sales channel settings</li>
+<li>Click "Develop apps" → "Create an app"</li>
+<li>Set app name (e.g., "Gravity Forms Integration")</li>
+<li>Configure Admin API scopes:<ul>
+<li><code>read_customers</code></li>
+<li><code>write_customers</code></li>
+<li><code>write_customers_marketing_consent</code></li>
+</ul>
+</li>
+<li>Install the app and copy the Admin API access token</li>
+</ol>
+<h2>Plugin Configuration</h2>
+<p>Navigate to <strong>Settings → GF Shopify</strong> and configure:</p>
+<ul>
+<li><strong>Shopify Domain</strong>: <code>your-store.myshopify.com</code> (without https://)</li>
+<li><strong>Admin API Access Token</strong>: From your private app</li>
+<li><strong>Gravity Form ID</strong>: ID of the form to integrate</li>
+<li><strong>Customer Tags</strong>: Comma-separated tags (e.g., newsletter, subscriber)</li>
+<li><strong>Enable Debug Logging</strong>: Toggle logging on/off for troubleshooting</li>
+<li><strong>Log Retention</strong>: Automatically delete logs after specified days (1-30)</li>
+</ul>
+<h2>Form Requirements</h2>
+<p>Your Gravity Form must include:</p>
+<ul>
+<li><strong>Email field</strong> (required)</li>
+<li><strong>Name field</strong> (optional - first/last name support)</li>
+</ul>
+<h2>How It Works</h2>
+<ol>
+<li>User submits your Gravity Form</li>
+<li>Plugin extracts email and name fields</li>
+<li>Creates/updates customer in Shopify with:<ul>
+<li>Email address</li>
+<li>First/last name (if provided)</li>
+<li>Marketing subscription with confirmed opt-in consent</li>
+<li>Custom tags</li>
+<li>Proper consent timestamps</li>
+</ul>
+</li>
+</ol>
+<h2>Debugging</h2>
+<p>The plugin includes comprehensive logging with retention controls:</p>
+<ul>
+<li><strong>Two-column admin interface</strong> with real-time status monitoring</li>
+<li><strong>Configurable logging</strong> - enable/disable as needed  </li>
+<li><strong>Automatic log cleanup</strong> based on retention period</li>
+<li><strong>Form submission tracking</strong> with detailed field mapping</li>
+<li><strong>API request/response monitoring</strong> with error details</li>
+</ul>
+<p>Check <strong>Settings → GF Shopify</strong> for configuration status and recent activity logs.</p>
+<h2>Common Issues</h2>
+<p><strong>HTTP 301 Error</strong>: Check domain format - should be <code>store-name.myshopify.com</code></p>
+<p><strong>No email found</strong>: Ensure your form has an email field type</p>
+<p><strong>API permissions</strong>: Verify your Shopify app has customer read/write permissions</p>
+<h2>Support</h2>
+<p>For issues and questions:</p>
+<ul>
+<li>Check the debug logs first</li>
+<li>Ensure all requirements are met</li>
+<li>Verify Shopify API credentials</li>
+</ul>
+<h2>License</h2>
+<p>Licensed under the Apache License 2.0. See the LICENSE file for details.</p>
+<h2>Author</h2>
+<p><strong>Gabriel Kanev</strong><br />Website: <a href="https://gkanev.com">gkanev.com</a></p>

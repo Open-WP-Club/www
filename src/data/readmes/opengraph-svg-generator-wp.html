@@ -1,0 +1,188 @@
+<h1>OpenGraph Image Generator</h1>
+<p>A WordPress plugin that automatically generates beautiful, branded OpenGraph images for social media sharing. Uses SVG for crisp, scalable graphics with a modular theme system.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Automatic Social Sharing</strong> - Works with Facebook, Twitter, LinkedIn, Discord, Slack, WhatsApp</li>
+<li><strong>Dynamic Content</strong> - Uses your site title, page titles, and tagline</li>
+<li><strong>Avatar Integration</strong> - Upload your profile image with automatic caching</li>
+<li><strong>Themes</strong> -  Modern Card, Purple Guide, Split, Dark Author, Simple Featured, Minimal, and more</li>
+<li><strong>Modular Theme System</strong> - Easy to create custom themes</li>
+<li><strong>Configurable Footer Text</strong> - Add your own professional tagline</li>
+<li><strong>Bulk Generation</strong> - Generate images for all posts at once with progress tracking</li>
+<li><strong>Media Library Integration</strong> - Images appear in WordPress media library</li>
+<li><strong>Smart Caching</strong> - Avatar caching (7 days) and preview caching (15 minutes)</li>
+<li><strong>Performance Optimized</strong> - Batch database queries, lazy theme loading</li>
+<li><strong>WP-CLI Support</strong> - Full command-line interface for automation</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Upload the plugin folder to <code>/wp-content/plugins/</code></li>
+<li>Activate the plugin through WordPress admin</li>
+<li>Go to <strong>Settings → OpenGraph SVG</strong></li>
+<li>Upload your avatar image</li>
+<li>Choose your theme</li>
+<li>Configure footer text (optional)</li>
+<li>Save settings</li>
+</ol>
+<h2>Usage</h2>
+<p>The plugin works automatically once activated. Every page on your site will have a unique OpenGraph image when shared on social media.</p>
+<h3>Generate Images for All Posts</h3>
+<ol>
+<li>Go to Settings → OpenGraph SVG</li>
+<li>Click "Generate All Images"</li>
+<li>Optionally check "Regenerate existing images"</li>
+<li>Wait for the process to complete</li>
+</ol>
+<h3>Image URLs</h3>
+<ul>
+<li>Homepage: <code>yoursite.com/og-svg/home/</code></li>
+<li>Specific pages: <code>yoursite.com/og-svg/[post-id]/</code></li>
+</ul>
+<h2>Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Avatar Image</strong></td>
+<td>Your profile photo (200x200px recommended, max 500KB)</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Choose from 8+ professional themes</td>
+</tr>
+<tr>
+<td><strong>Show Tagline</strong></td>
+<td>Include/exclude site tagline in images</td>
+</tr>
+<tr>
+<td><strong>Fallback Title</strong></td>
+<td>Text for pages without titles (e.g., homepage)</td>
+</tr>
+<tr>
+<td><strong>Post Types</strong></td>
+<td>Enable for posts, pages, custom post types</td>
+</tr>
+<tr>
+<td><strong>Footer Text</strong></td>
+<td>Custom text shown in footer (e.g., "Developer • Designer • Creator")</td>
+</tr>
+</tbody></table>
+<h2>Available Themes</h2>
+<table>
+<thead>
+<tr>
+<th>Theme</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Modern Card</strong></td>
+<td>Clean card-based layout</td>
+</tr>
+<tr>
+<td><strong>Purple Guide</strong></td>
+<td>Elegant purple color scheme</td>
+</tr>
+<tr>
+<td><strong>Split</strong></td>
+<td>Two-column layout design</td>
+</tr>
+<tr>
+<td><strong>Dark Author</strong></td>
+<td>Dark theme with author focus</td>
+</tr>
+<tr>
+<td><strong>Simple Featured</strong></td>
+<td>Minimal featured image layout</td>
+</tr>
+<tr>
+<td><strong>Minimal</strong></td>
+<td>Ultra-simple, clean design</td>
+</tr>
+</tbody></table>
+<h2>Creating Custom Themes</h2>
+<p>Themes are located in the <code>/themes/</code> directory. Each theme extends <code>OG_SVG_Theme_Base</code>:</p>
+<pre><code class="language-php">&lt;?php
+class OG_SVG_Theme_MyTheme extends OG_SVG_Theme_Base
+{
+  public function getThemeInfo(): array
+  {
+    return [
+      'name' =&gt; 'My Theme',
+      'description' =&gt; 'Custom theme description',
+      'author' =&gt; 'Your Name',
+      'preview_colors' =&gt; ['#3b82f6', '#1e40af', '#60a5fa']
+    ];
+  }
+
+  public function getColorScheme(): array
+  {
+    return [
+      'background' =&gt; '#1e40af',
+      'gradient_start' =&gt; '#3b82f6',
+      'gradient_end' =&gt; '#1e40af',
+      'text_primary' =&gt; '#ffffff',
+      'text_secondary' =&gt; '#e5e7eb',
+      'accent' =&gt; '#60a5fa'
+    ];
+  }
+
+  public function generateSVG(): string
+  {
+    // Your SVG generation logic
+  }
+}
+</code></pre>
+<h2>Troubleshooting</h2>
+<h3>OpenGraph URLs return 404 errors</h3>
+<ol>
+<li>Go to Settings → OpenGraph SVG</li>
+<li>Click "Fix URL Issues"</li>
+<li>Test URLs with "Test URLs" button</li>
+</ol>
+<h3>Images don't appear on social media</h3>
+<ol>
+<li>Check that your post type is enabled in settings</li>
+<li>Use "Generate All Images" to create missing images</li>
+<li>Verify upload directory is writable</li>
+<li>Use <a href="https://developers.facebook.com/tools/debug/">Facebook Debugger</a> to refresh cache</li>
+</ol>
+<h3>Avatar not loading</h3>
+<ol>
+<li>Ensure image is under 500KB</li>
+<li>Check that the URL is accessible</li>
+<li>Try re-uploading the image</li>
+<li>Check <code>/uploads/og-svg/avatars/</code> for cached files</li>
+</ol>
+<h2>WP-CLI Commands</h2>
+<pre><code class="language-bash"># Generate images for all posts
+wp og-svg generate
+
+# Force regenerate all images
+wp og-svg generate --force
+
+# Generate for specific post type
+wp og-svg generate --post-type=post
+
+# Show statistics
+wp og-svg stats
+
+# Test URLs
+wp og-svg test
+
+# Clean up all images
+wp og-svg cleanup
+</code></pre>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 6.0+</li>
+<li>PHP 8.2+</li>
+<li>Pretty permalinks enabled (recommended)</li>
+<li>Writable uploads directory</li>
+</ul>
+<h2>License</h2>
+<p>GPL v2 or later</p>

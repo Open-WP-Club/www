@@ -1,0 +1,93 @@
+<h1>Open WP Club Website</h1>
+<p>The community website for <a href="https://openwpclub.com">Open WP Club</a> — free, open-source WordPress plugins built by the community. Powered by <a href="https://astro.build">Astro</a>, Tailwind CSS v4, and deployed on Cloudflare Workers.</p>
+<h2>Quick Start</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js (version 18 or higher)</li>
+<li>npm</li>
+</ul>
+<h3>Installation</h3>
+<pre><code class="language-bash">git clone https://github.com/Open-WP-Club/www.git
+cd www
+npm install
+</code></pre>
+<h3>Development</h3>
+<pre><code class="language-bash">npm run dev
+</code></pre>
+<p>The site will be available at <code>http://localhost:4321</code>.</p>
+<h3>Build</h3>
+<pre><code class="language-bash">npm run build
+npm run preview   # preview the production build locally
+</code></pre>
+<h2>Scripts</h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>npm run dev</code></td>
+<td>Start development server</td>
+</tr>
+<tr>
+<td><code>npm run build</code></td>
+<td>Build for production (fetches latest data from GitHub)</td>
+</tr>
+<tr>
+<td><code>npm run preview</code></td>
+<td>Preview production build locally</td>
+</tr>
+<tr>
+<td><code>npm run fetch-data</code></td>
+<td>Fetch plugin + contributor data from GitHub and print a summary</td>
+</tr>
+<tr>
+<td><code>npm run refresh</code></td>
+<td>Fetch data summary + build in one step</td>
+</tr>
+<tr>
+<td><code>npm run test</code></td>
+<td>Run unit tests</td>
+</tr>
+</tbody></table>
+<h3>Updating plugin data</h3>
+<p>Plugin and contributor data is fetched from GitHub at build time. To refresh:</p>
+<pre><code class="language-bash">npm run refresh
+</code></pre>
+<p>Or to check the data first without building:</p>
+<pre><code class="language-bash">npm run fetch-data
+</code></pre>
+<p>For higher GitHub API rate limits (60/hr without, 5000/hr with):</p>
+<pre><code class="language-bash">GITHUB_TOKEN=ghp_xxx npm run refresh
+</code></pre>
+<h2>Project Structure</h2>
+<pre><code>src/
+  components/    # Reusable Astro components (Nav, Footer, Sidebar, etc.)
+  content/       # Content collections (blog posts, plugin data)
+  layouts/       # Base layout with SEO, Open Graph, structured data
+  lib/           # Config, GitHub API fetching, types
+  pages/         # File-based routing (plugins, blog, contributors, etc.)
+  styles/        # Global CSS (Tailwind v4)
+scripts/         # Standalone utility scripts (fetch-data)
+public/          # Static assets (favicon, OG image)
+</code></pre>
+<h2>Key Features</h2>
+<ul>
+<li>Plugin catalog fetched from GitHub at build time (stats, READMEs)</li>
+<li>Blog with tag filtering and RSS feed</li>
+<li>Contributors page from GitHub API</li>
+<li>SEO: sitemap, structured data, Open Graph, Twitter Cards</li>
+<li>View Transitions (SPA-style navigation)</li>
+<li>Dark mode with system preference detection</li>
+<li>Deployed to Cloudflare Workers ($0/month)</li>
+</ul>
+<h2>License</h2>
+<p>MIT - see <a href="LICENSE">LICENSE</a> for details.</p>
+<h2>Community</h2>
+<ul>
+<li><a href="https://github.com/Open-WP-Club">GitHub</a></li>
+<li><a href="https://discord.gg/ESTDmmjj">Discord</a></li>
+<li>Email: <a href="mailto:contact@openwpclub.com">contact@openwpclub.com</a></li>
+</ul>

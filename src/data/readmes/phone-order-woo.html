@@ -1,0 +1,161 @@
+<h1>Phone Order for WooCommerce</h1>
+<p>Modern phone-based order creation with Gutenberg blocks and WordPress Interactivity API for WooCommerce stores. Built with cutting-edge WordPress 6.9+ technologies for a superior user experience.</p>
+<h2>Features</h2>
+<h3>New in 2.0</h3>
+<ul>
+<li><strong>Gutenberg Block</strong> - Native block editor support with live preview and customization</li>
+<li><strong>Interactivity API</strong> - Modern, reactive user interface powered by WordPress Interactivity API</li>
+<li><strong>Analytics Dashboard</strong> - Track phone orders, conversion rates, and performance metrics</li>
+<li><strong>Admin Dashboard</strong> - Dedicated interface for managing phone orders</li>
+<li><strong>Abilities API</strong> - Extended functionality and integration points</li>
+</ul>
+<h3>Core Features</h3>
+<ul>
+<li><strong>Quick Orders</strong> - Customers order with just a phone number</li>
+<li><strong>Smart Customer Matching</strong> - Automatically matches existing customers by phone</li>
+<li><strong>Guest Customer Support</strong> - Creates guest accounts for new phone numbers</li>
+<li><strong>Flexible Display</strong> - Show form after product summary, after add-to-cart, use Gutenberg block, or shortcode</li>
+<li><strong>Stock Management</strong> - Respects product stock status with configurable behavior</li>
+<li><strong>Full Customization</strong> - Configure all form text via settings page</li>
+<li><strong>HPOS Compatible</strong> - Works with WooCommerce High Performance Order Storage</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>WordPress 6.9 or higher</li>
+<li>WooCommerce 9.0 or higher</li>
+<li>PHP 8.0 or higher</li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Upload the plugin folder to <code>/wp-content/plugins/</code></li>
+<li>Activate through the 'Plugins' menu in WordPress</li>
+<li>Ensure WooCommerce is installed and activated</li>
+<li>Configure settings at WooCommerce &gt; Settings &gt; Phone Order</li>
+</ol>
+<h2>Configuration</h2>
+<p>Navigate to <strong>WooCommerce &gt; Settings &gt; Phone Order</strong> to configure:</p>
+<h3>Form Content</h3>
+<ul>
+<li><strong>Form Title</strong> - Main heading (default: "Quick Purchase")</li>
+<li><strong>Form Subtitle</strong> - Tagline/subtitle</li>
+<li><strong>Form Description</strong> - Explanatory text</li>
+<li><strong>Button Text</strong> - Submit button label (default: "Order Now")</li>
+</ul>
+<h3>Display Options</h3>
+<ul>
+<li><strong>After product summary</strong> - Shows below product details</li>
+<li><strong>After add to cart button</strong> - Shows near purchase button</li>
+<li><strong>Disabled</strong> - Use shortcode only</li>
+</ul>
+<h3>Stock Behavior</h3>
+<ul>
+<li><strong>Hide form</strong> - Don't show for out-of-stock products</li>
+<li><strong>Show form</strong> - Display but reject orders</li>
+<li><strong>Show disabled</strong> - Display with disabled state and notice</li>
+</ul>
+<h2>Usage</h2>
+<h3>Gutenberg Block</h3>
+<p>Add the "Phone Order" block to any post or page using the block editor. Configure options directly in the editor:</p>
+<ul>
+<li>Product selection</li>
+<li>Show/hide title and description</li>
+<li>Custom title and button text</li>
+<li>Color and spacing customization</li>
+</ul>
+<h3>Automatic Display</h3>
+<p>Configure display position in settings. Form appears automatically on product pages.</p>
+<h3>Shortcode</h3>
+<pre><code>[woo_phone_order]
+</code></pre>
+<p>With specific product:</p>
+<pre><code>[woo_phone_order product_id="123"]
+</code></pre>
+<p>If no product ID specified, uses current product or latest product.</p>
+<h2>How It Works</h2>
+<ol>
+<li>Customer enters phone number on product page (via block, shortcode, or automatic display)</li>
+<li>Interactive form validates input in real-time (powered by Interactivity API)</li>
+<li>Plugin checks for existing customer with that phone</li>
+<li>Creates guest account if customer is new</li>
+<li>Creates WooCommerce order with "Processing" status</li>
+<li>Analytics tracks conversion and displays on dashboard</li>
+<li>Store owner contacts customer to complete order</li>
+</ol>
+<p>Orders use WooCommerce's standard <code>billing_phone</code> field for compatibility.</p>
+<h2>Dashboard &amp; Analytics</h2>
+<p>Version 2.0 introduces a comprehensive analytics and management system:</p>
+<ul>
+<li><strong>Phone Order Dashboard</strong> - Centralized view of all phone orders</li>
+<li><strong>Conversion Tracking</strong> - Monitor success rates and trends</li>
+<li><strong>Performance Metrics</strong> - Track order volume and customer engagement</li>
+<li>Access via WooCommerce &gt; Phone Orders in admin menu</li>
+</ul>
+<h2>Developer Hooks</h2>
+<h3>Actions</h3>
+<p><strong><code>wc_phone_order_created</code></strong>
+Fires when order is created via phone order.</p>
+<pre><code class="language-php">do_action('wc_phone_order_created', $order_id, $phone, $product_id);
+</code></pre>
+<h3>Filters</h3>
+<p><strong><code>wc_phone_order_settings</code></strong>
+Modify settings page fields.</p>
+<pre><code class="language-php">add_filter('wc_phone_order_settings', function($settings) {
+    // Modify $settings array
+    return $settings;
+});
+</code></pre>
+<h2>Frequently Asked Questions</h2>
+<p><strong>What's new in version 2.0?</strong>
+Version 2.0 is a complete modernization with Gutenberg blocks, WordPress Interactivity API for reactive interfaces, analytics dashboard, and requires WordPress 6.9+ with PHP 8.0+.</p>
+<p><strong>Can customers order multiple products?</strong>
+No, this is designed for quick single-product orders. Customers should use regular checkout for complex orders.</p>
+<p><strong>How are orders managed?</strong>
+Orders appear in WooCommerce Orders with "Processing" status. Filter by payment method "Phone Order". Use the new Phone Orders dashboard for dedicated management.</p>
+<p><strong>Does it work with HPOS?</strong>
+Yes! Fully compatible with WooCommerce High Performance Order Storage (Custom Order Tables).</p>
+<p><strong>Can I use the old shortcode method?</strong>
+Yes! All legacy features (shortcodes, automatic display) remain fully supported alongside the new Gutenberg block.</p>
+<p><strong>Can I style the form?</strong>
+Yes! Add custom CSS targeting <code>.woo-phone-order</code> classes. Uses BEM methodology for easy customization. The Gutenberg block also supports WordPress block styling options.</p>
+<p><strong>What happens to customer data?</strong>
+Uses WooCommerce standard fields. Existing customers are matched by phone. New customers get guest accounts.</p>
+<p><strong>What is the Interactivity API?</strong>
+WordPress Interactivity API is a modern framework for building reactive, dynamic interfaces. It provides real-time validation and smooth user interactions without page reloads.</p>
+<h2>Changelog</h2>
+<h3>Version 2.0.0 (Latest)</h3>
+<p><strong>New Features:</strong></p>
+<ul>
+<li>Gutenberg block for phone order form</li>
+<li>WordPress Interactivity API integration</li>
+<li>Analytics dashboard</li>
+<li>Admin dashboard for phone order management</li>
+<li>Abilities API for extensibility</li>
+</ul>
+<p><strong>Improvements:</strong></p>
+<ul>
+<li>Modern PHP 8.0+ codebase</li>
+<li>Block-based architecture</li>
+<li>Enhanced performance and UX</li>
+</ul>
+<p><strong>Requirements Update:</strong></p>
+<ul>
+<li>WordPress 6.9+</li>
+<li>PHP 8.0+</li>
+<li>WooCommerce 9.0+</li>
+</ul>
+<h3>Version 1.1.0</h3>
+<ul>
+<li>HPOS compatibility</li>
+<li>Settings page</li>
+<li>Customer matching</li>
+<li>Stock validation</li>
+</ul>
+<h3>Version 1.0.0</h3>
+<ul>
+<li>Initial release</li>
+</ul>
+<h2>License</h2>
+<p>GPL v2 or later</p>
+<h2>Credits</h2>
+<p>Developed and maintained by <a href="https://openwpclub.com">OpenWPClub.com</a></p>
+<p>Version 2.0 - Modern WordPress architecture with Gutenberg blocks and Interactivity API</p>

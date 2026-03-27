@@ -1,0 +1,117 @@
+<h1>StageGuard</h1>
+<h2>Description</h2>
+<p>StageGuard is a WordPress plugin designed to clearly indicate and manage a staging environment. It provides various features to protect your staging site, prevent accidental emails, and manage plugin activations.</p>
+<h2>Features</h2>
+<ul>
+<li>Displays a prominent message in the admin panel and on the frontend indicating a staging environment - only if WooCommerce is not installed</li>
+<li>Automatically deactivates specific plugins on staging environments</li>
+<li>Prevents activation of certain plugins and provides a custom error message</li>
+<li>Activates Coming Soon mode for WooCommerce (if installed)</li>
+<li>Modifies search engine visibility settings</li>
+<li>Provides password protection for the staging site (redirects to WordPress login)</li>
+<li><strong>Advanced IP restriction with multiple formats:</strong><ul>
+<li>Individual IP addresses (e.g., <code>192.168.1.1</code>)</li>
+<li>CIDR notation for IP ranges (e.g., <code>192.168.1.0/24</code>)</li>
+<li>IP address ranges (e.g., <code>192.168.1.1-192.168.1.10</code>)</li>
+<li>Supports both IPv4 and IPv6</li>
+<li>Automatic localhost whitelisting for safety</li>
+<li>Smart proxy header detection (X-Forwarded-For, X-Real-IP)</li>
+</ul>
+</li>
+<li>Filters robots.txt to discourage search engine indexing (no physical file modification)</li>
+<li>Catches and logs emails sent from the staging environment</li>
+<li>Includes WP-CLI commands for managing the plugin</li>
+<li>Clean, modular architecture with separated concerns</li>
+</ul>
+<h2>Deactivated Plugins</h2>
+<p>StageGuard will deactivate the following plugins:</p>
+<ol>
+<li><a href="https://wordpress.org/plugins/bunnycdn/">BunnyCDN</a></li>
+<li><a href="https://wordpress.org/plugins/redis-cache/">Redis Cache</a></li>
+<li><a href="https://wordpress.org/plugins/google-listings-and-ads/">Google Listings and Ads</a></li>
+<li><a href="https://wordpress.org/plugins/metorik-helper/">Metorik Helper</a></li>
+<li><a href="https://wordpress.org/plugins/order-sync-with-zendesk-for-woocommerce/">Order Sync with Zendesk for WooCommerce</a></li>
+<li><a href="https://wordpress.org/plugins/redis-object-cache/">Redis Object Cache</a></li>
+<li><a href="https://wordpress.org/plugins/runcloud-hub/">RunCloud Hub</a></li>
+<li><a href="https://wordpress.org/plugins/google-site-kit/">Site Kit by Google</a></li>
+<li><a href="https://wordpress.org/plugins/wp-cloudflare-page-cache/">Super Page Cache for Cloudflare</a></li>
+<li><a href="https://wordpress.org/plugins/woocommerce-shipstation-integration/">WooCommerce - ShipStation Integration</a></li>
+<li><a href="https://wordpress.org/plugins/wp-opcache/">WP OPcache</a></li>
+<li><a href="https://wordpress.org/plugins/headers-security-advanced-hsts-wp/">Headers Security Advanced &amp; HSTS WP</a></li>
+<li><a href="https://wp-rocket.me/">WP-Rocket</a></li>
+<li><a href="https://wordpress.org/plugins/tidio-live-chat/">Tidio Chat</a></li>
+<li><a href="https://wordpress.org/plugins/litespeed-cache/">LiteSpeed Cache</a></li>
+<li><a href="https://wordpress.org/plugins/wp-fastest-cache/">WP Fastest Cache</a></li>
+<li><a href="https://wordpress.org/plugins/phastpress/">PhastPress</a></li>
+<li><a href="https://wordpress.org/plugins/w3-total-cache/">W3 Total Cache</a></li>
+<li><a href="https://wordpress.org/plugins/wp-optimize/">WP Optimize</a></li>
+<li><a href="https://wordpress.org/plugins/autoptimize/">Autoptimize</a></li>
+<li><a href="https://wordpress.org/plugins/nitropack/">NitroPack</a></li>
+<li><a href="https://github.com/wp-sync-db/wp-sync-db">WP Sync DB</a></li>
+<li><a href="https://github.com/wp-sync-db/wp-sync-db-media-files">WP Sync DB Media Files</a></li>
+<li><a href="https://wordpress.org/plugins/updraftplus/">UpdraftPlus</a></li>
+<li><a href="https://wordpress.org/plugins/mailchimp-for-woocommerce/">Mailchimp for WooCommerce</a></li>
+</ol>
+<h2>Installation</h2>
+<ol>
+<li>Upload the <code>stageguard</code> folder to the <code>/wp-content/plugins/</code> directory.</li>
+<li>Activate the plugin through the 'Plugins' menu in WordPress.</li>
+<li>Go to Settings &gt; StageGuard to configure the plugin.</li>
+</ol>
+<h2>Configuration</h2>
+<p>Navigate to <strong>Settings &gt; StageGuard</strong> in your WordPress admin panel to configure:</p>
+<h3>1. Debug Mode</h3>
+<p>Toggle WordPress debug mode on or off. When enabled, WP_DEBUG constant will be set to true in wp-config.php.</p>
+<h3>2. Password Protection</h3>
+<p>Enable to redirect non-logged-in users to the WordPress login page. This ensures only authenticated users can access the staging site.</p>
+<h3>3. IP Restriction</h3>
+<p>Enable IP-based access control to restrict who can view the staging site.</p>
+<h3>4. Allowed IPs</h3>
+<p>Specify IP addresses that should have access to the staging site. Supports multiple formats:</p>
+<ul>
+<li><strong>Individual IPs</strong>: <code>192.168.1.1</code> (one per line)</li>
+<li><strong>CIDR Notation</strong>: <code>192.168.1.0/24</code> (allows entire subnet)</li>
+<li><strong>IP Ranges</strong>: <code>192.168.1.1-192.168.1.10</code> (allows range of IPs)</li>
+<li><strong>IPv6 Support</strong>: <code>2001:db8::1</code> or <code>2001:db8::/32</code></li>
+</ul>
+<p>The system automatically whitelists <code>127.0.0.1</code> and <code>::1</code> (localhost) for safety. Your current IP address is displayed in the settings page for convenience.</p>
+<h2>Viewing Logs</h2>
+<p>You can view the StageGuard logs in two ways:</p>
+<ol>
+<li><strong>Admin Interface</strong>: Go to Settings &gt; StageGuard Logs in the WordPress admin area.</li>
+<li><strong>WP-CLI</strong>: Use the command <code>wp stageguard show_log</code> to view logs in the terminal.</li>
+</ol>
+<h2>WP-CLI Commands</h2>
+<p>StageGuard supports the following WP-CLI commands:</p>
+<ul>
+<li><code>wp stageguard debug_mode &lt;on|off&gt;</code>: Toggle debug mode on or off.</li>
+<li><code>wp stageguard show_log [--lines=&lt;number&gt;]</code>: Display the StageGuard log. Use the <code>--lines</code> option to specify the number of lines to show (default is 50).</li>
+<li><code>wp stageguard status</code>: Shows current status.</li>
+<li><code>wp stageguard password_protection</code>: Toggle password protection on or off.</li>
+<li><code>wp stageguard ip_restriction</code>: Toggle IP restrictions on or off.</li>
+<li><code>wp stageguard show_log --clear</code>: Clearing logs.</li>
+</ul>
+<h2>Troubleshooting</h2>
+<p>If you're having issues with StageGuard, check the following:</p>
+<ol>
+<li><strong>Logging Issues</strong>: Ensure that the web server has write permissions to the <code>wp-content</code> directory for logging.</li>
+<li><strong>Staging Indicator Not Showing</strong>: Check if your theme is properly loading the <code>wp_head</code> action.</li>
+<li><strong>Password Protection Not Working</strong>: Make sure you're not already logged in to WordPress. The protection only affects non-authenticated users.</li>
+<li><strong>IP Restriction Issues</strong>:<ul>
+<li>Verify your IP format is correct (use the formats shown in Configuration section)</li>
+<li>Check if you're behind a proxy - the plugin detects <code>X-Forwarded-For</code> headers</li>
+<li>Remember that <code>127.0.0.1</code> and <code>::1</code> are always whitelisted</li>
+</ul>
+</li>
+<li><strong>robots.txt Not Updating</strong>: The plugin uses WordPress's virtual robots.txt. If you have a physical <code>robots.txt</code> file, it will take precedence. Delete the physical file to use the plugin's filter.</li>
+</ol>
+<h2>Requirements</h2>
+<ul>
+<li><strong>WordPress</strong>: 6.4 or higher</li>
+<li><strong>PHP</strong>: 8.0 or higher</li>
+<li><strong>License</strong>: GPL-2.0-or-later</li>
+</ul>
+<h2>Support</h2>
+<p>For support, please open an issue on the <a href="https://github.com/Open-WP-Club/StageGuard/">GitHub repository</a>.</p>
+<h2>Contributing</h2>
+<p>We welcome contributions! Please feel free to submit pull requests or open issues for bugs and feature requests.</p>
