@@ -1,136 +1,318 @@
 ---
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Sidebar from '../../components/Sidebar.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCollection } from 'astro:content';
 
-const allItems = await getCollection('plugins');
-const apps = allItems.filter((p) => p.data.category === 'app');
+const allApps = (await getCollection('plugins'))
+  .filter((p) => p.data.category === 'app')
+  .sort((a, b) => new Date(b.data.lastPush).getTime() - new Date(a.data.lastPush).getTime());
 
-const hardcodedApps = [
-  {
-    name: 'Desktop for WooCommerce',
-    description: 'Manage orders, inventory, and customers from a native desktop app - no browser tabs required. Still in development.',
-    platform: 'Desktop',
-    platformIcon: 'desktop',
-    status: 'Coming Soon',
-    tags: ['WooCommerce', 'Desktop', 'Orders', 'Inventory'],
+const categoryMap: Record<string, { label: string; icon: string; keywords: string[] }> = {
+  woocommerce: {
+    label: 'WooCommerce',
+    icon: 'lucide:shopping-cart',
+    keywords: ['woocommerce', 'woocommerce-plugin', 'e-commerce', 'wooco'],
   },
-  {
-    name: 'Android app for WooCommerce',
-    description: 'Check orders and update stock from your phone. Push notifications for new orders and low-stock alerts. Early stage - not yet available.',
-    platform: 'Android',
-    platformIcon: 'mobile',
-    status: 'Coming Soon',
-    tags: ['WooCommerce', 'Android', 'Mobile', 'Orders'],
+  orders: {
+    label: 'Orders',
+    icon: 'lucide:package',
+    keywords: ['order-management', 'orders', 'order-history', 'order-processing'],
   },
-];
+  inventory: {
+    label: 'Inventory',
+    icon: 'lucide:boxes',
+    keywords: ['inventory', 'inventory-management', 'stock', 'stock-management'],
+  },
+  mobile: {
+    label: 'Mobile',
+    icon: 'lucide:smartphone',
+    keywords: ['android', 'ios', 'mobile', 'react-native', 'flutter'],
+  },
+  desktop: {
+    label: 'Desktop',
+    icon: 'lucide:monitor',
+    keywords: ['electron', 'desktop', 'tauri', 'native'],
+  },
+  analytics: {
+    label: 'Analytics',
+    icon: 'lucide:chart-bar',
+    keywords: ['analytics', 'reporting', 'reports', 'insights', 'dashboard'],
+  },
+  tools: {
+    label: 'Tools',
+    icon: 'lucide:wrench',
+    keywords: ['cli', 'tool', 'utility', 'automation', 'devtools'],
+  },
+};
+
+const categoryCounts: Record<string, number> = {};
+for (const [key, cat] of Object.entries(categoryMap)) {
+  categoryCounts[key] = allApps.filter((p) =>
+    p.data.topics.some((t) => cat.keywords.includes(t.toLowerCase()))
+  ).length;
+}
+
+const categoryKeywordsJson = Object.fromEntries(
+  Object.entries(categoryMap).map(([key, cat]) => [key, cat.keywords])
+);
 ---
 
-<BaseLayout title="Apps - Open WP Club" description="Desktop and mobile apps for WooCommerce store management. Currently in development by Open WP Club.">
+<BaseLayout title="Apps - Open WP Club" description="Desktop and mobile apps built by Open WP Club.">
   <Breadcrumbs items={[{ label: 'Apps' }]} />
 
-  <section class="pt-8 pb-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
-          Apps
-        </h1>
-        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Native apps for WooCommerce store management. {apps.length > 0 ? `${apps.length} app${apps.length > 1 ? 's' : ''} available.` : 'These are in active development - none are publicly available yet.'}
-        </p>
-      </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10">
+
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Apps</h1>
+      <p class="mt-1 text-gray-500 dark:text-gray-400">{allApps.length} app{allApps.length !== 1 ? 's' : ''} built by Open WP Club</p>
     </div>
-  </section>
 
-  <section class="py-12 bg-gray-50 dark:bg-gray-950">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+    <div class="flex gap-8 items-start">
 
-        <!-- App cards -->
-        <div class="lg:col-span-2 space-y-6">
+      <!-- Left sidebar -->
+      <aside class="hidden lg:block w-56 shrink-0 sticky top-6">
 
-          {/* Real apps from GitHub data */}
-          {apps.map((app) => (
-            <a href={`/plugins/${app.id}/`} class="block bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-700 transition-all duration-200">
-              <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                <div class="flex items-start gap-4">
-                  <div class="flex-shrink-0 size-14 flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/40">
-                    <Icon name="lucide:monitor" class="size-7 text-blue-500" />
+        <!-- Search -->
+        <div class="relative mb-6">
+          <Icon name="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
+          <input
+            id="app-search"
+            type="search"
+            placeholder="Search apps..."
+            class="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            aria-label="Search apps"
+          />
+        </div>
+
+        <!-- Sort -->
+        <div class="mb-6">
+          <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Sort by</p>
+          <select
+            id="app-sort"
+            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          >
+            <option value="updated">Recently updated</option>
+            <option value="stars">Most stars</option>
+            <option value="name">Name A-Z</option>
+          </select>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Category</p>
+          <nav class="space-y-0.5" id="category-filters">
+            <button
+              data-category="all"
+              class="category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+            >
+              <span class="flex items-center gap-2">
+                <Icon name="lucide:layout-grid" class="size-4 shrink-0" />
+                All apps
+              </span>
+              <span class="text-xs text-gray-400 dark:text-gray-500">{allApps.length}</span>
+            </button>
+            {Object.entries(categoryMap).map(([key, cat]) => (
+              categoryCounts[key] > 0 && (
+                <button
+                  data-category={key}
+                  class="category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
+                >
+                  <span class="flex items-center gap-2">
+                    <Icon name={cat.icon} class="size-4 shrink-0" />
+                    {cat.label}
+                  </span>
+                  <span class="text-xs text-gray-400 dark:text-gray-500">{categoryCounts[key]}</span>
+                </button>
+              )
+            ))}
+          </nav>
+        </div>
+
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1 min-w-0">
+
+        <!-- Mobile controls -->
+        <div class="lg:hidden mb-4 space-y-2">
+          <div class="relative">
+            <Icon name="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
+            <input
+              id="app-search-mobile"
+              type="search"
+              placeholder="Search apps..."
+              class="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+            />
+          </div>
+          <div class="flex flex-wrap gap-2" id="category-filters-mobile">
+            <button data-category="all" class="category-btn-mobile inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-blue-500 text-white border-blue-500">
+              All <span class="opacity-75">{allApps.length}</span>
+            </button>
+            {Object.entries(categoryMap).map(([key, cat]) => (
+              categoryCounts[key] > 0 && (
+                <button
+                  data-category={key}
+                  class="category-btn-mobile inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700"
+                >
+                  {cat.label} <span class="opacity-60">{categoryCounts[key]}</span>
+                </button>
+              )
+            ))}
+          </div>
+        </div>
+
+        <div id="app-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {allApps.map((app) => (
+            <div
+              class="app-item"
+              data-topics={app.data.topics.join(' ').toLowerCase()}
+              data-name={app.data.name.toLowerCase()}
+              data-description={app.data.description.toLowerCase()}
+              data-stars={app.data.stars}
+              data-updated={app.data.lastPush}
+            >
+              <a
+                href={`/plugins/${app.id}/`}
+                class="block bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 h-full flex flex-col hover:shadow-md hover:border-blue-200 dark:hover:border-blue-700 transition-all duration-200"
+              >
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex items-start gap-4">
+                    <div class="shrink-0 size-12 flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/40">
+                      <Icon name="lucide:smartphone" class="size-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <h2 class="text-base font-semibold text-gray-900 dark:text-white">{app.data.name}</h2>
+                      {app.data.language && (
+                        <span class="inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                          {app.data.language}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{app.data.name}</h2>
-                    {app.data.language && (
-                      <span class="inline-flex items-center mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-                        {app.data.language}
+                  {app.data.stars > 0 && (
+                    <span class="inline-flex items-center gap-1 text-sm text-gray-500 shrink-0">
+                      <Icon name="lucide:star" class="size-4" />
+                      {app.data.stars}
+                    </span>
+                  )}
+                </div>
+                <p class="mt-4 text-sm text-gray-600 dark:text-gray-400 leading-relaxed flex-1">
+                  {app.data.description || 'No description available.'}
+                </p>
+                {app.data.topics.length > 0 && (
+                  <div class="mt-4 flex flex-wrap gap-1.5">
+                    {app.data.topics.slice(0, 5).map((tag) => (
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
+                        {tag}
                       </span>
-                    )}
+                    ))}
                   </div>
-                </div>
-                {app.data.stars > 0 && (
-                  <span class="inline-flex items-center gap-1 text-sm text-gray-500">
-                    <Icon name="lucide:star" class="size-4" />
-                    {app.data.stars}
-                  </span>
                 )}
-              </div>
-              <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">{app.data.description}</p>
-              {app.data.topics.length > 0 && (
-                <div class="mt-5 flex flex-wrap gap-2">
-                  {app.data.topics.map((tag) => (
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </a>
-          ))}
-
-          {/* Planned apps (hardcoded) */}
-          {hardcodedApps.map((app) => (
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm border border-gray-200 dark:border-gray-700">
-              <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                <div class="flex items-start gap-4">
-                  <div class="flex-shrink-0 size-14 flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/40">
-                    {app.platformIcon === 'desktop' ? (
-                      <Icon name="lucide:monitor" class="size-7 text-blue-500" />
-                    ) : (
-                      <Icon name="lucide:smartphone" class="size-7 text-blue-500" />
-                    )}
-                  </div>
-                  <div>
-                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{app.name}</h2>
-                    <span class="inline-flex items-center mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-                      {app.platform}
-                    </span>
-                  </div>
-                </div>
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700 shrink-0">
-                  {app.status}
-                </span>
-              </div>
-              <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">{app.description}</p>
-              <div class="mt-5 flex flex-wrap gap-2">
-                {app.tags.map((tag) => (
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200">
-                    {tag}
-                  </span>
-                ))}
-              </div>
+              </a>
             </div>
           ))}
         </div>
 
-        <!-- Sidebar -->
-        <div class="mt-8 lg:mt-0">
-          <div class="lg:sticky lg:top-24">
-            <Sidebar />
-          </div>
-        </div>
+        <p id="no-results" class="hidden text-center text-gray-500 dark:text-gray-500 py-12">No apps match your search or filter.</p>
 
+        <div class="mt-8 flex justify-center">
+          <p id="app-count" class="text-sm text-gray-400 dark:text-gray-500"></p>
+        </div>
       </div>
+
     </div>
-  </section>
+  </div>
 </BaseLayout>
+
+<script define:vars={{ categoryKeywordsJson }}>
+  window.__appCategoryKeywords = categoryKeywordsJson;
+</script>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const search = document.getElementById('app-search') as HTMLInputElement | null;
+    const searchMobile = document.getElementById('app-search-mobile') as HTMLInputElement | null;
+    const sort = document.getElementById('app-sort') as HTMLSelectElement | null;
+    const filterBtns = document.querySelectorAll('.category-btn') as NodeListOf<HTMLButtonElement>;
+    const filterBtnsMobile = document.querySelectorAll('.category-btn-mobile') as NodeListOf<HTMLButtonElement>;
+    const grid = document.getElementById('app-grid');
+    const countEl = document.getElementById('app-count');
+    const noResults = document.getElementById('no-results');
+    const categoryKeywords = (window as any).__appCategoryKeywords as Record<string, string[]>;
+    if (!grid || !countEl || !noResults) return;
+
+    const items = [...grid.querySelectorAll('.app-item')] as HTMLElement[];
+    let active = 'all';
+
+    function getSearch() { return (search?.value || searchMobile?.value || '').toLowerCase().trim(); }
+
+    function matchesCategory(topics: string): boolean {
+      if (active === 'all') return true;
+      return (categoryKeywords[active] || []).some((kw) => topics.includes(kw));
+    }
+
+    function update() {
+      const query = getSearch();
+      const sortBy = sort?.value || 'updated';
+
+      const matched = items.filter((item) => {
+        const name = item.dataset.name || '';
+        const desc = item.dataset.description || '';
+        const topics = item.dataset.topics || '';
+        return (!query || name.includes(query) || desc.includes(query) || topics.includes(query))
+          && matchesCategory(topics);
+      });
+
+      const sorted = [...matched].sort((a, b) => {
+        if (sortBy === 'stars') return Number(b.dataset.stars) - Number(a.dataset.stars);
+        if (sortBy === 'name') return (a.dataset.name || '').localeCompare(b.dataset.name || '');
+        return (b.dataset.updated || '').localeCompare(a.dataset.updated || '');
+      });
+
+      items.forEach((item) => { item.style.display = 'none'; });
+      sorted.forEach((el) => { el.style.display = ''; grid!.appendChild(el); });
+
+      countEl!.textContent = `${matched.length} app${matched.length !== 1 ? 's' : ''}${active !== 'all' ? ' in this category' : ''}`;
+      noResults!.classList.toggle('hidden', matched.length > 0);
+    }
+
+    function updateButtons() {
+      filterBtns.forEach((btn) => {
+        const isActive = btn.dataset.category === active;
+        btn.className = `category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+          isActive
+            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
+        }`;
+      });
+      filterBtnsMobile.forEach((btn) => {
+        const isActive = btn.dataset.category === active;
+        btn.className = `category-btn-mobile inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+          isActive ? 'bg-blue-500 text-white border-blue-500' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700'
+        }`;
+      });
+    }
+
+    [...filterBtns, ...filterBtnsMobile].forEach((btn) => {
+      btn.addEventListener('click', () => {
+        active = btn.dataset.category || 'all';
+        updateButtons();
+        update();
+      });
+    });
+
+    let debounce: ReturnType<typeof setTimeout>;
+    search?.addEventListener('input', () => {
+      if (searchMobile) searchMobile.value = search.value;
+      clearTimeout(debounce); debounce = setTimeout(update, 150);
+    });
+    searchMobile?.addEventListener('input', () => {
+      if (search) search.value = searchMobile.value;
+      clearTimeout(debounce); debounce = setTimeout(update, 150);
+    });
+    sort?.addEventListener('change', update);
+
+    update();
+  });
+</script>

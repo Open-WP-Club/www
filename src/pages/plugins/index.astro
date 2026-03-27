@@ -2,6 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PluginCard from '../../components/PluginCard.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCollection } from 'astro:content';
 
 const allItems = await getCollection('plugins');
@@ -68,8 +69,9 @@ const starThreshold = sorted.length > 0
 ---
 
 <BaseLayout title="All Plugins - Open WP Club" description={`${sorted.length} free, open-source WordPress plugins. Browse the full catalog, sorted by most recently updated.`}>
+  <Breadcrumbs items={[{ label: 'Plugins' }]} />
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10">
 
     <!-- Page header -->
     <div class="mb-8">
@@ -196,8 +198,6 @@ const starThreshold = sorted.length > 0
           ))}
         </div>
 
-        <p id="plugin-count" class="text-sm text-gray-500 dark:text-gray-500 mb-4"></p>
-
         <div id="plugin-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {sorted.map((plugin) => (
             <div
@@ -225,8 +225,11 @@ const starThreshold = sorted.length > 0
         </div>
         <p id="no-results" class="hidden text-center text-gray-500 dark:text-gray-500 py-12">No plugins match your search or filter.</p>
 
-        <!-- Pagination -->
-        <div id="pagination" class="hidden mt-8 flex items-center justify-center gap-1"></div>
+        <!-- Pagination + count -->
+        <div class="mt-8 flex items-center justify-between">
+          <p id="plugin-count" class="text-sm text-gray-400 dark:text-gray-500"></p>
+          <div id="pagination" class="hidden flex items-center gap-1"></div>
+        </div>
       </div>
 
     </div>
