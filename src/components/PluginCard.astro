@@ -31,29 +31,38 @@ const languageColors: Record<string, string> = {
 const langColor = language ? (languageColors[language] || '#6B7280') : '#6B7280';
 ---
 
-<a href={`/plugins/${slug}/`} class="relative block plugin-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-lg border border-gray-200 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-700 transition-all duration-200">
-  {(isNew || isPopular) && (
-    <div class="absolute top-3 right-3 flex gap-1.5">
-      {isPopular && (
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">
-          <Icon name="lucide:trending-up" class="size-3" />
-          Popular
-        </span>
-      )}
-      {isNew && (
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300">
-          <Icon name="lucide:sparkles" class="size-3" />
-          New
-        </span>
-      )}
-    </div>
-  )}
-  <div class="flex items-center space-x-2 mb-3">
-    <div class="flex-shrink-0">
-      <Icon name="lucide:code" class="size-5 text-blue-500 dark:text-blue-400" />
-    </div>
-    <h3 class="text-lg font-semibold text-gray-900 dark:text-white truncate">{name}</h3>
+<a href={`/plugins/${slug}/`} class="relative flex flex-col plugin-card bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg border border-gray-200 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-700 transition-all duration-200 overflow-hidden">
+  <!-- Banner image -->
+  <div class="h-28 bg-gray-100 dark:bg-gray-700 overflow-hidden shrink-0">
+    <img
+      src={`https://opengraph.githubassets.com/1/Open-WP-Club/${slug}`}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      class="w-full h-full object-cover"
+      onerror="this.parentElement.style.display='none'"
+    />
   </div>
+
+  <!-- Content -->
+  <div class="relative flex flex-col flex-1 p-6">
+    {(isNew || isPopular) && (
+      <div class="absolute top-3 right-3 flex gap-1.5">
+        {isPopular && (
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">
+            <Icon name="lucide:trending-up" class="size-3" />
+            Popular
+          </span>
+        )}
+        {isNew && (
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300">
+            <Icon name="lucide:sparkles" class="size-3" />
+            New
+          </span>
+        )}
+      </div>
+    )}
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white truncate mb-3 pr-16">{name}</h3>
 
   <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">{description}</p>
 
@@ -71,5 +80,6 @@ const langColor = language ? (languageColors[language] || '#6B7280') : '#6B7280'
     )}
   </div>
 
-  <PluginStats stars={stars} lastPush={lastPush} downloads={downloads} compact />
+    <PluginStats stars={stars} lastPush={lastPush} downloads={downloads} compact />
+  </div>
 </a>

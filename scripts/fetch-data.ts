@@ -311,6 +311,31 @@ async function main() {
   const contributors = Array.from(contributorMap.values()).sort((a, b) => b.contributions - a.contributions);
   console.log(`  Found ${contributors.length} unique contributors\n`);
 
+  // Fetch changelog from GitHub releases
+  console.log('Fetching changelog from GitHub releases...');
+  interface GitHubRelease { tag_name: string; name: string; published_at: string; body: string; draft: boolean; prerelease: boolean; }
+  const releasesResult = await cachedFetch(`https://api.github.com/repos/${ORG}/www/releases?per_page=30`);
+  const releases: GitHubRelease[] = releasesResult
+    ? (releasesResult.data as GitHubRelease[]).filter((r) => !r.draft && !r.prerelease)
+    : [];
+
+  if (releases.length > 0) {
+    const changelog = [...releases].reverse().map((r) => {
+      const date = new Date(r.published_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      const items = (r.body || '')
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l.startsWith('- ') || l.startsWith('* '))
+        .map((l) => l.slice(2).trim())
+        .filter(Boolean);
+      return { date, title: r.name || r.tag_name, items: items.length > 0 ? items : [`Release ${r.tag_name}`] };
+    });
+    writeFileSync(resolve(DATA_DIR, 'changelog.json'), JSON.stringify(changelog, null, 2));
+    console.log(`  Saved ${changelog.length} releases to changelog.json\n`);
+  } else {
+    console.log('  No releases found — keeping existing changelog.json\n');
+  }
+
   // Save to disk
   mkdirSync(DATA_DIR, { recursive: true });
   mkdirSync(READMES_DIR, { recursive: true });

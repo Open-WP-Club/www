@@ -29,13 +29,13 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
-    "@iconify-json/lucide": "^1.2.99",
+    "@iconify-json/lucide": "^1.2.101",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.2.2",
-    "astro": "^6.1.1",
+    "astro": "^6.1.4",
     "astro-icon": "^1.1.5",
-    "marked": "^17.0.5",
+    "marked": "^18.0.0",
     "sanitize-html": "^2.17.2",
     "satori": "^0.26.0",
     "tailwindcss": "^4.2.2"
